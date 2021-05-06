@@ -2,12 +2,12 @@ import html
 import re, os
 import time
 from typing import List
-
+import git
 import requests
 from telegram import Update, MessageEntity, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import CommandHandler, Filters, CallbackContext
-from telegram.utils.helpers import mention_html
+from telegram.utils.helpers import mention_html, escape_markdown
 from subprocess import Popen, PIPE
 
 from tg_bot import (
@@ -20,14 +20,17 @@ from tg_bot import (
     WHITELIST_USERS,
     INFOPIC,
     sw,
+    StartTime
 )
 from tg_bot.__main__ import STATS, USER_INFO, TOKEN
+from tg_bot.modules.sql import SESSION
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.chat_status import user_admin, sudo_plus
 from tg_bot.modules.helper_funcs.extraction import extract_user
 import tg_bot.modules.sql.users_sql as sql
 from tg_bot.modules.language import gs
-from telegram import __version__
+from telegram import __version__ as ptbver, InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram import __version__ as pyrover
 from psutil import cpu_percent, virtual_memory, disk_usage, boot_time
 import datetime
 import platform
@@ -168,33 +171,39 @@ def info(update: Update, context: CallbackContext):
     except:
         pass  # don't crash if api is down somehow...
 
-    try:
-        status = client.raw_output(int(user.id))
-        ptid = status["results"]["private_telegram_id"]
-        op = status["results"]["attributes"]["is_operator"]
-        ag = status["results"]["attributes"]["is_agent"]
-        wl = status["results"]["attributes"]["is_whitelisted"]
-        ps = status["results"]["attributes"]["is_potential_spammer"]
-        sp = status["results"]["spam_prediction"]["spam_prediction"]
-        hamp = status["results"]["spam_prediction"]["ham_prediction"]
-        blc = status["results"]["attributes"]["is_blacklisted"]
-        if blc:
-            blres = status["results"]["attributes"]["blacklist_reason"]
-        else:
-            blres = None
+    apst = requests.get(f'https://api.intellivoid.net/spamprotection/v1/lookup?query={context.bot.username}')
+    api_status = apst.status_code
+    if (api_status == 200):
+        try:
+            status = client.raw_output(int(user.id))
+            ptid = status["results"]["private_telegram_id"]
+            op = status["results"]["attributes"]["is_operator"]
+            ag = status["results"]["attributes"]["is_agent"]
+            wl = status["results"]["attributes"]["is_whitelisted"]
+            ps = status["results"]["attributes"]["is_potential_spammer"]
+            sp = status["results"]["spam_prediction"]["spam_prediction"]
+            hamp = status["results"]["spam_prediction"]["ham_prediction"]
+            blc = status["results"]["attributes"]["is_blacklisted"]
+            if blc:
+                blres = status["results"]["attributes"]["blacklist_reason"]
+            else:
+                blres = None
+            text += "\n\n<b>SpamProtection:</b>"
+            text += f"<b>\nPrivate Telegram ID:</b> <code>{ptid}</code>\n"
+            text += f"<b>Operator:</b> <code>{op}</code>\n"
+            text += f"<b>Agent:</b> <code>{ag}</code>\n"
+            text += f"<b>Whitelisted:</b> <code>{wl}</code>\n"
+            text += f"<b>Spam Prediction:</b> <code>{sp}</code>\n"
+            text += f"<b>Ham Prediction:</b> <code>{hamp}</code>\n"
+            text += f"<b>Potential Spammer:</b> <code>{ps}</code>\n"
+            text += f"<b>Blacklisted:</b> <code>{blc}</code>\n"
+            text += f"<b>Blacklist Reason:</b> <code>{blres}</code>\n"
+        except HostDownError:
+            text += "\n\n<b>SpamProtection:</b>"
+            text += "\nCan't connect to Intellivoid SpamProtection API\n"
+    else:
         text += "\n\n<b>SpamProtection:</b>"
-        text += f"<b>\nPrivate Telegram ID:</b> <code>{ptid}</code>\n"
-        text += f"<b>Operator:</b> <code>{op}</code>\n"
-        text += f"<b>Agent:</b> <code>{ag}</code>\n"
-        text += f"<b>Whitelisted:</b> <code>{wl}</code>\n"
-        text += f"<b>Spam Prediction:</b> <code>{sp}</code>\n"
-        text += f"<b>Ham Prediction ID:</b> <code>{hamp}</code>\n"
-        text += f"<b>Potential Spammer:</b> <code>{ps}</code>\n"
-        text += f"<b>Blacklisted:</b> <code>{blc}</code>\n"
-        text += f"<b>Blacklist Reason:</b> <code>{blres}</code>\n"
-    except HostDownError:
-        text += "\n\n<b>SpamProtection:</b>"
-        text += "\nCan't connect to Intellivoid SpamProtection API\n"
+        text += f"\n<code>API RETURNED: {api_status}</code>\n"
 
     Nation_level_present = False
 
@@ -328,47 +337,82 @@ def markdown_help(update: Update, _):
         "[button2](buttonurl://google.com:same)"
     )
 
+def get_readable_time(seconds: int) -> str:
+    count = 0
+    ping_time = ""
+    time_list = []
+    time_suffix_list = ["s", "m", "h", "days"]
 
+    while count < 4:
+        count += 1
+        if count < 3:
+            remainder, result = divmod(seconds, 60)
+        else:
+            remainder, result = divmod(seconds, 24)
+        if seconds == 0 and remainder == 0:
+            break
+        time_list.append(int(result))
+        seconds = int(remainder)
+
+    for x in range(len(time_list)):
+        time_list[x] = str(time_list[x]) + time_suffix_list[x]
+    if len(time_list) == 4:
+        ping_time += time_list.pop() + ", "
+
+    time_list.reverse()
+    ping_time += ":".join(time_list)
+
+    return ping_time
+
+stats_str = '''
+'''
 @sudo_plus
 def stats(update, context):
+    db_size = SESSION.execute("SELECT pg_size_pretty(pg_database_size(current_database()))").scalar_one_or_none()
     uptime = datetime.datetime.fromtimestamp(boot_time()).strftime("%Y-%m-%d %H:%M:%S")
-    status = "*>-------< System >-------<*\n"
-    status += "*System uptime:* " + str(uptime) + "\n"
-
+    botuptime = get_readable_time((time.time() - StartTime))
+    status = "*╒═══「 System statistics: 」*\n\n"
+    status += "*• System Start time:* " + str(uptime) + "\n"
     uname = platform.uname()
-    status += "*System:* " + str(uname.system) + "\n"
-    status += "*Node name:* " + str(uname.node) + "\n"
-    status += "*Release:* " + str(uname.release) + "\n"
-    status += "*Machine:* " + str(uname.machine) + "\n"
+    status += "*• System:* " + str(uname.system) + "\n"
+    status += "*• Node name:* " + escape_markdown(str(uname.node)) + "\n"
+    status += "*• Release:* " + escape_markdown(str(uname.release)) + "\n"
+    status += "*• Machine:* " + escape_markdown(str(uname.machine)) + "\n"
 
     mem = virtual_memory()
     cpu = cpu_percent()
     disk = disk_usage("/")
-    status += "*CPU usage:* " + str(cpu) + " %\n"
-    status += "*Ram usage:* " + str(mem[2]) + " %\n"
-    status += "*Storage used:* " + str(disk[3]) + " %\n\n"
-    status += "*Python version:* " + python_version() + "\n"
-    status += "*Library version:* " + str(__version__) + "\n"
+    status += "*• CPU:* " + str(cpu) + " %\n"
+    status += "*• RAM:* " + str(mem[2]) + " %\n"
+    status += "*• Storage:* " + str(disk[3]) + " %\n\n"
+    status += "*• Python version:* " + python_version() + "\n"
+    status += "*• python-telegram-bot:* " + str(ptbver) + "\n"
+    status += "*• Pyrogram:* " + str(pyrover) + "\n"
+    status += "*• Uptime:* " + str(botuptime) + "\n"
+    status += "*• Database size:* " + str(db_size) + "\n"
+    kb = [
+          [
+           InlineKeyboardButton('Channel', url='t.me/KigyoUpdates'),
+           InlineKeyboardButton('Support', url='t.me/YorktownEagleUnion')
+          ]
+    ]
+    repo = git.Repo(search_parent_directories=True)
+    sha = repo.head.object.hexsha
+    status += f"*• Commit*: `{sha[0:9]}`\n"
     try:
-        update.effective_message.reply_text(
-
-            f"*Kigyo (@{context.bot.username}), *\n" +
-            "Maintained by [Dank-del](t.me/dank_as_fuck)\n" +
-            "Built with ❤️ using python-telegram-bot\n\n" + status +
+        update.effective_message.reply_text(status +
             "\n*Bot statistics*:\n"
             + "\n".join([mod.__stats__() for mod in STATS]) +
-            "\n\n*SRC*: [GitHub](https://github.com/Dank-del/EnterpriseALRobot) | [GitLab](https://gitlab.com/Dank-del/EnterpriseALRobot)",
-        parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
+            "\n\n[⍙ GitHub](https://github.com/Dank-del/EnterpriseALRobot) | [⍚ GitLab](https://gitlab.com/Dank-del/EnterpriseALRobot)\n\n" +
+            "╘══「 by [Dank-del](github.com/Dank-del)」\n",
+        parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(kb), disable_web_page_preview=True)
     except BaseException:
         update.effective_message.reply_text(
-
-            f"*Kigyo (@{context.bot.username}), *\n" +
-            "built by [Dank-del](t.me/dank_as_fuck)\n" +
-            "Built with ❤️ using python-telegram-bot\n" +
-            "\n*Bot statistics*:\n"
-            + "\n".join([mod.__stats__() for mod in STATS]) +
-            "\n\n*SRC*: [GitHub](https://github.com/Dank-del/EnterpriseALRobot) | [GitLab](https://gitlab.com/Dank-del/EnterpriseALRobot)",
-        parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True)
+        "\n*Bot statistics*:\n"
+        + "\n".join([mod.__stats__() for mod in STATS]) +
+        "\n\n⍙ [GitHub](https://github.com/Dank-del/EnterpriseALRobot) | ⍚ [GitLab](https://gitlab.com/Dank-del/EnterpriseALRobot)\n\n" +
+        "╘══「 by [Dank-del](github.com/Dank-del)」\n",
+        parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(kb), disable_web_page_preview=True)
 
 
 def ping(update: Update, _):

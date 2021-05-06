@@ -1,5 +1,5 @@
 from pyrogram import filters
-from tg_bot import kp, CF_API_KEY, log
+from tg_bot import kp, CF_API_KEY, log, dispatcher
 from pyrogram.handlers import MessageHandler
 from pyrogram.types import ChatPermissions, Message
 from pyrogram.errors import BadRequest
@@ -72,6 +72,9 @@ async def detect_spam(client, message):
     user = message.from_user
     chat = message.chat
     msg = message.text
+    if user.id == dispatcher.bot.id:
+        return
+    
     chat_state = sql.does_chat_nlp(chat.id)
     if SPB_MODE and CF_API_KEY and chat_state == True:
         try:
@@ -82,8 +85,8 @@ async def detect_spam(client, message):
                 spam_check = res_json['results']['spam_prediction']['is_spam']
                 if spam_check == True:
                     pred = res_json['results']['spam_prediction']['prediction']
-                    await kp.restrict_chat_member(chat.id, user.id, ChatPermissions(can_send_messages=False))
                     try:
+                        await kp.restrict_chat_member(chat.id, user.id, ChatPermissions(can_send_messages=False))
                         await message.reply_text(
                         f"**⚠ SPAM DETECTED!**\nSpam Prediction: `{pred}`\nUser: `{user.id}` was muted.",
                         parse_mode="md",
@@ -102,8 +105,8 @@ async def detect_spam(client, message):
                 spam_check = res_json['results']['spam_prediction']['is_spam']
                 if spam_check is True:
                     pred = res_json['results']['spam_prediction']['prediction']
-                    await kp.restrict_chat_member(chat.id, user.id, ChatPermissions(can_send_messages=False))
                     try:
+                        await kp.restrict_chat_member(chat.id, user.id, ChatPermissions(can_send_messages=False))
                         await message.reply_text(
                             f"**⚠ SPAM DETECTED!**\nSpam Prediction: `{pred}`\nUser: `{user.id}` was muted.", parse_mode="markdown")
                     except BadRequest:

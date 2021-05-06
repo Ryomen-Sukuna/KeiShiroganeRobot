@@ -194,7 +194,16 @@ def start(update: Update, context: CallbackContext):
                                 url="t.me/{}?startgroup=true".format(
                                     context.bot.username
                                 ),
-                            )
+                            ),
+
+                            InlineKeyboardButton(
+                                text="Help",
+                                url="t.me/{}?start=help".format(
+                                    context.bot.username
+                                ),
+
+                            ),
+
                         ],
                         [
                             InlineKeyboardButton(
@@ -210,7 +219,12 @@ def start(update: Update, context: CallbackContext):
                             InlineKeyboardButton(
                                 text=gs(chat.id, "src_btn"),
                                 url="https://github.com/Dank-del/EnterpriseALRobot",
-                            )
+                            ),
+
+                             InlineKeyboardButton(
+                                 text="Try inline mode",
+                                 switch_inline_query_current_chat="",
+                             )
                         ],
                     ]
                 ),
@@ -621,7 +635,7 @@ def main():
             updater.bot.set_webhook(url=URL + TOKEN)
 
     else:
-        log.info("Kigyo started, Using long polling.")
+        log.info(f"Kigyo started, Using long polling. | BOT: [@{dispatcher.bot.username}]")
         updater.start_polling(timeout=15, read_latency=4, drop_pending_updates=True)
     if len(argv) not in (1, 3, 4):
         telethn.disconnect()
