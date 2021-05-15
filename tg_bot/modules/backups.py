@@ -7,7 +7,7 @@ from tg_bot import dispatcher, log as LOGGER, OWNER_ID
 from tg_bot.__main__ import DATA_IMPORT
 from tg_bot.modules.helper_funcs.chat_status import user_admin
 from tg_bot.modules.helper_funcs.alternate import typing_action
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 # from tg_bot.modules.rules import get_rules
 import tg_bot.modules.sql.rules_sql as rulessql
 from tg_bot.modules.language import gs
@@ -25,7 +25,7 @@ def get_help(chat):
 
 __mod_name__ = "Backup"
 
-@kigcmd(command='import')
+@keicmd(command='import')
 @user_admin
 @typing_action
 def import_data(update, context):
@@ -118,7 +118,7 @@ def import_data(update, context):
             text = "Backup fully restored"
         msg.reply_text(text, parse_mode="markdown")
 
-@kigcmd(command='export')
+@keicmd(command='export')
 @user_admin
 def export_data(update, context):
     chat_data = context.chat_data
@@ -325,21 +325,21 @@ def export_data(update, context):
         },
     }
     baccinfo = json.dumps(backup, indent=4)
-    with open("KigyoRobot{}.json".format(chat_id), "w") as f:
+    with open("KeiRobot{}.json".format(chat_id), "w") as f:
         f.write(str(baccinfo))
     context.bot.sendChatAction(current_chat_id, "upload_document")
     tgl = time.strftime("%H:%M:%S - %d/%m/%Y", time.localtime(time.time()))
     context.bot.sendDocument(
         current_chat_id,
-        document=open("KigyoRobot{}.json".format(chat_id), "rb"),
-        caption="*Successfully Exported backup:*\nChat: `{}`\nChat ID: `{}`\nOn: `{}`\n\nNote: This `KigyoRobot-Backup` was specially made for notes.".format(
+        document=open("KeiRobot{}.json".format(chat_id), "rb"),
+        caption="*Successfully Exported backup:*\nChat: `{}`\nChat ID: `{}`\nOn: `{}`\n\nNote: This `KeiRobot-Backup` was specially made for notes.".format(
             chat.title, chat_id, tgl,
         ),
         timeout=360,
         reply_to_message_id=msg.message_id,
         parse_mode=ParseMode.MARKDOWN,
     )
-    os.remove("KigyoRobot{}.json".format(chat_id))  # Cleaning file
+    os.remove("KeiRobot{}.json".format(chat_id))  # Cleaning file
 
 
 # Temporary data
