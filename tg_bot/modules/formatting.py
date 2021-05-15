@@ -1,4 +1,4 @@
-from tg_bot.modules.helper_funcs.decorators import kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicallback
 from telegram import (
     ParseMode,
     Update,
@@ -23,7 +23,7 @@ def fmt_filling_help(update: Update, context: CallbackContext):
 
 
 
-@kigcallback(pattern=r"fmt_help_")
+@keicallback(pattern=r"fmt_help_")
 def fmt_help(update: Update, context: CallbackContext):
     query = update.callback_query
     bot = context.bot
@@ -37,7 +37,7 @@ def fmt_help(update: Update, context: CallbackContext):
         parse_mode=ParseMode.HTML,
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton(text="Back", callback_data=f"help_module({__mod_name__.lower()})"),
-            InlineKeyboardButton(text='Report Error', url='https://t.me/YorkTownEagleUnion')]]
+            InlineKeyboardButton(text='Report Error', url='https://t.me/zerounions')]]
         ),
     )
     bot.answer_callback_query(query.id)
