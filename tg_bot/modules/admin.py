@@ -22,7 +22,7 @@ from tg_bot import kp, get_entity
 from pyrogram import Client, filters
 from pyrogram.types import Chat, User
 from tg_bot.modules.language import gs
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 @keicmd(command="promote", can_disable=False)
 @connection_status
