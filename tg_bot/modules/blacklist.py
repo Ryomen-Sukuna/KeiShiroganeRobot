@@ -15,12 +15,12 @@ from tg_bot.modules.log_channel import loggable
 from tg_bot.modules.warns import warn
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.connection import connected
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigmsg
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
 from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
 
 BLACKLIST_GROUP = -3
 
-@kigcmd(command="blacklist", pass_args=True, admin_ok=True)
+@keicmd(command="blacklist", pass_args=True, admin_ok=True)
 @user_admin
 @typing_action
 def blacklist(update, context):
@@ -65,7 +65,7 @@ def blacklist(update, context):
             return
         send_message(update.effective_message, text, parse_mode=ParseMode.HTML)
 
-@kigcmd(command="addblacklist", pass_args=True)
+@keicmd(command="addblacklist", pass_args=True)
 @user_admin
 @typing_action
 def add_blacklist(update, context):
@@ -118,7 +118,7 @@ def add_blacklist(update, context):
             "Tell me which words you would like to add in blacklist.",
         )
 
-@kigcmd(command="unblacklist", pass_args=True)
+@keicmd(command="unblacklist", pass_args=True)
 @user_admin
 @typing_action
 def unblacklist(update, context):
@@ -197,7 +197,7 @@ def unblacklist(update, context):
             "Tell me which words you would like to remove from blacklist!",
         )
 
-@kigcmd(command="blacklistmode", pass_args=True)
+@keicmd(command="blacklistmode", pass_args=True)
 @loggable
 @user_admin
 @typing_action
@@ -335,7 +335,7 @@ def findall(p, s):
 
 
 
-@kigmsg(((Filters.text | Filters.command | Filters.sticker | Filters.photo) & Filters.chat_type.groups), group=BLACKLIST_GROUP)
+@keimsg(((Filters.text | Filters.command | Filters.sticker | Filters.photo) & Filters.chat_type.groups), group=BLACKLIST_GROUP)
 @user_not_admin
 def del_blacklist(update, context):
     chat = update.effective_chat
