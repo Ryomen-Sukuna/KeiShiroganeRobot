@@ -1,6 +1,6 @@
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 normiefont = [
     "a",
@@ -59,7 +59,7 @@ weebyfont = [
     "乙",
 ]
 
-@kigcmd(command='weebify')
+@keicmd(command='weebify')
 def weebify(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
