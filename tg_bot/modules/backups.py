@@ -25,9 +25,9 @@ def get_help(chat):
 
 __mod_name__ = "Backup"
 
+@kigcmd(command='import')
 @user_admin
 @typing_action
-@kigcmd(command='import')
 def import_data(update, context):
     msg = update.effective_message
     chat = update.effective_chat
@@ -118,9 +118,8 @@ def import_data(update, context):
             text = "Backup fully restored"
         msg.reply_text(text, parse_mode="markdown")
 
-
-@user_admin
 @kigcmd(command='export')
+@user_admin
 def export_data(update, context):
     chat_data = context.chat_data
     msg = update.effective_message  # type: Optional[Message]
@@ -356,6 +355,3 @@ def get_chat(chat_id, chat_data):
         return chat_data[chat_id]["backups"]
     except KeyError:
         return {"status": False, "value": False}
-
-
-
