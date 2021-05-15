@@ -27,7 +27,7 @@ logging.basicConfig(handlers=[RichHandler()], level=logging.INFO, format=FORMAT,
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 log = logging.getLogger("rich")
 
-log.info("[KEI] Kigyo is starting. | An Zero Union Project. | Licensed under GPLv3.")
+log.info("[KEI] Kei is starting. | An Zero Union Project. | Licensed under GPLv3.")
 
 log.info("[KEI] Not affiliated to Azur Lane or Yostar in any way whatsoever.")
 log.info("[KEI] Project maintained by: github.com/Dank-del (t.me/dank_as_fuck)")
