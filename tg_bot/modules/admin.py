@@ -24,7 +24,7 @@ from pyrogram.types import Chat, User
 from tg_bot.modules.language import gs
 from tg_bot.modules.helper_funcs.decorators import kigcmd
 
-@kigcmd(command="promote", can_disable=False)
+@keicmd(command="promote", can_disable=False)
 @connection_status
 @bot_admin
 @can_promote
@@ -107,7 +107,7 @@ def promote(update: Update, context: CallbackContext) -> str:
 
     return log_message
 
-@kigcmd(command="demote", can_disable=False)
+@keicmd(command="demote", can_disable=False)
 @connection_status
 @bot_admin
 @can_promote
@@ -181,13 +181,13 @@ def demote(update: Update, context: CallbackContext) -> str:
         )
         return
 
-@kigcmd(command="admincache", can_disable=False)
+@keicmd(command="admincache", can_disable=False)
 @user_admin
 def refresh_admin(update, _):
     ADMIN_CACHE.pop(update.effective_chat.id)
     update.effective_message.reply_text("Admins cache refreshed!")
 
-@kigcmd(command="title", can_disable=False)
+@keicmd(command="title", can_disable=False)
 @connection_status
 @bot_admin
 @can_promote
@@ -251,7 +251,7 @@ def set_title(update: Update, context: CallbackContext):
         parse_mode=ParseMode.HTML,
     )
 
-@kigcmd(command="pin", can_disable=False)
+@keicmd(command="pin", can_disable=False)
 @bot_admin
 @can_pin
 @user_admin
@@ -292,7 +292,7 @@ def pin(update: Update, context: CallbackContext) -> str:
 
         return log_message
 
-@kigcmd(command="unpin", can_disable=False)
+@keicmd(command="unpin", can_disable=False)
 @bot_admin
 @can_pin
 @user_admin
@@ -318,7 +318,7 @@ def unpin(update: Update, context: CallbackContext) -> str:
 
     return log_message
 
-@kigcmd(command="invitelink", can_disable=False)
+@keicmd(command="invitelink", can_disable=False)
 @bot_admin
 @user_admin
 @connection_status
