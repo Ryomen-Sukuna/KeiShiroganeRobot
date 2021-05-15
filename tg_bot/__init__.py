@@ -27,23 +27,23 @@ logging.basicConfig(handlers=[RichHandler()], level=logging.INFO, format=FORMAT,
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 log = logging.getLogger("rich")
 
-log.info("[KIGYO] Kigyo is starting. | An Eagle Union Project. | Licensed under GPLv3.")
+log.info("[KEI] Kigyo is starting. | An Zero Union Project. | Licensed under GPLv3.")
 
-log.info("[KIGYO] Not affiliated to Azur Lane or Yostar in any way whatsoever.")
-log.info("[KIGYO] Project maintained by: github.com/Dank-del (t.me/dank_as_fuck)")
+log.info("[KEI] Not affiliated to Azur Lane or Yostar in any way whatsoever.")
+log.info("[KEI] Project maintained by: github.com/Dank-del (t.me/dank_as_fuck)")
 
 # if version < 3.6, stop bot.
 if sys.version_info[0] < 3 or sys.version_info[1] < 7:
     log.error(
-        "[KIGYO] You MUST have a python version of at least 3.7! Multiple features depend on this. Bot quitting."
+        "[KEI] You MUST have a python version of at least 3.7! Multiple features depend on this. Bot quitting."
     )
-    quit(1)
+    sys.exit(1)
 
 parser = ConfigParser()
 parser.read("config.ini")
-kigconfig = parser["kigconfig"]
+keiconfig = parser["keiconfig"]
 
-class KigyoINIT:
+class KeiINIT:
     def __init__(self, parser):
         self.parser = parser
         self.SYS_ADMIN = self.parser.getint('SYS_ADMIN', 0)
@@ -76,8 +76,8 @@ class KigyoINIT:
         self.LASTFM_API_KEY = self.parser.get('LASTFM_API_KEY', None)
         self.CF_API_KEY =  self.parser.get("CF_API_KEY", None)
         self.bot_id = 0 #placeholder
-        self.bot_name = "Kigyo" #placeholder
-        self.bot_username = "KigyoRobot" #placeholder
+        self.bot_name = "Kei" #placeholder
+        self.bot_username = "KeiRobot" #placeholder
 
 
     def init_sw(self):
@@ -94,7 +94,7 @@ class KigyoINIT:
                 return sw
 
 
-KInit = KigyoINIT(parser=kigconfig)
+KInit = KeiINIT(parser=keiconfig)
 
 SYS_ADMIN = KInit.SYS_ADMIN
 OWNER_ID = KInit.OWNER_ID
@@ -129,7 +129,7 @@ WALL_API = KInit.WALL_API
 LASTFM_API_KEY = KInit.LASTFM_API_KEY
 CF_API_KEY = KInit.CF_API_KEY
 
-SPB_MODE = kigconfig.getboolean('SPB_MODE', False)
+SPB_MODE = keiconfig.getboolean('SPB_MODE', False)
 
 # SpamWatch
 sw = KInit.init_sw()
