@@ -161,11 +161,11 @@ def start(update: Update, context: CallbackContext):
                             ),
                             InlineKeyboardButton(
                                 text=gs(chat.id, "updates_channel_link_btn"),
-                                url="https://t.me/zerounions",
+                                url="https://t.me/keiupdates",
                             ),
                             InlineKeyboardButton(
                                 text=gs(chat.id, "src_btn"),
-                                url="https://github.com/Dank-del/EnterpriseALRobot",
+                                url="https://github.com/Ryomen-Sukuna/KeiShiroganeRobot",
                             ),
                             
                         ],
