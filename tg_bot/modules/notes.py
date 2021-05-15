@@ -24,7 +24,7 @@ from telegram.ext import (
     Filters,
 )
 
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigmsg, kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 
 JOIN_LOGGER = None
 FILE_MATCHER = re.compile(r"^###file_id(!photo)?###:(.*?)(?:\s|$)")
@@ -206,7 +206,7 @@ def get(update, context, notename, show_none=True, no_format=False):
 
 
 @connection_status
-@kigcmd(command="get")
+@keicmd(command="get")
 def cmd_get(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
     if len(args) >= 2 and args[1].lower() == "noformat":
@@ -218,7 +218,7 @@ def cmd_get(update: Update, context: CallbackContext):
 
 
 @connection_status
-@kigmsg((Filters.regex(r"^#[^\s]+")), group=-14)
+@keimsg((Filters.regex(r"^#[^\s]+")), group=-14)
 def hash_get(update: Update, context: CallbackContext):
     message = update.effective_message.text
     fst_word = message.split()[0]
@@ -227,7 +227,7 @@ def hash_get(update: Update, context: CallbackContext):
 
 
 @connection_status
-@kigmsg((Filters.regex(r"^/\d+$")), group=-16)
+@keimsg((Filters.regex(r"^/\d+$")), group=-16)
 def slash_get(update: Update, context: CallbackContext):
     message, chat_id = update.effective_message.text, update.effective_chat.id
     no_slash = message[1:]
@@ -240,7 +240,7 @@ def slash_get(update: Update, context: CallbackContext):
     except IndexError:
         update.effective_message.reply_text("Wrong Note ID 😾")
 
-@kigcmd(command='save')
+@keicmd(command='save')
 @user_admin
 @connection_status
 def save(update: Update, context: CallbackContext):
@@ -282,7 +282,7 @@ def save(update: Update, context: CallbackContext):
             )
         return
 
-@kigcmd(command='clear')
+@keicmd(command='clear')
 @user_admin
 @connection_status
 def clear(update: Update, context: CallbackContext):
@@ -299,7 +299,7 @@ def clear(update: Update, context: CallbackContext):
         update.effective_message.reply_text("Provide a notename.")
 
 
-@kigcmd(command='removeallnotes')
+@keicmd(command='removeallnotes')
 def clearall(update: Update, context: CallbackContext):
     chat = update.effective_chat
     user = update.effective_user
@@ -326,7 +326,7 @@ def clearall(update: Update, context: CallbackContext):
         )
 
 
-@kigcallback(pattern=r"notes_.*")
+@keicallback(pattern=r"notes_.*")
 def clearall_btn(update: Update, context: CallbackContext):
     query = update.callback_query
     chat = update.effective_chat
@@ -359,7 +359,7 @@ def clearall_btn(update: Update, context: CallbackContext):
 
 
 @connection_status
-@kigcmd(command=["notes", "saved"])
+@keicmd(command=["notes", "saved"])
 def list_notes(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     note_list = sql.get_all_chat_notes(chat_id)
