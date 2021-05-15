@@ -3,9 +3,9 @@ import subprocess
 from tg_bot import log as LOGGER, dispatcher, SYS_ADMIN
 from telegram import ParseMode, Update
 from telegram.ext import Filters, CallbackContext
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
-@kigcmd(command='sh', filters=Filters.user(SYS_ADMIN))
+@keicmd(command='sh', filters=Filters.user(SYS_ADMIN))
 def shell(update: Update, context: CallbackContext):
     message = update.effective_message
     cmd = message.text.split(" ", 1)
