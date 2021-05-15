@@ -3,9 +3,9 @@ from tg_bot import dispatcher
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
-@kigcmd(command='paste', pass_args=True)
+@keicmd(command='paste', pass_args=True)
 def paste(update: Update, context: CallbackContext):
     args = context.args
     message = update.effective_message
