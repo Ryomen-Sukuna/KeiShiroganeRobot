@@ -2,9 +2,9 @@ import requests
 from tg_bot import CASH_API_KEY
 from telegram import Update, ParseMode
 from telegram.ext import CallbackContext
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
-@kigcmd(command='cash')
+@keicmd(command='cash')
 def convert(update: Update, context: CallbackContext):
     args = update.effective_message.text.split(" ")
 
