@@ -2,6 +2,7 @@
 language: "English 🇺🇲"
 # name of people(s) who worked on this translation
 authors: "@dank_as_fuck"
+edited : "@Anomaliii"
 
 # languages
 curr_chat_lang: "Hey. Your current language is {}, select the one you want from the buttons below :)"
