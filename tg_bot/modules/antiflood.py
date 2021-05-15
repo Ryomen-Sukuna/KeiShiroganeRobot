@@ -43,11 +43,11 @@ from tg_bot.modules.log_channel import loggable
 from tg_bot.modules.sql import antiflood_sql as sql
 from tg_bot.modules.connection import connected
 from tg_bot.modules.helper_funcs.alternate import send_message
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigmsg, kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 
 FLOOD_GROUP = -5
 
-@kigmsg((Filters.all & ~Filters.status_update & Filters.chat_type.groups), group=FLOOD_GROUP)
+@keimsg((Filters.all & ~Filters.status_update & Filters.chat_type.groups), group=FLOOD_GROUP)
 @connection_status
 @loggable
 def check_flood(update, context) -> str:
@@ -135,7 +135,7 @@ def check_flood(update, context) -> str:
 
 @user_admin_no_reply
 @bot_admin
-@kigcallback(pattern=r"unmute_flooder")
+@keicallback(pattern=r"unmute_flooder")
 def flood_button(update: Update, context: CallbackContext):
     bot = context.bot
     query = update.callback_query
@@ -162,7 +162,7 @@ def flood_button(update: Update, context: CallbackContext):
         except:
             pass
 
-@kigcmd(command='setflood', pass_args=True, filters=Filters.chat_type.groups)
+@keicmd(command='setflood', pass_args=True, filters=Filters.chat_type.groups)
 @connection_status
 @user_admin
 @can_restrict
@@ -260,7 +260,7 @@ def set_flood(update, context) -> str:
 
 
 @connection_status
-@kigcmd(command="flood", filters=Filters.chat_type.groups)
+@keicmd(command="flood", filters=Filters.chat_type.groups)
 def flood(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -302,7 +302,7 @@ def flood(update, context):
                 )
             )
 
-@kigcmd(command="setfloodmode", pass_args=True, filters=Filters.chat_type.groups)
+@keicmd(command="setfloodmode", pass_args=True, filters=Filters.chat_type.groups)
 @user_admin
 def set_flood_mode(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
