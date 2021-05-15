@@ -31,7 +31,7 @@ from tg_bot.modules.sql import cust_filters_sql as sql
 from tg_bot.modules.connection import connected
 
 from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigmsg, kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 
 
 HANDLER_GROUP = 10
@@ -50,7 +50,7 @@ ENUM_FUNC_MAP = {
 
 
 @typing_action
-@kigcmd(command='filters', admin_ok=True)
+@keicmd(command='filters', admin_ok=True)
 def list_handlers(update, context):
     chat = update.effective_chat
     user = update.effective_user
@@ -97,7 +97,7 @@ def list_handlers(update, context):
 
 
 # NOT ASYNC BECAUSE DISPATCHER HANDLER RAISED
-@kigcmd(command='filter', run_async=False)
+@keicmd(command='filter', run_async=False)
 @user_admin
 @typing_action
 def filters(update, context):
@@ -225,7 +225,7 @@ def filters(update, context):
 
 
 # NOT ASYNC BECAUSE DISPATCHER HANDLER RAISED
-@kigcmd(command='stop', run_async=False)
+@keicmd(command='stop', run_async=False)
 @user_admin
 @typing_action
 def stop_filter(update, context):
@@ -269,7 +269,7 @@ def stop_filter(update, context):
         "That's not a filter - Click: /filters to get currently active filters.",
     )
 
-@kigmsg((CustomFilters.has_text & ~Filters.update.edited_message))
+@keimsg((CustomFilters.has_text & ~Filters.update.edited_message))
 def reply_filter(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     message = update.effective_message  # type: Optional[Message]
@@ -469,7 +469,7 @@ def reply_filter(update, context):
                         pass
                 break
 
-@kigcmd(command="removeallfilters", filters=Filters.chat_type.groups)
+@keicmd(command="removeallfilters", filters=Filters.chat_type.groups)
 def rmall_filters(update, context):
     chat = update.effective_chat
     user = update.effective_user
@@ -495,7 +495,7 @@ def rmall_filters(update, context):
             parse_mode=ParseMode.MARKDOWN,
         )
 
-@kigcallback(pattern=r"filters_.*")
+@keicallback(pattern=r"filters_.*")
 def rmall_callback(update, context):
     query = update.callback_query
     chat = update.effective_chat
