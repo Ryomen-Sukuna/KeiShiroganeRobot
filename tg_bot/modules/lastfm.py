@@ -6,10 +6,10 @@ from telegram import Update, ParseMode
 from telegram.ext import CallbackContext
 
 from tg_bot import dispatcher, LASTFM_API_KEY
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 import tg_bot.modules.sql.last_fm_sql as sql
 
-@kigcmd(command='setuser')
+@keicmd(command='setuser')
 def set_user(update: Update, context: CallbackContext):
     args = context.args
     msg = update.effective_message
@@ -23,7 +23,7 @@ def set_user(update: Update, context: CallbackContext):
             "That's not how this works...\nRun /setuser followed by your username!"
         )
 
-@kigcmd(command='clearuser')
+@keicmd(command='clearuser')
 def clear_user(update: Update, _):
     user = update.effective_user.id
     sql.set_user(user, "")
@@ -31,7 +31,7 @@ def clear_user(update: Update, _):
         "Last.fm username successfully cleared from my database!"
     )
 
-@kigcmd(command='lastfm')
+@keicmd(command='lastfm')
 def last_fm(update: Update, _):
     msg = update.effective_message
     user = update.effective_user.first_name
