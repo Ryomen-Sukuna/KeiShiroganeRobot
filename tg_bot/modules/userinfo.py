@@ -8,9 +8,9 @@ from telegram.utils.helpers import escape_markdown
 import tg_bot.modules.sql.userinfo_sql as sql
 from tg_bot import dispatcher, SUDO_USERS, DEV_USERS
 from tg_bot.modules.helper_funcs.extraction import extract_user
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
-@kigcmd(command='me', pass_args=True)
+@keicmd(command='me', pass_args=True)
 def about_me(update: Update, context: CallbackContext):
     args = context.args
     bot = context.bot
@@ -36,7 +36,7 @@ def about_me(update: Update, context: CallbackContext):
         )
 
 
-@kigcmd(command='setme')
+@keicmd(command='setme')
 def set_about_me(update: Update, context: CallbackContext):
     bot = context.bot
     message = update.effective_message
@@ -67,7 +67,7 @@ def set_about_me(update: Update, context: CallbackContext):
                 )
             )
 
-@kigcmd(command='bio', pass_args=True)
+@keicmd(command='bio', pass_args=True)
 def about_bio(update: Update, context: CallbackContext):
     args = context.args
     bot = context.bot
@@ -133,7 +133,7 @@ def about_bio(update: Update, context: CallbackContext):
     else:
         message.reply_text("Reply to someone's message to set their bio!")
 
-@kigcmd(command='setbio')
+@keicmd(command='setbio')
 def set_about_bio(update: Update, context: CallbackContext):
     message = update.effective_message
     sender_id = update.effective_user.id
