@@ -5,7 +5,7 @@ from telegram import TelegramError, ChatPermissions
 from telegram.error import BadRequest
 from telegram.ext import Filters
 from telegram.utils.helpers import mention_html
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigmsg
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
 from alphabet_detector import AlphabetDetector
 from tg_bot.modules.sql.approve_sql import is_approved
 import tg_bot.modules.sql.locks_sql as sql
@@ -129,7 +129,7 @@ def unrestr_members(
         except TelegramError:
             pass
 
-@kigcmd(command='locktypes')
+@keicmd(command='locktypes')
 def locktypes(update, context):
     update.effective_message.reply_text(
         "\n • ".join(
@@ -142,7 +142,7 @@ def locktypes(update, context):
 @user_admin
 @loggable
 @typing_action
-@kigcmd(command='lock', pass_args=True)
+@keicmd(command='lock', pass_args=True)
 def lock(update, context) -> str:
     args = context.args
     chat = update.effective_chat
@@ -250,7 +250,7 @@ def lock(update, context) -> str:
 @user_admin
 @loggable
 @typing_action
-@kigcmd(command='unlock', pass_args=True)
+@keicmd(command='unlock', pass_args=True)
 def unlock(update, context) -> str:
     args = context.args
     chat = update.effective_chat
@@ -345,7 +345,7 @@ def unlock(update, context) -> str:
 
 
 @user_not_admin
-@kigmsg((Filters.all & Filters.chat_type.groups), group=PERM_GROUP)
+@keimsg((Filters.all & Filters.chat_type.groups), group=PERM_GROUP)
 def del_lockables(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     message = update.effective_message  # type: Optional[Message]
@@ -486,7 +486,7 @@ def build_lock_message(chat_id):
 
 @user_admin
 @typing_action
-@kigcmd(command='locks')
+@keicmd(command='locks')
 def list_locks(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user
