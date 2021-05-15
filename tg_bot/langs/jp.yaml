@@ -2,6 +2,7 @@
 language: "日本語 🇯🇵"
 # name of people(s) who worked on this translation
 authors: "@dank_as_fuck"
+edited: "@Anomaliii"
 
 # languages
 curr_chat_lang: "ねえ。現在の言語は {} です。下のボタンから、必要な言語を選択してください"
@@ -13,10 +14,10 @@ pm_start_text: |
    私はアニメをテーマにしたグループ管理ボットで、楽しい機能がいくつかあります;）
 
    使用可能なコマンドのリストは /help で見つけることができます。
-grp_start_text: 「こんにちは、キギョです。」
+grp_start_text: 「こんにちは、ケイです。」
 
 pm_help_text: |
-   Hello there! My name is *Kigyo*. A part of *Eagle Union*.
+   Hello there! My name is *Kei*. A part of *Zero Unions*.
    I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of
    the things I can help you with.
    *Main* commands available:
@@ -208,7 +209,7 @@ antispam_help: |
      you and your groups by removing spam flooders as quickly as possible.
      *Note:* Users can appeal gbans or report spammers at @YorkTownEagleUnion
 
-     Kigyo also integrates @Spamwatch API to remove Spammers as much as possible from your chatroom!
+     Kei also integrates @Spamwatch API to remove Spammers as much as possible from your chatroom!
      *What is SpamWatch?*
      SpamWatch maintains a large constantly updated ban-list of spambots, trolls, bitcoin spammers and unsavoury characters[.](https://telegra.ph/file/c1051d264a5b4146bd71e.jpg)
      Constantly help banning spammers off from your group automatically So, you wont have to worry about spammers storming your group.
