@@ -200,7 +200,7 @@ def new_member(update: Update, context: CallbackContext):
             # Welcome Devs
             elif new_mem.id in DEV_USERS:
                 update.effective_message.reply_text(
-                    "Whoa! A member of the Eagle Union just joined!",
+                    "Whoa! A member of the Zero Unions on just joined!",
                     reply_to_message_id=reply,
                 )
                 continue
@@ -238,7 +238,7 @@ def new_member(update: Update, context: CallbackContext):
             # Welcome yourself
             elif new_mem.id == bot.id:
                 update.effective_message.reply_text(
-                    "Thanks for adding me! Join @YorkTownEagleUnion for support.",
+                    "Thanks for adding me! Join @zerounions for support.",
                     reply_to_message_id=reply,
                 )
                 continue
@@ -591,7 +591,7 @@ def left_member(update: Update, context: CallbackContext):
             # Give the devs a special goodbye
             elif left_mem.id in DEV_USERS:
                 update.effective_message.reply_text(
-                    "See you later at the Eagle Union!",
+                    "See you later at the Zero Unions!",
                     reply_to_message_id=reply,
                 )
                 return
