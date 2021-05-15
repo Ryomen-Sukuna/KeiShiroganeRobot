@@ -43,7 +43,7 @@ from tg_bot.modules.helper_funcs.alternate import (
     typing_action,
     send_action,
 )
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
 
 # Hello bot owner, I spent many hours of my life for feds, Please don't remove this if you still respect MrYacha and peaktogoo and AyraHikari too
 # Federation by MrYacha 2018-2019
@@ -89,7 +89,7 @@ UNFBAN_ERRORS = {
 
 
 @typing_action
-@kigcmd(command='newfed')
+@keicmd(command='newfed')
 def new_fed(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -142,7 +142,7 @@ def new_fed(update, context):
 
 
 @typing_action
-@kigcmd(command='delfed', pass_args=True)
+@keicmd(command='delfed', pass_args=True)
 def del_fed(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -190,7 +190,7 @@ def del_fed(update, context):
 
 
 @typing_action
-@kigcmd(command='chatfed', pass_args=True)
+@keicmd(command='chatfed', pass_args=True)
 def fed_chat(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     fed_id = sql.get_fed_id(chat.id)
@@ -216,7 +216,7 @@ def fed_chat(update, context):
 
 
 @typing_action
-@kigcmd(command='joinfed', pass_args=True)
+@keicmd(command='joinfed', pass_args=True)
 def join_fed(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -278,7 +278,7 @@ def join_fed(update, context):
 
 
 @typing_action
-@kigcmd(command='leavefed')
+@keicmd(command='leavefed')
 def leave_fed(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -320,7 +320,7 @@ def leave_fed(update, context):
 
 
 @typing_action
-@kigcmd(command='fpromote', pass_args=True)
+@keicmd(command='fpromote', pass_args=True)
 def user_join_fed(update, context):
     chat = update.effective_chat
     user = update.effective_user
@@ -385,7 +385,7 @@ def user_join_fed(update, context):
 
 
 @typing_action
-@kigcmd(command='fdemote', pass_args=True)
+@keicmd(command='fdemote', pass_args=True)
 def user_demote_fed(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -446,7 +446,7 @@ def user_demote_fed(update, context):
 
 
 @typing_action
-@kigcmd(command='fedinfo', pass_args=True)
+@keicmd(command='fedinfo', pass_args=True)
 def fed_info(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -546,7 +546,7 @@ def fed_admin(update, context):
 
 
 @typing_action
-@kigcmd(command=['fban', 'fedban'], pass_args=True)
+@keicmd(command=['fban', 'fedban'], pass_args=True)
 def fed_ban(update, context):
 
     chat = update.effective_chat  # type: Optional[Chat]
@@ -1236,7 +1236,7 @@ def set_frules(update, context):
 
 
 @typing_action
-@kigcmd(command='frules', pass_args=True)
+@keicmd(command='frules', pass_args=True)
 def get_frules(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     args = context.args
@@ -1260,7 +1260,7 @@ def get_frules(update, context):
 
 
 @typing_action
-@kigcmd(command='fbroadcast', pass_args=True)
+@keicmd(command='fbroadcast', pass_args=True)
 def fed_broadcast(update, context):
     msg = update.effective_message  # type: Optional[Message]
     user = update.effective_user  # type: Optional[User]
@@ -1320,7 +1320,7 @@ def fed_broadcast(update, context):
 
 
 @send_action(ChatAction.UPLOAD_DOCUMENT)
-@kigcmd(command='fbanlist', pass_args=True, pass_chat_data=True)
+@keicmd(command='fbanlist', pass_args=True, pass_chat_data=True)
 def fed_ban_list(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -1393,10 +1393,10 @@ def fed_ban_list(update, context):
                 backups += json.dumps(json_parser)
                 backups += "\n"
             with BytesIO(str.encode(backups)) as output:
-                output.name = "kigyo_fbanned_users.json"
+                output.name = "kei_fbanned_users.json"
                 update.effective_message.reply_document(
                     document=output,
-                    filename="kigyo_fbanned_users.json",
+                    filename="kei_fbanned_users.json",
                     caption="Total {} User are blocked by the Federation {}.".format(
                         len(getfban), info["fname"]
                     ),
@@ -1438,10 +1438,10 @@ def fed_ban_list(update, context):
                 )
                 backups += "\n"
             with BytesIO(str.encode(backups)) as output:
-                output.name = "kigyo_fbanned_users.csv"
+                output.name = "kei_fbanned_users.csv"
                 update.effective_message.reply_document(
                     document=output,
-                    filename="kigyo_fbanned_users.csv",
+                    filename="kei_fbanned_users.csv",
                     caption="Total {} User are blocked by Federation {}.".format(
                         len(getfban), info["fname"]
                     ),
@@ -1503,7 +1503,7 @@ def fed_ban_list(update, context):
 
 
 @typing_action
-@kigcmd(command='fednotif', pass_args=True)
+@keicmd(command='fednotif', pass_args=True)
 def fed_notif(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -1539,7 +1539,7 @@ def fed_notif(update, context):
 
 
 @typing_action
-@kigcmd(command='fedchats', pass_args=True)
+@keicmd(command='fedchats', pass_args=True)
 def fed_chats(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -1604,7 +1604,7 @@ def fed_chats(update, context):
 
 
 @typing_action
-@kigcmd(command='importfbans', pass_args=True, pass_chat_data=True)
+@keicmd(command='importfbans', pass_args=True, pass_chat_data=True)
 def fed_import_bans(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -1826,7 +1826,7 @@ def fed_import_bans(update, context):
         send_message(update.effective_message, text)
 
 
-@kigcallback(pattern=r"rmfed_")
+@keicallback(pattern=r"rmfed_")
 def del_fed_button(update, context):
     query = update.callback_query
     fed_id = query.data.split("_")[1]
@@ -1848,7 +1848,7 @@ def del_fed_button(update, context):
 
 
 @typing_action
-@kigcmd(command='fbanstat', pass_args=True)
+@keicmd(command='fbanstat', pass_args=True)
 def fed_stat_user(update, context):
     user = update.effective_user  # type: Optional[User]
     msg = update.effective_message  # type: Optional[Message]
@@ -1957,7 +1957,7 @@ def fed_stat_user(update, context):
 
 
 @typing_action
-@kigcmd(command='setfedlog', pass_args=True)
+@keicmd(command='setfedlog', pass_args=True)
 def set_fed_log(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -1999,7 +1999,7 @@ def set_fed_log(update, context):
 
 
 @typing_action
-@kigcmd(command='unsetfedlog', pass_args=True)
+@keicmd(command='unsetfedlog', pass_args=True)
 def unset_fed_log(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -2042,7 +2042,7 @@ def unset_fed_log(update, context):
 
 
 @typing_action
-@kigcmd('subfed', pass_args=True)
+@keicmd('subfed', pass_args=True)
 def subs_feds(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -2109,7 +2109,7 @@ def subs_feds(update, context):
 
 
 @typing_action
-@kigcmd(command='unsubfed', pass_args=True)
+@keicmd(command='unsubfed', pass_args=True)
 def unsubs_feds(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -2176,7 +2176,7 @@ def unsubs_feds(update, context):
 
 
 @typing_action
-@kigcmd(command='fedsubs', pass_args=True)
+@keicmd(command='fedsubs', pass_args=True)
 def get_myfedsubs(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -2225,7 +2225,7 @@ def get_myfedsubs(update, context):
 
 
 @typing_action
-@kigcmd(command='myfeds', pass_args=True)
+@keicmd(command='myfeds', pass_args=True)
 def get_myfeds_list(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
@@ -2365,7 +2365,7 @@ def fed_user_help(update: Update, context: CallbackContext):
     )
 
 
-@kigcallback(pattern=r"fed_help_")
+@keicallback(pattern=r"fed_help_")
 def fed_help(update: Update, context: CallbackContext):
     query = update.callback_query
     bot = context.bot
