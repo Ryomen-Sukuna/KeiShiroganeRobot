@@ -26,7 +26,7 @@ from tg_bot import (
     sw, log
 )
 from tg_bot.modules.helper_funcs.misc import article
-from tg_bot.modules.helper_funcs.decorators import kiginline
+from tg_bot.modules.helper_funcs.decorators import keiinline
 
 
 client = SPBClient()
@@ -37,7 +37,7 @@ def remove_prefix(text, prefix):
         text = text.replace(prefix, "", 1)
     return text
 
-@kiginline()
+@keiinline()
 def inlinequery(update: Update, _) -> None:
     """
     Main InlineQueryHandler callback.
@@ -56,24 +56,24 @@ def inlinequery(update: Update, _) -> None:
             "keyboard": ".spb ",
         },
         {
-            "title": "Account info on Kigyo",
-            "description": "Look up a Telegram account in Kigyo database",
-            "message_text": "Click the button below to look up a person in Kigyo database using their Telegram ID",
-            "thumb_urL": "https://telegra.ph/file/c85e07b58f5b3158b529a.jpg",
+            "title": "Account info on Kei",
+            "description": "Look up a Telegram account in Kei database",
+            "message_text": "Click the button below to look up a person in Kei database using their Telegram ID",
+            "thumb_urL": "https://telegra.ph/file/0be21ef31429a41faa7b7.jpg",
             "keyboard": ".info ",
         },
         {
             "title": "About",
-            "description": "Know about Kigyo",
-            "message_text": "Click the button below to get to know about Kigyo.",
-            "thumb_urL": "https://telegra.ph/file/c85e07b58f5b3158b529a.jpg",
+            "description": "Know about Kei",
+            "message_text": "Click the button below to get to know about Kei.",
+            "thumb_urL": "https://telegra.ph/file/0be21ef31429a41faa7b7.jpg",
             "keyboard": ".about ",
         },
         {
             "title": "Anilist",
             "description": "Search anime and manga on AniList.co",
             "message_text": "Click the button below to search anime and manga on AniList.co",
-            "thumb_urL": "https://telegra.ph/file/c85e07b58f5b3158b529a.jpg",
+            "thumb_urL": "https://telegra.ph/file/0be21ef31429a41faa7b7.jpg",
             "keyboard": ".anilist ",
         },
     ]
@@ -224,7 +224,7 @@ def inlineinfo(query: str, update: Update, context: CallbackContext) -> None:
             [
                 InlineKeyboardButton(
                     text="Report Error",
-                    url=f"https://t.me/YorktownEagleUnion",
+                    url=f"https://t.me/zerounions",
                 ),
                 InlineKeyboardButton(
                     text="Search again",
@@ -255,8 +255,8 @@ def about(query: str, update: Update, context: CallbackContext) -> None:
     user = context.bot.get_chat(user_id)
     sql.update_user(user.id, user.username)
     about_text = f"""
-    Kigyo (@{context.bot.username})
-    Maintained by [Dank-del](t.me/dank_as_fuck)
+    Kei (@{context.bot.username})
+    Maintained by [ZERO](t.me/Anomaliii)
     Built with ❤️ using python-telegram-bot v{str(__version__)}
     Running on Python {python_version()}
     """
@@ -266,22 +266,18 @@ def about(query: str, update: Update, context: CallbackContext) -> None:
             [
                 InlineKeyboardButton(
                     text="Support",
-                    url=f"https://t.me/YorktownEagleUnion",
+                    url=f"https://t.me/zerounions",
                 ),
                 InlineKeyboardButton(
                     text="Channel",
-                    url=f"https://t.me/KigyoUpdates",
+                    url=f"https://t.me/KeiUpdates",
                 ),
 
             ],
             [
                 InlineKeyboardButton(
-                    text="GitLab",
-                    url=f"https://www.gitlab.com/Dank-del/EnterpriseALRobot",
-                ),
-                InlineKeyboardButton(
                     text="GitHub",
-                    url="https://www.github.com/Dank-del/EnterpriseALRobot",
+                    url="https://www.github.com/Ryomen-Sukuna/Kei",
                 ),
             ],
         ])
@@ -291,7 +287,7 @@ def about(query: str, update: Update, context: CallbackContext) -> None:
         InlineQueryResultArticle
             (
             id=str(uuid4()),
-            title=f"About Kigyo (@{context.bot.username})",
+            title=f"About Kei (@{context.bot.username})",
             input_message_content=InputTextMessageContent(about_text, parse_mode=ParseMode.MARKDOWN,
                                                           disable_web_page_preview=True),
             reply_markup=kb
@@ -362,7 +358,7 @@ def spb(query: str, update: Update, context: CallbackContext) -> None:
             [
                 InlineKeyboardButton(
                     text="Report Error",
-                    url=f"https://t.me/YorktownEagleUnion",
+                    url=f"https://t.me/zerounions",
                 ),
                 InlineKeyboardButton(
                     text="Search again",
@@ -506,7 +502,7 @@ def media_query(query: str, update: Update, context: CallbackContext) -> None:
                 [
                     InlineKeyboardButton(
                         text="Report error",
-                        url="t.me/YorktownEagleUnion",
+                        url="t.me/zerounions",
                     ),
                     InlineKeyboardButton(
                         text="Search again",
