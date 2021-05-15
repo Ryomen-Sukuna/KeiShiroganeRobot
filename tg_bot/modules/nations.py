@@ -20,7 +20,7 @@ from tg_bot.modules.helper_funcs.chat_status import whitelist_plus, dev_plus, su
 from tg_bot.modules.helper_funcs.extraction import extract_user
 from tg_bot.modules.log_channel import gloggable
 from tg_bot.modules.sql import nation_sql as sql
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
     bot = context.bot
@@ -34,7 +34,7 @@ def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
         reply = None
     return reply
 
-@kigcmd(command='addsudo')
+@keicmd(command='addsudo')
 @dev_plus
 @gloggable
 def addsudo(update: Update, context: CallbackContext) -> str:
@@ -56,11 +56,11 @@ def addsudo(update: Update, context: CallbackContext) -> str:
         return ""
 
     if user_id in SUPPORT_USERS:
-        rt += "Requested Eagle Union to promote a Support user to Sudo."
+        rt += "Requested Zero Unions to promote a Support user to Sudo."
         SUPPORT_USERS.remove(user_id)
 
     if user_id in WHITELIST_USERS:
-        rt += "Requested Eagle Union to promote a Whitelist user to Sudo."
+        rt += "Requested Zero Unions to promote a Whitelist user to Sudo."
         WHITELIST_USERS.remove(user_id)
 
     # will add or update their role
@@ -86,7 +86,7 @@ def addsudo(update: Update, context: CallbackContext) -> str:
     return log_message
 
 
-@kigcmd(command='addsupport')
+@keicmd(command='addsupport')
 @sudo_plus
 @gloggable
 def addsupport(
@@ -107,7 +107,7 @@ def addsupport(
         return ""
 
     if user_id in SUDO_USERS:
-        rt += "Requested Eagle Union to demote this Sudo to Support"
+        rt += "Requested Zero Unions to demote this Sudo to Support"
         SUDO_USERS.remove(user_id)
 
     if user_id in SUPPORT_USERS:
@@ -115,7 +115,7 @@ def addsupport(
         return ""
 
     if user_id in WHITELIST_USERS:
-        rt += "Requested Eagle Union to promote this Whitelist user to Support"
+        rt += "Requested Zero Unions to promote this Whitelist user to Support"
         WHITELIST_USERS.remove(user_id)
 
     sql.set_royal_role(user_id, "supports")
@@ -137,7 +137,7 @@ def addsupport(
     return log_message
 
 
-@kigcmd(command='addwhitelist')
+@keicmd(command='addwhitelist')
 @sudo_plus
 @gloggable
 def addwhitelist(update: Update, context: CallbackContext) -> str:
@@ -185,7 +185,7 @@ def addwhitelist(update: Update, context: CallbackContext) -> str:
     return log_message
 
 
-@kigcmd(command='addsardegna')
+@keicmd(command='addsardegna')
 @sudo_plus
 @gloggable
 def addsardegna(update: Update, context: CallbackContext) -> str:
@@ -237,7 +237,7 @@ def addsardegna(update: Update, context: CallbackContext) -> str:
     return log_message
 
 
-@kigcmd(command='removesudo')
+@keicmd(command='removesudo')
 @dev_plus
 @gloggable
 def removesudo(update: Update, context: CallbackContext) -> str:
@@ -274,7 +274,7 @@ def removesudo(update: Update, context: CallbackContext) -> str:
         return ""
 
 
-@kigcmd(command='removesupport')
+@keicmd(command='removesupport')
 @sudo_plus
 @gloggable
 def removesupport(update: Update, context: CallbackContext) -> str:
@@ -311,7 +311,7 @@ def removesupport(update: Update, context: CallbackContext) -> str:
         return ""
 
 
-@kigcmd(command='removewhitelist')
+@keicmd(command='removewhitelist')
 @sudo_plus
 @gloggable
 def removewhitelist(update: Update, context: CallbackContext) -> str:
@@ -347,7 +347,7 @@ def removewhitelist(update: Update, context: CallbackContext) -> str:
         return ""
 
 
-@kigcmd(command='removesardegna')
+@keicmd(command='removesardegna')
 @sudo_plus
 @gloggable
 def removesardegna(update: Update, context: CallbackContext) -> str:
@@ -383,16 +383,16 @@ def removesardegna(update: Update, context: CallbackContext) -> str:
         return ""
 
 # I added extra new lines
-nations = """ Kigyō has bot access levels we call as *"Nation Levels"*
-\n*Eagle Union* - Devs who can access the bots server and can execute, edit, modify bot code. Can also manage other Nations
+nations = """ Kei has bot access levels we call as *"Nation Levels"*
+\n*Zero Unions* - Devs who can access the bots server and can execute, edit, modify bot code. Can also manage other Nations
 \n*God* - Only one exists, bot owner.
-Owner has complete bot access, including bot adminship in chats Kigyō is at.
-\n*Royals* - Have super user access, can gban, manage Nations lower than them and are admins in Kigyō.
-\n*Sakuras* - Have access go globally ban users across Kigyō.
+Owner has complete bot access, including bot adminship in chats Kei is at.
+\n*Royals* - Have super user access, can gban, manage Nations lower than them and are admins in Kei.
+\n*Sakuras* - Have access go globally ban users across Kei.
 \n*Sardegnas* - Same as Neptunians but can unban themselves if banned.
 \n*Neptunians* - Cannot be banned, muted flood kicked but can be manually banned by admins.
-\n*Disclaimer*: The Nation levels in Kigyō are there for troubleshooting, support, banning potential scammers.
-Report abuse or ask us more on these at [Eagle Union](https://t.me/YorktownEagleUnion).
+\n*Disclaimer*: The Nation levels in Kei are there for troubleshooting, support, banning potential scammers.
+Report abuse or ask us more on these at [Zero Unions](https://t.me/zerounions).
 """
 
 
@@ -401,7 +401,7 @@ def send_nations(update):
         nations, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
     )
 
-@kigcmd(command='removesardegna')
+@keicmd(command='removesardegna')
 @whitelist_plus
 def whitelistlist(update: Update, context: CallbackContext):
     bot = context.bot
@@ -416,7 +416,7 @@ def whitelistlist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
-@kigcmd(command='sardegnas')
+@keicmd(command='sardegnas')
 @whitelist_plus
 def Sardegnalist(update: Update, context: CallbackContext):
     bot = context.bot
@@ -430,7 +430,7 @@ def Sardegnalist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
-@kigcmd(command=["supportlist", "sakuras"])
+@keicmd(command=["supportlist", "sakuras"])
 @whitelist_plus
 def supportlist(update: Update, context: CallbackContext):
     bot = context.bot
@@ -444,7 +444,7 @@ def supportlist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
-@kigcmd(command=["sudolist", "royals"])
+@keicmd(command=["sudolist", "royals"])
 @whitelist_plus
 def sudolist(update: Update, context: CallbackContext):
     bot = context.bot
@@ -459,7 +459,7 @@ def sudolist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
-@kigcmd(command=["devlist", "eagle"])
+@keicmd(command=["devlist", "eagle"])
 @whitelist_plus
 def devlist(update: Update, context: CallbackContext):
     bot = context.bot
