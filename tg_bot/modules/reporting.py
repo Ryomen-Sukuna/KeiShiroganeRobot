@@ -12,12 +12,12 @@ from telegram.ext import (
     Filters,
 )
 from telegram.utils.helpers import mention_html
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigmsg, kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 
 REPORT_GROUP = 12
 REPORT_IMMUNE_USERS = SUDO_USERS + SARDEGNA_USERS + WHITELIST_USERS
 
-@kigcmd(command='reports')
+@keicmd(command='reports')
 @user_admin
 def report_setting(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
@@ -64,8 +64,8 @@ def report_setting(update: Update, context: CallbackContext):
 
 @user_not_admin
 @loggable
-@kigcmd(command='report', filters=Filters.chat_type.groups, group=REPORT_GROUP)
-@kigmsg((Filters.regex(r"(?i)@admin(s)?")), group=REPORT_GROUP)
+@keicmd(command='report', filters=Filters.chat_type.groups, group=REPORT_GROUP)
+@keimsg((Filters.regex(r"(?i)@admin(s)?")), group=REPORT_GROUP)
 def report(update: Update, context: CallbackContext) -> str:
     bot = context.bot
     args = context.args
@@ -221,7 +221,7 @@ def __user_settings__(user_id):
         text = "You will *not* receive reports from chats you're admin."
     return text
 
-@kigcallback(pattern=r"report_")
+@keicallback(pattern=r"report_")
 def buttons(update: Update, context: CallbackContext):
     bot = context.bot
     query = update.callback_query
