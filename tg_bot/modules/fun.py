@@ -13,13 +13,13 @@ import tg_bot.modules.fun_strings as fun_strings
 from tg_bot import dispatcher
 from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.extraction import extract_user
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
-@kigcmd(command='runs')
+@keicmd(command='runs')
 def runs(update: Update, context: CallbackContext):
     update.effective_message.reply_text(random.choice(fun_strings.RUN_STRINGS))
 
-@kigcmd(command='slap')
+@keicmd(command='slap')
 def slap(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
     message = update.effective_message
@@ -73,7 +73,7 @@ def slap(update: Update, context: CallbackContext):
 
     reply_text(reply, parse_mode=ParseMode.HTML)
 
-@kigcmd(command='pat')
+@keicmd(command='pat')
 def pat(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     msg = str(update.message.text)
@@ -113,15 +113,15 @@ def pat(update: Update, context: CallbackContext):
             reply_to_message_id=msg_id,
         )
 
-@kigcmd(command='roll')
+@keicmd(command='roll')
 def roll(update: Update, context: CallbackContext):
     update.message.reply_text(random.choice(range(1, 7)))
 
-@kigcmd(command='toss')
+@keicmd(command='toss')
 def toss(update: Update, context: CallbackContext):
     update.message.reply_text(random.choice(fun_strings.TOSS))
 
-@kigcmd(command='shrug')
+@keicmd(command='shrug')
 def shrug(update: Update, context: CallbackContext):
     msg = update.effective_message
     reply_text = (
@@ -129,7 +129,7 @@ def shrug(update: Update, context: CallbackContext):
     )
     reply_text(r"¯\_(ツ)_/¯")
 
-@kigcmd(command='rlg')
+@keicmd(command='rlg')
 def rlg(update: Update, context: CallbackContext):
     eyes = random.choice(fun_strings.EYES)
     mouth = random.choice(fun_strings.MOUTHS)
@@ -141,7 +141,7 @@ def rlg(update: Update, context: CallbackContext):
         repl = ears[0] + eyes[0] + mouth[0] + eyes[0] + ears[1]
     update.message.reply_text(repl)
 
-@kigcmd(command='decide')
+@keicmd(command='decide')
 def decide(update: Update, context: CallbackContext):
     reply_text = (
         update.effective_message.reply_to_message.reply_text
@@ -150,7 +150,7 @@ def decide(update: Update, context: CallbackContext):
     )
     reply_text(random.choice(fun_strings.DECIDE))
 
-@kigcmd(command='table')
+@keicmd(command='table')
 def table(update: Update, context: CallbackContext):
     reply_text = (
         update.effective_message.reply_to_message.reply_text
