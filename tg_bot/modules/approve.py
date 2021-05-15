@@ -9,9 +9,9 @@ from tg_bot.modules.log_channel import loggable
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, Update
 from telegram.utils.helpers import mention_html
 from telegram.error import BadRequest
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
 
-@kigcmd(command='approve', filters=Filters.chat_type.groups)
+@keicmd(command='approve', filters=Filters.chat_type.groups)
 @loggable
 @user_admin
 def approve(update, context):
@@ -54,7 +54,7 @@ def approve(update, context):
 
     return log_message
 
-@kigcmd(command='unapprove', filters=Filters.chat_type.groups)
+@keicmd(command='unapprove', filters=Filters.chat_type.groups)
 @loggable
 @user_admin
 def disapprove(update, context):
@@ -90,7 +90,7 @@ def disapprove(update, context):
 
     return log_message
 
-@kigcmd(command='approved', filters=Filters.chat_type.groups)
+@keicmd(command='approved', filters=Filters.chat_type.groups)
 @user_admin
 def approved(update, context):
     message = update.effective_message
@@ -108,7 +108,7 @@ def approved(update, context):
         message.reply_text(msg, parse_mode=ParseMode.MARKDOWN)
 
 
-@kigcmd(command='approval', filters=Filters.chat_type.groups)
+@keicmd(command='approval', filters=Filters.chat_type.groups)
 @user_admin
 def approval(update, context):
     message = update.effective_message
@@ -131,7 +131,7 @@ def approval(update, context):
         )
 
 
-@kigcmd(command='unapproveall', filters=Filters.chat_type.groups)
+@keicmd(command='unapproveall', filters=Filters.chat_type.groups)
 def unapproveall(update: Update, context: CallbackContext):
     chat = update.effective_chat
     user = update.effective_user
@@ -157,7 +157,7 @@ def unapproveall(update: Update, context: CallbackContext):
             parse_mode=ParseMode.MARKDOWN,
         )
 
-@kigcallback(pattern=r"unapproveall_.*")
+@keicallback(pattern=r"unapproveall_.*")
 def unapproveall_btn(update: Update, context: CallbackContext):
     query = update.callback_query
     chat = update.effective_chat
