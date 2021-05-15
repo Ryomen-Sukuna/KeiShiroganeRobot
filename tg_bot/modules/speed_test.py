@@ -3,7 +3,7 @@ from tg_bot import DEV_USERS, dispatcher
 from tg_bot.modules.helper_funcs.chat_status import dev_plus
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.ext import CallbackContext
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigcallback
+from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
 
 
 def convert(speed):
@@ -11,7 +11,7 @@ def convert(speed):
 
 
 @dev_plus
-@kigcmd(command='speedtest')
+@keicmd(command='speedtest')
 def speedtestxyz(update: Update, context: CallbackContext):
     buttons = [
         [
@@ -24,7 +24,7 @@ def speedtestxyz(update: Update, context: CallbackContext):
     )
 
 
-@kigcallback(pattern="speedtest_.*")
+@keicallback(pattern="speedtest_.*")
 def speedtestxyz_callback(update: Update, context: CallbackContext):
     query = update.callback_query
 
@@ -48,7 +48,7 @@ def speedtestxyz_callback(update: Update, context: CallbackContext):
             replymsg += f"\nDownload: `{convert(result['download'])}Mb/s`\nUpload: `{convert(result['upload'])}Mb/s`\nPing: `{result['ping']}`"
             update.effective_message.edit_text(replymsg, parse_mode=ParseMode.MARKDOWN)
     else:
-        query.answer("You are not a part of Eagle Union.")
+        query.answer("You are not a part of Zero Unions.")
 
 
 __mod_name__ = "SpeedTest"
