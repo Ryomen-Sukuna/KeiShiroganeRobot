@@ -38,7 +38,7 @@ import platform
 from platform import python_version
 from spamprotection.sync import SPBClient
 from spamprotection.errors import HostDownError
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 client = SPBClient()
 
 MARKDOWN_HELP = f"""
@@ -65,7 +65,7 @@ This will create two buttons on a single line, instead of one button per line.
 Keep in mind that your message <b>MUST</b> contain some text other than just a button!
 """
 
-@kigcmd(command='id', pass_args=True)
+@keicmd(command='id', pass_args=True)
 def get_id(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
     message = update.effective_message
@@ -107,7 +107,7 @@ def get_id(update: Update, context: CallbackContext):
                 f"This group's id is <code>{chat.id}</code>.", parse_mode=ParseMode.HTML
             )
 
-@kigcmd(command='gifid')
+@keicmd(command='gifid')
 def gifid(update: Update, _):
     msg = update.effective_message
     if msg.reply_to_message and msg.reply_to_message.animation:
@@ -118,7 +118,7 @@ def gifid(update: Update, _):
     else:
         update.effective_message.reply_text("Please reply to a gif to get its ID.")
 
-@kigcmd(command='info', pass_args=True)
+@keicmd(command='info', pass_args=True)
 def info(update: Update, context: CallbackContext):
     bot = context.bot
     args = context.args
@@ -235,7 +235,7 @@ def info(update: Update, context: CallbackContext):
         text += f"\nThis person is my owner"
         Nation_level_present = True
     elif user.id in DEV_USERS:
-        text += f"\nThis Person is a part of Eagle Union"
+        text += f"\nThis Person is a part of Zero Unions"
         Nation_level_present = True
     elif user.id in SUDO_USERS:
         text += f"\nThe Nation level of this person is Royal"
@@ -290,7 +290,7 @@ def info(update: Update, context: CallbackContext):
             text, parse_mode=ParseMode.HTML, disable_web_page_preview=True
         )
 
-@kigcmd(command='echo', pass_args=True, filters=Filters.chat_type.groups)
+@keicmd(command='echo', pass_args=True, filters=Filters.chat_type.groups)
 @user_admin
 def echo(update: Update, _):
     args = update.effective_message.text.split(None, 1)
@@ -309,7 +309,7 @@ def shell(command):
     stdout, stderr = process.communicate()
     return (stdout, stderr)
 
-@kigcmd(command='markdownhelp', filters=Filters.chat_type.private)
+@keicmd(command='markdownhelp', filters=Filters.chat_type.private)
 def markdown_help(update: Update, _):
     chat = update.effective_chat
     update.effective_message.reply_text((gs(chat.id, "markdown_help_text")), parse_mode=ParseMode.HTML)
@@ -351,7 +351,7 @@ def get_readable_time(seconds: int) -> str:
 
 stats_str = '''
 '''
-@kigcmd(command='stats', can_disable=False)
+@keicmd(command='stats', can_disable=False)
 @sudo_plus
 def stats(update, context):
     db_size = SESSION.execute("SELECT pg_size_pretty(pg_database_size(current_database()))").scalar_one_or_none()
@@ -378,8 +378,8 @@ def stats(update, context):
     status += "*• Database size:* " + str(db_size) + "\n"
     kb = [
           [
-           InlineKeyboardButton('Channel', url='t.me/KigyoUpdates'),
-           InlineKeyboardButton('Support', url='t.me/YorktownEagleUnion')
+           InlineKeyboardButton('Channel', url='t.me/KeiUpdates'),
+           InlineKeyboardButton('Support', url='t.me/zerounions')
           ]
     ]
     repo = git.Repo(search_parent_directories=True)
@@ -389,18 +389,18 @@ def stats(update, context):
         update.effective_message.reply_text(status +
             "\n*Bot statistics*:\n"
             + "\n".join([mod.__stats__() for mod in STATS]) +
-            "\n\n[⍙ GitHub](https://github.com/Dank-del/EnterpriseALRobot) | [⍚ GitLab](https://gitlab.com/Dank-del/EnterpriseALRobot)\n\n" +
-            "╘══「 by [Dank-del](github.com/Dank-del)」\n",
+            "\n\n[⍙ GitHub](https://github.com/Ryomen-Sukuna/Kei)\n\n" +
+            "╘══「 by [ZERO](github.com/Ryomen-Sukuna)」\n",
         parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(kb), disable_web_page_preview=True)
     except BaseException:
         update.effective_message.reply_text(
         "\n*Bot statistics*:\n"
         + "\n".join([mod.__stats__() for mod in STATS]) +
-        "\n\n⍙ [GitHub](https://github.com/Dank-del/EnterpriseALRobot) | ⍚ [GitLab](https://gitlab.com/Dank-del/EnterpriseALRobot)\n\n" +
-        "╘══「 by [Dank-del](github.com/Dank-del)」\n",
+        "\n\n⍙ [GitHub](https://github.com/Ryomen-Sukuna/Kei)\n\n" +
+        "╘══「 by [ZERO](github.com/Ryomen-Sukuna)」\n",
         parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(kb), disable_web_page_preview=True)
 
-@kigcmd(command='ping')
+@keicmd(command='ping')
 def ping(update: Update, _):
     msg = update.effective_message
     start_time = time.time()
