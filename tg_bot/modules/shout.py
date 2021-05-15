@@ -1,9 +1,9 @@
 from tg_bot import dispatcher
 from telegram import Update
 from telegram.ext import CallbackContext
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
-@kigcmd(command='shout')
+@keicmd(command='shout')
 def shout(update: Update, context: CallbackContext):
     args = context.args
     text = " ".join(args)
