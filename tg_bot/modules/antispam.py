@@ -17,7 +17,7 @@ from tg_bot import (
     dispatcher,
     log,
     KInit,
-    KigyoINIT,
+    KeiINIT,
 )
 from tg_bot.modules.helper_funcs.chat_status import (
     is_user_admin,
