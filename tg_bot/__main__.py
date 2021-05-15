@@ -1,9 +1,3 @@
-'''#TODO
-
-Dank-del
-2020-12-29
-'''
-
 import importlib
 import re
 from typing import Optional
@@ -30,7 +24,7 @@ from tg_bot import (
     log,
     telethn,
     kp,
-    KigyoINIT
+    KeiINIT
 )
 
 # needed to dynamically load modules
@@ -38,7 +32,7 @@ from tg_bot import (
 from tg_bot.modules import ALL_MODULES
 from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
-from tg_bot.modules.helper_funcs.decorators import kigcmd, kigcallback, kigmsg
+from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback, keimsg
 from tg_bot.modules.language import gs
 
 
@@ -105,7 +99,7 @@ def send_help(chat_id, text, keyboard=None):
         chat_id=chat_id, text=text, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard
     )
 
-@kigcmd(command='text')
+@keicmd(command='text')
 def test(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -119,7 +113,7 @@ def test(update: Update, context: CallbackContext):
     update.effective_message.reply_text("This person edited a message")
     print(update.effective_message)
 
-@kigcmd(command='start', pass_args=True)
+@keicmd(command='start', pass_args=True)
 def start(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -163,11 +157,11 @@ def start(update: Update, context: CallbackContext):
                         [
                             InlineKeyboardButton(
                                 text=gs(chat.id, "support_chat_link_btn"),
-                                url=f"https://t.me/YorktownEagleUnion",
+                                url=f"https://t.me/zerounions",
                             ),
                             InlineKeyboardButton(
                                 text=gs(chat.id, "updates_channel_link_btn"),
-                                url="https://t.me/KigyoUpdates",
+                                url="https://t.me/zerounions",
                             ),
                             InlineKeyboardButton(
                                 text=gs(chat.id, "src_btn"),
@@ -231,7 +225,7 @@ def error_callback(update, context):
         pass
         # handle all other telegram related errors
 
-@kigcallback(pattern=r'help_')
+@keicallback(pattern=r'help_')
 def help_button(update, context):
     '''#TODO
 
@@ -266,7 +260,7 @@ def help_button(update, context):
             )
             help_buttons.append(
                 [InlineKeyboardButton(text="Back", callback_data="help_back"),
-                InlineKeyboardButton(text='Report Error', url='https://t.me/YorkTownEagleUnion')]
+                InlineKeyboardButton(text='Report Error', url='https://t.me/zerounions')]
             )
             query.message.edit_text(
                 text=text,
@@ -310,7 +304,7 @@ def help_button(update, context):
     except BadRequest:
         pass
 
-@kigcmd(command='help')
+@keicmd(command='help')
 def get_help(update, context):
     '''#TODO
 
@@ -408,7 +402,7 @@ def send_settings(chat_id, user_id, user=False):
                 parse_mode=ParseMode.MARKDOWN,
             )
 
-@kigcallback(pattern=r"stngs_")
+@keicallback(pattern=r"stngs_")
 def settings_button(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -500,7 +494,7 @@ def settings_button(update: Update, context: CallbackContext):
         else:
             log.exception("Exception in settings buttons. %s", str(query.data))
 
-@kigcmd(command='settings')
+@keicmd(command='settings')
 def get_settings(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -538,7 +532,7 @@ def get_settings(update: Update, context: CallbackContext):
     else:
         send_settings(chat.id, user.id, True)
 
-@kigcmd(command='donate')
+@keicmd(command='donate')
 def donate(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -549,7 +543,7 @@ def donate(update: Update, context: CallbackContext):
 
     update.effective_message.reply_text("I'm free for everyone! >_<")
 
-@kigmsg((Filters.status_update.migrate))
+@keimsg((Filters.status_update.migrate))
 def migrate_chats(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -590,10 +584,10 @@ def main():
             updater.bot.set_webhook(url=URL + TOKEN)
 
     else:
-        log.info(f"Kigyo started, Using long polling. | BOT: [@{dispatcher.bot.username}]")
-        KigyoINIT.bot_id = dispatcher.bot.id
-        KigyoINIT.bot_username = dispatcher.bot.username
-        KigyoINIT.bot_name = dispatcher.bot.first_name
+        log.info(f"Kei started, Using long polling. | BOT: [@{dispatcher.bot.username}]")
+        KeiINIT.bot_id = dispatcher.bot.id
+        KeiINIT.bot_username = dispatcher.bot.username
+        KeiINIT.bot_name = dispatcher.bot.first_name
         updater.start_polling(timeout=15, read_latency=4, drop_pending_updates=True)
     if len(argv) not in (1, 3, 4):
         telethn.disconnect()
@@ -603,7 +597,7 @@ def main():
 
 if __name__ == "__main__":
     kp.start()
-    log.info("[KIGYO] Successfully loaded modules: " + str(ALL_MODULES))
+    log.info("[KEI] Successfully loaded modules: " + str(ALL_MODULES))
     telethn.start(bot_token=TOKEN)
     main()
     idle()
