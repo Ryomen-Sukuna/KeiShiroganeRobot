@@ -14,7 +14,7 @@ from pyrogram import filters
 from pyrogram.types import Message
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.language import gs
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 
 def get_help(chat):
@@ -54,7 +54,7 @@ async def translate(_, message: Message) -> None:
 
     await message.reply_text(reply, parse_mode="html")
 
-@kigcmd(command='langs')
+@keicmd(command='langs')
 def languages(update: Update, context: CallbackContext) -> None:
     update.effective_message.reply_text(
         "Click on the button below to see the list of supported language codes.",
