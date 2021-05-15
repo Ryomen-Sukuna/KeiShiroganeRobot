@@ -15,10 +15,10 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, Filters
 from telegram.utils.helpers import escape_markdown
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 
-@kigcmd(command='rules', filters=Filters.chat_type.groups)
+@keicmd(command='rules', filters=Filters.chat_type.groups)
 def get_rules(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     send_rules(update, chat_id)
@@ -73,7 +73,7 @@ def send_rules(update, chat_id, from_pm=False):
             "This probably doesn't mean it's lawless though...!"
         )
 
-@kigcmd(command='setrules', filters=Filters.chat_type.groups)
+@keicmd(command='setrules', filters=Filters.chat_type.groups)
 @user_admin
 def set_rules(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
@@ -90,7 +90,7 @@ def set_rules(update: Update, context: CallbackContext):
         sql.set_rules(chat_id, markdown_rules)
         update.effective_message.reply_text("Successfully set rules for this group.")
 
-@kigcmd(command='clearrules', filters=Filters.chat_type.groups)
+@keicmd(command='clearrules', filters=Filters.chat_type.groups)
 @user_admin
 def clear_rules(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
