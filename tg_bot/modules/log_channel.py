@@ -2,7 +2,7 @@ from datetime import datetime
 from functools import wraps
 
 from telegram.ext import CallbackContext
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.misc import is_module_loaded
 from tg_bot.modules.language import gs
 
@@ -94,7 +94,7 @@ if is_module_loaded(FILENAME):
                 )
 
     @user_admin
-    @kigcmd(command='logchannel')
+    @keicmd(command='logchannel')
     def logging(update: Update, context: CallbackContext):
         bot = context.bot
         message = update.effective_message
@@ -113,7 +113,7 @@ if is_module_loaded(FILENAME):
             message.reply_text("No log channel has been set for this group!")
 
     @user_admin
-    @kigcmd(command='setlog')
+    @keicmd(command='setlog')
     def setlog(update: Update, context: CallbackContext):
         bot = context.bot
         message = update.effective_message
@@ -157,7 +157,7 @@ if is_module_loaded(FILENAME):
             )
 
     @user_admin
-    @kigcmd(command='unsetlog')
+    @keicmd(command='unsetlog')
     def unsetlog(update: Update, context: CallbackContext):
         bot = context.bot
         message = update.effective_message
