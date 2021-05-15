@@ -17,7 +17,7 @@ from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CommandHandler
 from telegram.utils.helpers import mention_html
 from tg_bot.modules.language import gs
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 
 def check_user(user_id: int, bot: Bot, chat: Chat) -> Optional[str]:
@@ -44,7 +44,7 @@ def check_user(user_id: int, bot: Bot, chat: Chat) -> Optional[str]:
 
     return None
 
-@kigcmd(command='mute')
+@keicmd(command='mute')
 @connection_status
 @bot_admin
 @user_admin
@@ -91,7 +91,7 @@ def mute(update: Update, context: CallbackContext) -> str:
 
     return ""
 
-@kigcmd(command='unmute')
+@keicmd(command='unmute')
 @connection_status
 @bot_admin
 @user_admin
@@ -153,7 +153,7 @@ def unmute(update: Update, context: CallbackContext) -> str:
 
     return ""
 
-@kigcmd(command=['tmute', 'tempmute'])
+@keicmd(command=['tmute', 'tempmute'])
 @connection_status
 @bot_admin
 @can_restrict
