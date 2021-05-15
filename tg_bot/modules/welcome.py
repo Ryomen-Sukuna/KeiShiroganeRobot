@@ -200,7 +200,7 @@ def new_member(update: Update, context: CallbackContext):
             # Welcome Devs
             elif new_mem.id in DEV_USERS:
                 update.effective_message.reply_text(
-                    "Whoa! A member of the Zero Unions on just joined!",
+                    "Whoa! A member of the Zero Unions just joined!",
                     reply_to_message_id=reply,
                 )
                 continue
