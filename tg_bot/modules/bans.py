@@ -30,11 +30,11 @@ from tg_bot.modules.helper_funcs.chat_status import (
 from tg_bot.modules.helper_funcs.extraction import extract_user_and_text
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.log_channel import loggable, gloggable
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 @connection_status
 @bot_admin
-@kigcmd(command='ban', pass_args=True)
+@keicmd(command='ban', pass_args=True)
 @can_restrict
 @user_admin
 @loggable
@@ -127,7 +127,7 @@ def ban(update, context):
 
 
 @connection_status
-@kigcmd(command='tban', pass_args=True)
+@keicmd(command='tban', pass_args=True)
 @bot_admin
 @can_restrict
 @user_admin
@@ -221,7 +221,7 @@ def temp_ban(update: Update, context: CallbackContext) -> str:
 
 
 @connection_status
-@kigcmd(command='kick', pass_args=True)
+@keicmd(command='kick', pass_args=True)
 @bot_admin
 @can_restrict
 @user_admin
@@ -282,7 +282,7 @@ def kick(update: Update, context: CallbackContext) -> str:
 
 @bot_admin
 @can_restrict
-@kigcmd(command='kickme', pass_args=True, filters=Filters.chat_type.groups)
+@keicmd(command='kickme', pass_args=True, filters=Filters.chat_type.groups)
 def kickme(update: Update, context: CallbackContext):
     user_id = update.effective_message.from_user.id
     if is_user_admin(update.effective_chat, user_id):
@@ -297,7 +297,7 @@ def kickme(update: Update, context: CallbackContext):
 
 
 @connection_status
-@kigcmd(command='unban', pass_args=True)
+@keicmd(command='unban', pass_args=True)
 @bot_admin
 @can_restrict
 @user_admin
@@ -347,7 +347,7 @@ def unban(update: Update, context: CallbackContext) -> str:
 
 
 @connection_status
-@kigcmd(command='selfunban', pass_args=True)
+@keicmd(command='selfunban', pass_args=True)
 @bot_admin
 @can_restrict
 @gloggable
