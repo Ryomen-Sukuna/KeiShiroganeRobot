@@ -17,14 +17,14 @@ from telegram import ParseMode, Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CommandHandler, run_async
 from telegram.utils.helpers import mention_html
-from tg_bot.modules.helper_funcs.decorators import kigcmd
+from tg_bot.modules.helper_funcs.decorators import keicmd
 
 BLACKLISTWHITELIST = (
     [OWNER_ID] + DEV_USERS + SUDO_USERS + WHITELIST_USERS + SUPPORT_USERS
 )
 BLABLEUSERS = [OWNER_ID] + DEV_USERS
 
-@kigcmd(command='ignore', pass_args=True)
+@keicmd(command='ignore', pass_args=True)
 @dev_plus
 @gloggable
 def bl_user(update: Update, context: CallbackContext) -> str:
@@ -66,7 +66,7 @@ def bl_user(update: Update, context: CallbackContext) -> str:
 
     return log_message
 
-@kigcmd(command='notice', pass_args=True)
+@keicmd(command='notice', pass_args=True)
 @dev_plus
 @gloggable
 def unbl_user(update: Update, context: CallbackContext) -> str:
@@ -108,7 +108,7 @@ def unbl_user(update: Update, context: CallbackContext) -> str:
         message.reply_text("I am not ignoring them at all though!")
         return ""
 
-@kigcmd(command='ignoredlist', pass_args=True)
+@keicmd(command='ignoredlist', pass_args=True)
 @dev_plus
 def bl_users(update: Update, context: CallbackContext):
     users = []
