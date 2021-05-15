@@ -1,7 +1,7 @@
 
 {
-  "name": "Licht",
-  "logo": "https://telegra.ph/file/9f44458a5f632dcb8c0a5.jpg",
+  "name": "Kei",
+  "logo": "https://telegra.ph/file/0be21ef31429a41faa7b7.jpg",
   "description": "Telegram's sassiest group manager. Modular Telegram group management bot!",
   "keywords": [
     "telegram",
@@ -10,7 +10,7 @@
     "manager",
     "Kaguya"
   ],
-  "repository": "hhttps://github.com/ChisakiKai/Licht",
+  "repository": "hhttps://github.com/Ryomen-Sukuna/KeiShiroganeRobot",
   "env": {
     "ENV": {
       "description": "Setting this to ANYTHING will enable env variables",
