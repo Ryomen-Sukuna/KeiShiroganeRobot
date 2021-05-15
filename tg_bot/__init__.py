@@ -22,7 +22,7 @@ def get_user_list(key):
     return [a.user_id for a in royals]
 
 # enable logging
-FORMAT = "[Enterprise] %(message)s"
+FORMAT = "[ZERO] %(message)s"
 logging.basicConfig(handlers=[RichHandler()], level=logging.INFO, format=FORMAT, datefmt="[%X]")
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 log = logging.getLogger("rich")
