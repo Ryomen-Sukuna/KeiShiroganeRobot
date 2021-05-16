@@ -254,7 +254,7 @@ def removesudo(update: Update, context: CallbackContext) -> str:
         return ""
 
     if user_id in SUDO_USERS:
-        message.reply_text("Requested Eagle Union to demote this user to Civilian")
+        message.reply_text("Requested Zero Unions to demote this user to Civilian")
         SUDO_USERS.remove(user_id)
         sql.remove_royal(user_id)
 
@@ -291,7 +291,7 @@ def removesupport(update: Update, context: CallbackContext) -> str:
         return ""
 
     if user_id in SUPPORT_USERS:
-        message.reply_text("Requested Eagle Union to demote this user to Civilian")
+        message.reply_text("Requested Zero Unions to demote this user to Civilian")
         SUPPORT_USERS.remove(user_id)
         sql.remove_royal(user_id)
 
