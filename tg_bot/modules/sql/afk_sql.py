@@ -1,8 +1,9 @@
 import threading
 
-from sqlalchemy import Column, UnicodeText, Boolean, Integer
+from datetime import datetime
 
 from tg_bot.modules.sql import BASE, SESSION
+from sqlalchemy import Boolean, Column, Integer, UnicodeText, DateTime
 
 
 class AFK(BASE):
@@ -11,11 +12,13 @@ class AFK(BASE):
     user_id = Column(Integer, primary_key=True)
     is_afk = Column(Boolean)
     reason = Column(UnicodeText)
+    time = Column(DateTime)
 
-    def __init__(self, user_id, reason="", is_afk=True):
+    def __init__(self, user_id: int, reason: str = "", is_afk: bool = True):
         self.user_id = user_id
         self.reason = reason
         self.is_afk = is_afk
+        self.time = datetime.now()
 
     def __repr__(self):
         return "afk_status for {}".format(self.user_id)
@@ -32,9 +35,10 @@ def is_afk(user_id):
 
 
 def check_afk_status(user_id):
-    if user_id in AFK_USERS:
-        return True, AFK_USERS[user_id]
-    return False, ""
+    try:
+        return SESSION.query(AFK).get(user_id)
+    finally:
+        SESSION.close()
 
 
 def set_afk(user_id, reason=""):
@@ -44,9 +48,8 @@ def set_afk(user_id, reason=""):
             curr = AFK(user_id, reason, True)
         else:
             curr.is_afk = True
-            curr.reason = reason
 
-        AFK_USERS[user_id] = reason
+        AFK_USERS[user_id] = {"reason": reason, "time": curr.time}
 
         SESSION.add(curr)
         SESSION.commit()
@@ -67,11 +70,26 @@ def rm_afk(user_id):
         return False
 
 
+def toggle_afk(user_id, reason=""):
+    with INSERTION_LOCK:
+        curr = SESSION.query(AFK).get(user_id)
+        if not curr:
+            curr = AFK(user_id, reason, True)
+        elif curr.is_afk:
+            curr.is_afk = False
+        elif not curr.is_afk:
+            curr.is_afk = True
+        SESSION.add(curr)
+        SESSION.commit()
+
+
 def __load_afk_users():
     global AFK_USERS
     try:
         all_afk = SESSION.query(AFK).all()
-        AFK_USERS = {user.user_id: user.reason for user in all_afk if user.is_afk}
+        AFK_USERS = {
+            user.user_id: {"reason": user.reason, "time": user.time} for user in all_afk if user.is_afk
+        }
     finally:
         SESSION.close()
 
