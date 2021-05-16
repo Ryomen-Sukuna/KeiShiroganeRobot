@@ -1,5 +1,7 @@
 import html
 import random
+from datetime import datetime
+import humanize
 
 from telegram import Update, MessageEntity
 from telegram.ext import Filters, CallbackContext, MessageHandler
