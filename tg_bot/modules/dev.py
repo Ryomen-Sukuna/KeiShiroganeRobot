@@ -2,8 +2,7 @@ import os
 import subprocess
 import sys
 from time import sleep
-from threading import Thread
-from tg_bot import dispatcher, updater, telethn, OWNER_ID
+from tg_bot import dispatcher, telethn, OWNER_ID
 from tg_bot.modules.helper_funcs.chat_status import dev_plus
 from telegram import TelegramError, Update
 from telegram.ext import CallbackContext, CommandHandler
@@ -94,7 +93,7 @@ telethn.add_event_handler(callback_queries, events.CallbackQuery())
 @telethn.on(events.NewMessage(pattern=r"/getstats", from_users=OWNER_ID))
 async def getstats(event):
     await event.reply(
-        f"**__KIGYO EVENT STATISTICS__**\n**Average messages:** {messages.average()}/s\n**Average Callback Queries:** {callback_queries.average()}/s\n**Average Inline Queries:** {inline_queries.average()}/s", parse_mode='md'
+        f"**__KEI EVENT STATISTICS__**\n**Average messages:** {messages.average()}/s\n**Average Callback Queries:** {callback_queries.average()}/s\n**Average Inline Queries:** {inline_queries.average()}/s", parse_mode='md'
         )
 
 
