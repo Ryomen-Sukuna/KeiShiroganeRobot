@@ -104,7 +104,7 @@ def send_help(chat_id, text, keyboard=None):
 
 
 
-@kigcmd(command='text')
+@keicmd(command='text')
 def test(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -118,8 +118,8 @@ def test(update: Update, context: CallbackContext):
     update.effective_message.reply_text("This person edited a message")
     print(update.effective_message)
 
-@kigcallback(pattern=r'start_back')
-@kigcmd(command='start', pass_args=True)
+@keicallback(pattern=r'start_back')
+@keicmd(command='start', pass_args=True)
 def start(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -290,7 +290,7 @@ def error_callback(update, context):
         pass
         # handle all other telegram related errors
 
-@kigcallback(pattern=r'help_')
+@keicallback(pattern=r'help_')
 def help_button(update, context):
     '''#TODO
 
@@ -372,7 +372,7 @@ def help_button(update, context):
     except BadRequest:
         pass
 
-@kigcmd(command='help')
+@keicmd(command='help')
 def get_help(update, context):
     '''#TODO
 
@@ -470,7 +470,7 @@ def send_settings(chat_id, user_id, user=False):
                 parse_mode=ParseMode.MARKDOWN,
             )
 
-@kigcallback(pattern=r"stngs_")
+@keicallback(pattern=r"stngs_")
 def settings_button(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -562,7 +562,7 @@ def settings_button(update: Update, context: CallbackContext):
         else:
             log.exception("Exception in settings buttons. %s", str(query.data))
 
-@kigcmd(command='settings')
+@keicmd(command='settings')
 def get_settings(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -600,7 +600,7 @@ def get_settings(update: Update, context: CallbackContext):
     else:
         send_settings(chat.id, user.id, True)
 
-@kigcmd(command='donate')
+@keicmd(command='donate')
 def donate(update: Update, context: CallbackContext):
     '''#TODO
 
@@ -611,7 +611,7 @@ def donate(update: Update, context: CallbackContext):
 
     update.effective_message.reply_text("I'm free for everyone! >_<")
 
-@kigmsg((Filters.status_update.migrate))
+@keimsg((Filters.status_update.migrate))
 def migrate_chats(update: Update, context: CallbackContext):
     '''#TODO
 

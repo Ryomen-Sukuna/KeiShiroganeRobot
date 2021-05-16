@@ -20,7 +20,7 @@
 
 A modular telegram Python bot running on python3 with an sqlalchemy database.
 
-Originally a Kigyō fork - Kei has evolved further and was built to be more useful for Anime Chats.
+Originally a [Kigyō](https://github.com/Dank-del/EnterpriseALRobot) fork - Kei has evolved further and was built to be more useful for Anime Chats.
 
 Can be found on telegram as [Kei](https://t.me/keibotrobot).
 
