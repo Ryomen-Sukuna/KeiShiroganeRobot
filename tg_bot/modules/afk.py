@@ -1,7 +1,5 @@
 import html
 import random
-from datetime import datetime
-import humanize
 
 from telegram import Update, MessageEntity
 from telegram.ext import Filters, CallbackContext, MessageHandler
@@ -9,9 +7,6 @@ from telegram.error import BadRequest
 from tg_bot.modules.sql import afk_sql as sql
 from tg_bot.modules.users import get_user_id
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
-
-AFK_GROUP = 7
-AFK_REPLY_GROUP = 8
 
 @keimsg(Filters.regex("(?i)brb"), friendly="afk", group=3)
 @keicmd(command="afk", group=3)
@@ -41,7 +36,7 @@ def afk(update: Update, context: CallbackContext):
     except BadRequest:
         pass
 
-@keimsg((Filters.all & Filters.chat_type.groups), friendly='afk', group=1)
+@kejmsg((Filters.all & Filters.chat_type.groups), friendly='afk', group=1)
 def no_longer_afk(update: Update, context: CallbackContext):
     user = update.effective_user
     message = update.effective_message
@@ -129,26 +124,17 @@ def reply_afk(update: Update, context: CallbackContext):
         check_afk(update, context, user_id, fst_name, userc_id)
 
 
-def check_afk(update: Update, context: CallbackContext, user_id: int, fst_name: str, userc_id: int):
-    if sql.is_afk(user_id):
-        user = sql.check_afk_status(user_id)
-
-        if int(userc_id) == int(user_id):
-            return
-
-        time = humanize.naturaldelta(datetime.now() - user.time)
-
-        if not user.reason:
-            res = "{} is AFK.\nLast seen {} ago.".format(
-                fst_name,
-                time
-            )
-            update.effective_message.reply_text(res)
+def check_afk(update, context, user_id, fst_name, userc_id):
+    if int(userc_id) == int(user_id):
+        return
+    is_afk, reason = sql.check_afk_status(user_id)
+    if is_afk:
+        if not reason:
+            res = "{} is afk".format(fst_name)
+            update.effective_message.reply_text(res, parse_mode=None)
         else:
-            res = "{} is AFK.\nReason: <code>{}</code>\nLast seen <code>{}</code> ago.".format(
-                html.escape(fst_name),
-                html.escape(user.reason),
-                time
+            res = "{} is afk.\nReason: <code>{}</code>".format(
+                html.escape(fst_name), html.escape(reason)
             )
             update.effective_message.reply_text(res, parse_mode="html")
 
