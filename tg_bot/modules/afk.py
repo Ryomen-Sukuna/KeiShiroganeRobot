@@ -10,6 +10,9 @@ from tg_bot.modules.sql import afk_sql as sql
 from tg_bot.modules.users import get_user_id
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
 
+AFK_GROUP = 7
+AFK_REPLY_GROUP = 8
+
 @keimsg(Filters.regex("(?i)brb"), friendly="afk", group=3)
 @keicmd(command="afk", group=3)
 def afk(update: Update, context: CallbackContext):
