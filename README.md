@@ -49,7 +49,7 @@ For queries or any issues regarding the bot please open an issue ticket or visit
 The bot is based of on the original work done by [Dank-del](https://github.com/Dank-del)
 This repo was just reamped to suit an Anime-centric community. All original credits go to Dank-del and his dedication, Without his efforts, this fork would not have been possible!
 
-Should any be missing kindly let us know at [Eagle Union](https://t.me/YorktownEagleUnion) or simply submit a pull request on the readme.
+Should any be missing kindly let us know at [Zero Unions](https://t.me/zerounions) or simply submit a pull request on the readme.
 
 
 -------------------------------------------------------------------------------------
