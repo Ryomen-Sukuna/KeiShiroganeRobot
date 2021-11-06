@@ -1,6 +1,4 @@
-# module to get anime info by t.me/DragSama // find him on github :
-# https://github.com/DragSama // he's my doraemon btw.
-from tg_bot.modules.language import gs
+# module to get anime info by t.me/DragSama // find him on github :  https://github.com/DragSama // he's my doraemon btw.
 from telegram.ext import CommandHandler, CallbackContext
 from telegram import (
     Message,
@@ -15,7 +13,6 @@ import requests
 import math
 import time
 from tg_bot.modules.helper_funcs.decorators import keicmd
-
 
 def shorten(description, info="anilist.co"):
     msg = ""
@@ -163,7 +160,6 @@ query ($id: Int,$search: String) {
 
 url = "https://graphql.anilist.co"
 
-
 @keicmd(command="airing")
 def airing(update: Update, context: CallbackContext):
     message = update.effective_message
@@ -185,7 +181,6 @@ def airing(update: Update, context: CallbackContext):
     else:
         msg += f"\n*Episode*:{response['episodes']}\n*Status*: `N/A`"
     update.effective_message.reply_text(msg, parse_mode=ParseMode.MARKDOWN)
-
 
 @keicmd(command="anime")
 def anime(update: Update, context: CallbackContext):
@@ -246,7 +241,7 @@ def anime(update: Update, context: CallbackContext):
                     parse_mode=ParseMode.MARKDOWN,
                     reply_markup=InlineKeyboardMarkup(buttons),
                 )
-            except BaseException:
+            except:
                 msg += f" [〽️]({image})"
                 update.effective_message.reply_text(
                     msg,
@@ -260,14 +255,12 @@ def anime(update: Update, context: CallbackContext):
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
 
-
 @keicmd(command="character")
 def character(update: Update, context: CallbackContext):
     message = update.effective_message
     search = message.text.split(" ", 1)
     if len(search) == 1:
-        update.effective_message.reply_text(
-            "Format : /character < character name >")
+        update.effective_message.reply_text("Format : /character < character name >")
         return
     search = search[1]
     variables = {"query": search}
@@ -296,7 +289,6 @@ def character(update: Update, context: CallbackContext):
                 msg.replace("<b>", "</b>"), parse_mode=ParseMode.MARKDOWN
             )
 
-
 @keicmd(command="manga")
 def manga(update: Update, context: CallbackContext):
     message = update.effective_message
@@ -315,9 +307,9 @@ def manga(update: Update, context: CallbackContext):
         return
     if json:
         json = json["data"]["Media"]
-        title, title_native = json["title"].get(
-            "romaji", False), json["title"].get(
-            "native", False)
+        title, title_native = json["title"].get("romaji", False), json["title"].get(
+            "native", False
+        )
         start_date, status, score = (
             json["startDate"].get("year", False),
             json.get("status", False),
@@ -349,7 +341,7 @@ def manga(update: Update, context: CallbackContext):
                     parse_mode=ParseMode.MARKDOWN,
                     reply_markup=InlineKeyboardMarkup(buttons),
                 )
-            except BaseException:
+            except:
                 msg += f" [〽️]({image})"
                 update.effective_message.reply_text(
                     msg,
@@ -364,8 +356,9 @@ def manga(update: Update, context: CallbackContext):
             )
 
 
+from tg_bot.modules.language import gs
+
 def get_help(chat):
     return gs(chat, "anilist_help")
-
 
 __mod_name__ = "AniList"

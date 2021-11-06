@@ -10,10 +10,9 @@ from telegram import __version__ as v
 
 app = FastAPI()
 
-
 @app.get("/")
 def read_root():
-    return {"status": "online", "ptb_ver": v}
+    return {"status": "online", "ptb_ver": v }
 
 
 @app.get("/getuser/{user_id}")
@@ -31,22 +30,10 @@ def read_item(user_id: int):
             breason = sql2.get_reason(user_id)
         else:
             breason = None
-        return {
-            "status": "ok",
-            "user_id": user_id,
-            "gbanned": a,
-            "gban_reason": areason,
-            "blacklisted": b,
-            "blacklist_reason": breason}
+        return {"status": "ok", "user_id": user_id, "gbanned": a, "gban_reason" : areason, "blacklisted" : b, "blacklist_reason" : breason}
     except Exception:
         a = None
         areason = None
         b = None
         breason = None
-        return {
-            "status": "ok",
-            "user_id": user_id,
-            "gbanned": a,
-            "gban_reason": areason,
-            "blacklisted": b,
-            "blacklist_reason": breason}
+        return {"status": "ok", "user_id": user_id, "gbanned": a, "gban_reason" : areason, "blacklisted" : b, "blacklist_reason" : breason}

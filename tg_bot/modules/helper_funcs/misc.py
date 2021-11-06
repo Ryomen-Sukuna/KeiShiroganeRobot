@@ -31,18 +31,13 @@ def split_message(msg: str) -> List[str]:
                 result.append(small_msg)
                 small_msg = line
         else:
-            # Else statement at the end of the for loop, so append the leftover
-            # string.
+            # Else statement at the end of the for loop, so append the leftover string.
             result.append(small_msg)
 
         return result
 
 
-def paginate_modules(
-        page_n: int,
-        module_dict: Dict,
-        prefix,
-        chat=None) -> List:
+def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
     if not chat:
         modules = sorted(
             [
@@ -68,8 +63,7 @@ def paginate_modules(
             ]
         )
 
-    pairs = [modules[i * 3: (i + 1) * 3]
-             for i in range((len(modules) + 3 - 1) // 3)]
+    pairs = [modules[i * 3 : (i + 1) * 3] for i in range((len(modules) + 3 - 1) // 3)]
 
     round_num = len(modules) / 3
     calc = len(modules) - round(round_num)
@@ -79,7 +73,6 @@ def paginate_modules(
         pairs.append((modules[-1],))
 
     return pairs
-
 
 def article(
     title: str = "",
@@ -102,7 +95,6 @@ def article(
         reply_markup=reply_markup,
     )
 
-
 def send_to_list(
     bot: Bot, send_to: list, message: str, markdown=False, html=False
 ) -> None:
@@ -111,8 +103,7 @@ def send_to_list(
     for user_id in set(send_to):
         try:
             if markdown:
-                bot.send_message(
-                    user_id, message, parse_mode=ParseMode.MARKDOWN)
+                bot.send_message(user_id, message, parse_mode=ParseMode.MARKDOWN)
             elif html:
                 bot.send_message(user_id, message, parse_mode=ParseMode.HTML)
             else:

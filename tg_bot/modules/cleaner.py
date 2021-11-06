@@ -1,4 +1,3 @@
-from tg_bot.modules.language import gs
 import html
 
 from tg_bot import ALLOW_EXCL, CustomCommandHandler, dispatcher
@@ -25,10 +24,7 @@ else:
     CMD_STARTERS = "/"
 
 BLUE_TEXT_CLEAN_GROUP = 13
-CommandHandlerList = (
-    CommandHandler,
-    CustomCommandHandler,
-    DisableAbleCommandHandler)
+CommandHandlerList = (CommandHandler, CustomCommandHandler, DisableAbleCommandHandler)
 command_list = [
     "cleanblue",
     "ignoreblue",
@@ -46,8 +42,7 @@ command_list = [
 
 for handler_list in dispatcher.handlers:
     for handler in dispatcher.handlers[handler_list]:
-        if any(isinstance(handler, cmd_handler)
-               for cmd_handler in CommandHandlerList):
+        if any(isinstance(handler, cmd_handler) for cmd_handler in CommandHandlerList):
             command_list += handler.command
 
 
@@ -122,7 +117,8 @@ def add_bluetext_ignore(update: Update, context: CallbackContext):
         added = sql.chat_ignore_command(chat.id, val)
         if added:
             reply = "<b>{}</b> has been added to bluetext cleaner ignore list.".format(
-                args[0])
+                args[0]
+            )
         else:
             reply = "Command is already ignored."
         message.reply_text(reply, parse_mode=ParseMode.HTML)
@@ -164,7 +160,8 @@ def add_bluetext_ignore_global(update: Update, context: CallbackContext):
         added = sql.global_ignore_command(val)
         if added:
             reply = "<b>{}</b> has been added to global bluetext cleaner ignore list.".format(
-                args[0])
+                args[0]
+            )
         else:
             reply = "Command is already ignored."
         message.reply_text(reply, parse_mode=ParseMode.HTML)
@@ -183,7 +180,8 @@ def remove_bluetext_ignore_global(update: Update, context: CallbackContext):
         removed = sql.global_unignore_command(val)
         if removed:
             reply = "<b>{}</b> has been removed from global bluetext cleaner ignore list.".format(
-                args[0])
+                args[0]
+            )
         else:
             reply = "Command isn't ignored currently."
         message.reply_text(reply, parse_mode=ParseMode.HTML)
@@ -222,10 +220,10 @@ def bluetext_ignore_list(update: Update, context: CallbackContext):
     message.reply_text(text, parse_mode=ParseMode.HTML)
     return
 
+from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "cleaner_help")
-
 
 SET_CLEAN_BLUE_TEXT_HANDLER = CommandHandler(
     "cleanbluetext", set_blue_text_must_click, pass_args=True, run_async=True
@@ -234,10 +232,8 @@ ADD_CLEAN_BLUE_TEXT_HANDLER = CommandHandler(
     "ignorecleanbluetext", add_bluetext_ignore, pass_args=True, run_async=True
 )
 REMOVE_CLEAN_BLUE_TEXT_HANDLER = CommandHandler(
-    "unignorecleanbluetext",
-    remove_bluetext_ignore,
-    pass_args=True,
-    run_async=True)
+    "unignorecleanbluetext", remove_bluetext_ignore, pass_args=True, run_async=True
+)
 ADD_CLEAN_BLUE_TEXT_GLOBAL_HANDLER = CommandHandler(
     "ignoreglobalcleanbluetext",
     add_bluetext_ignore_global,

@@ -41,11 +41,10 @@ def extract_user_and_text(
         ent = None
 
     # if entity offset matches (command end/text start) then all good
-    if entities and ent and ent.offset == len(
-            message.text) - len(text_to_parse):
+    if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
-        text = message.text[ent.offset + ent.length:]
+        text = message.text[ent.offset + ent.length :]
 
     elif len(args) >= 1 and args[0][0] == "@":
         user = args[0]
@@ -53,7 +52,8 @@ def extract_user_and_text(
         if not user_id:
             message.reply_text(
                 "No idea who this user is. You'll be able to interact with them if "
-                "you reply to that person's message instead, or forward one of that user's messages.")
+                "you reply to that person's message instead, or forward one of that user's messages."
+            )
             return None, None
 
         else:
@@ -81,7 +81,8 @@ def extract_user_and_text(
             message.reply_text(
                 "I don't seem to have interacted with this user before - please forward a message from "
                 "them to give me control! (like a voodoo doll, I need a piece of them to be able "
-                "to execute certain commands...)")
+                "to execute certain commands...)"
+            )
         else:
             log.exception("Exception %s on user %s", excp.message, user_id)
 
@@ -118,11 +119,10 @@ def extract_unt_fedban(
         ent = None
 
     # if entity offset matches (command end/text start) then all good
-    if entities and ent and ent.offset == len(
-            message.text) - len(text_to_parse):
+    if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
-        text = message.text[ent.offset + ent.length:]
+        text = message.text[ent.offset + ent.length :]
 
     elif len(args) >= 1 and args[0][0] == "@":
         user = args[0]
@@ -130,7 +130,8 @@ def extract_unt_fedban(
         if not user_id and not isinstance(user_id, int):
             message.reply_text(
                 "I don't have users on my DB.You will be able to interact with them if "
-                "you reply to the person's message, or forward one of the user's message")
+                "you reply to the person's message, or forward one of the user's message"
+            )
             return None, None
 
         else:
@@ -154,16 +155,15 @@ def extract_unt_fedban(
     try:
         message.bot.get_chat(user_id)
     except BadRequest as excp:
-        if excp.message in (
-                "User_id_invalid",
-                "Chat not found") and not isinstance(
-                user_id,
-                int):
+        if excp.message in ("User_id_invalid", "Chat not found") and not isinstance(
+            user_id, int
+        ):
             message.reply_text(
                 "I seem to have never interacted with this user "
                 "Previously - please forward a message from them to give me control! "
                 "(Like a voodoo doll, I need a piece to be able to "
-                "run a certain command ...)")
+                "run a certain command ...)"
+            )
             return None, None
         elif excp.message != "Chat not found":
             log.exception("Exception %s on user %s", excp.message, user_id)

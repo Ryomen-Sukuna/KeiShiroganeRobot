@@ -20,7 +20,6 @@ from tg_bot.modules.helper_funcs.decorators import keicmd
 def get_help(chat):
     return gs(chat, "gtranslate_help")
 
-
 __mod_name__ = "Translator"
 
 
@@ -55,7 +54,6 @@ async def translate(_, message: Message) -> None:
 
     await message.reply_text(reply, parse_mode="html")
 
-
 @keicmd(command='langs')
 def languages(update: Update, context: CallbackContext) -> None:
     update.effective_message.reply_text(
@@ -65,7 +63,10 @@ def languages(update: Update, context: CallbackContext) -> None:
                 [
                     InlineKeyboardButton(
                         text="Language codes",
-                        url="https://telegra.ph/Lang-Codes-03-19-3"),
+                        url="https://telegra.ph/Lang-Codes-03-19-3"
+                        ),
                 ],
             ],
-            disable_web_page_preview=True))
+        disable_web_page_preview=True
+    )
+        )

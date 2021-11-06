@@ -24,7 +24,6 @@ from pyrogram.types import Chat, User
 from tg_bot.modules.language import gs
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
-
 @keicmd(command="promote", can_disable=False)
 @connection_status
 @bot_admin
@@ -43,7 +42,7 @@ def promote(update: Update, context: CallbackContext) -> str:
 
     if (
         not (promoter.can_promote_members or promoter.status == "creator")
-        and user.id not in SUDO_USERS
+        and not user.id in SUDO_USERS
     ):
         message.reply_text("You don't have the necessary rights to do that!")
         return
@@ -58,17 +57,15 @@ def promote(update: Update, context: CallbackContext) -> str:
 
     try:
         user_member = chat.get_member(user_id)
-    except BaseException:
+    except:
         return
 
     if user_member.status in ("administrator", "creator"):
-        message.reply_text(
-            "How am I meant to promote someone that's already an admin?")
+        message.reply_text("How am I meant to promote someone that's already an admin?")
         return
 
     if user_id == bot.id:
-        message.reply_text(
-            "I can't promote myself! Get an admin to do it for me.")
+        message.reply_text("I can't promote myself! Get an admin to do it for me.")
         return
 
     # set same perms as bot - bot can't assign higher perms than itself!
@@ -90,8 +87,7 @@ def promote(update: Update, context: CallbackContext) -> str:
         )
     except BadRequest as err:
         if err.message == "User_not_mutual_contact":
-            message.reply_text(
-                "I can't promote someone who isn't in the group.")
+            message.reply_text("I can't promote someone who isn't in the group.")
         else:
             message.reply_text("An error occured while promoting.")
         return
@@ -110,7 +106,6 @@ def promote(update: Update, context: CallbackContext) -> str:
     )
 
     return log_message
-
 
 @keicmd(command="demote", can_disable=False)
 @connection_status
@@ -135,12 +130,11 @@ def demote(update: Update, context: CallbackContext) -> str:
 
     try:
         user_member = chat.get_member(user_id)
-    except BaseException:
+    except:
         return
 
     if user_member.status == "creator":
-        message.reply_text(
-            "This person CREATED the chat, how would I demote them?")
+        message.reply_text("This person CREATED the chat, how would I demote them?")
         return
 
     if user_member.status != "administrator":
@@ -148,8 +142,7 @@ def demote(update: Update, context: CallbackContext) -> str:
         return
 
     if user_id == bot.id:
-        message.reply_text(
-            "I can't demote myself! Get an admin to do it for me.")
+        message.reply_text("I can't demote myself! Get an admin to do it for me.")
         return
 
     try:
@@ -177,22 +170,22 @@ def demote(update: Update, context: CallbackContext) -> str:
             f"<b>{html.escape(chat.title)}:</b>\n"
             f"#DEMOTED\n"
             f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-            f"<b>User:</b> {mention_html(user_member.user.id, user_member.user.first_name)}")
+            f"<b>User:</b> {mention_html(user_member.user.id, user_member.user.first_name)}"
+        )
 
         return log_message
     except BadRequest:
         message.reply_text(
             "Could not demote. I might not be admin, or the admin status was appointed by another"
-            " user, so I can't act upon them!")
+            " user, so I can't act upon them!"
+        )
         return
-
 
 @keicmd(command="admincache", can_disable=False)
 @user_admin
 def refresh_admin(update, _):
     ADMIN_CACHE.pop(update.effective_chat.id)
     update.effective_message.reply_text("Admins cache refreshed!")
-
 
 @keicmd(command="title", can_disable=False)
 @connection_status
@@ -209,7 +202,7 @@ def set_title(update: Update, context: CallbackContext):
     user_id, title = extract_user_and_text(message, args)
     try:
         user_member = chat.get_member(user_id)
-    except BaseException:
+    except:
         return
 
     if not user_id:
@@ -248,8 +241,7 @@ def set_title(update: Update, context: CallbackContext):
     try:
         bot.setChatAdministratorCustomTitle(chat.id, user_id, title)
     except BadRequest:
-        message.reply_text(
-            "I can't set custom title for admins that I didn't promote!")
+        message.reply_text("I can't set custom title for admins that I didn't promote!")
         return
 
     bot.sendMessage(
@@ -258,7 +250,6 @@ def set_title(update: Update, context: CallbackContext):
         f"to <code>{html.escape(title[:16])}</code>!",
         parse_mode=ParseMode.HTML,
     )
-
 
 @keicmd(command="pin", can_disable=False)
 @bot_admin
@@ -286,9 +277,8 @@ def pin(update: Update, context: CallbackContext) -> str:
     if prev_message and is_group:
         try:
             bot.pinChatMessage(
-                chat.id,
-                prev_message.message_id,
-                disable_notification=is_silent)
+                chat.id, prev_message.message_id, disable_notification=is_silent
+            )
         except BadRequest as excp:
             if excp.message == "Chat_not_modified":
                 pass
@@ -297,10 +287,10 @@ def pin(update: Update, context: CallbackContext) -> str:
         log_message = (
             f"<b>{html.escape(chat.title)}:</b>\n"
             f"#PINNED\n"
-            f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}")
+            f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}"
+        )
 
         return log_message
-
 
 @keicmd(command="unpin", can_disable=False)
 @bot_admin
@@ -327,7 +317,6 @@ def unpin(update: Update, context: CallbackContext) -> str:
     )
 
     return log_message
-
 
 @keicmd(command="invitelink", can_disable=False)
 @bot_admin
@@ -406,9 +395,7 @@ async def admins(client, message):
     reply = await message.reply_text(text_unping, disable_web_page_preview=True)
     await reply.edit_text(text_ping, disable_web_page_preview=True)
 
-
 def get_help(chat):
     return gs(chat, "admin_help")
-
 
 __mod_name__ = "Admin"

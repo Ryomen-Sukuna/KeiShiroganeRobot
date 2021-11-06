@@ -12,7 +12,6 @@ from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
 from tg_bot.modules.connection import connected
 from tg_bot.modules.language import gs
 
-
 def get_help(chat):
     return gs(chat, "disable_help")
 
@@ -36,13 +35,7 @@ if is_module_loaded(FILENAME):
     ADMIN_CMDS = []
 
     class DisableAbleCommandHandler(CommandHandler):
-        def __init__(
-                self,
-                command,
-                callback,
-                run_async=True,
-                admin_ok=False,
-                **kwargs):
+        def __init__(self, command, callback, run_async=True, admin_ok=False, **kwargs):
             super().__init__(command, callback, run_async=run_async, **kwargs)
             self.admin_ok = admin_ok
             if isinstance(command, string_types):
@@ -78,8 +71,7 @@ if is_module_loaded(FILENAME):
                             chat = update.effective_chat
                             user = update.effective_user
                             # disabled, admincmd, user admin
-                            if sql.is_command_disabled(
-                                    chat.id, command[0].lower()):
+                            if sql.is_command_disabled(chat.id, command[0].lower()):
                                 # check if command was disabled
                                 is_disabled = command[
                                     0
@@ -94,13 +86,7 @@ if is_module_loaded(FILENAME):
                             return False
 
     class DisableAbleMessageHandler(MessageHandler):
-        def __init__(
-                self,
-                pattern,
-                callback,
-                run_async=True,
-                friendly="",
-                **kwargs):
+        def __init__(self, pattern, callback, run_async=True, friendly="", **kwargs):
             super().__init__(pattern, callback, run_async=run_async, **kwargs)
             DISABLE_OTHER.append(friendly or pattern)
             self.friendly = friendly or pattern
@@ -145,17 +131,14 @@ if is_module_loaded(FILENAME):
                         disable_cmd, chat_name
                     )
                 else:
-                    text = "Disabled the use of `{}` command!".format(
-                        disable_cmd)
+                    text = "Disabled the use of `{}` command!".format(disable_cmd)
                 send_message(
                     update.effective_message,
                     text,
                     parse_mode=ParseMode.MARKDOWN,
                 )
             else:
-                send_message(
-                    update.effective_message,
-                    "This command can't be disabled")
+                send_message(update.effective_message, "This command can't be disabled")
 
         else:
             send_message(update.effective_message, "What should I disable?")
@@ -194,17 +177,14 @@ if is_module_loaded(FILENAME):
                         enable_cmd, chat_name
                     )
                 else:
-                    text = "Enabled the use of `{}` command!".format(
-                        enable_cmd)
+                    text = "Enabled the use of `{}` command!".format(enable_cmd)
                 send_message(
                     update.effective_message,
                     text,
                     parse_mode=ParseMode.MARKDOWN,
                 )
             else:
-                send_message(
-                    update.effective_message,
-                    "Is that even disabled?")
+                send_message(update.effective_message, "Is that even disabled?")
 
         else:
             send_message(update.effective_message, "What should I enable?")
@@ -232,8 +212,7 @@ if is_module_loaded(FILENAME):
         result = ""
         for cmd in disabled:
             result += " - `{}`\n".format(escape_markdown(cmd))
-        return "The following commands are currently restricted:\n{}".format(
-            result)
+        return "The following commands are currently restricted:\n{}".format(result)
 
     @typing_action
     def commands(update, context):
@@ -254,8 +233,7 @@ if is_module_loaded(FILENAME):
             chat_id = update.effective_chat.id
 
         text = build_curr_disabled(chat.id)
-        send_message(update.effective_message, text,
-                     parse_mode=ParseMode.MARKDOWN)
+        send_message(update.effective_message, text, parse_mode=ParseMode.MARKDOWN)
 
     def __import_data__(chat_id, data):
         disabled = data.get("disabled", {})

@@ -4,7 +4,6 @@ from telegram import Update, ParseMode
 from telegram.ext import CallbackContext
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
-
 @keicmd(command='cash')
 def convert(update: Update, context: CallbackContext):
     args = update.effective_message.text.split(" ")
@@ -42,8 +41,7 @@ def convert(update: Update, context: CallbackContext):
         )
 
     elif len(args) == 1:
-        update.effective_message.reply_text(
-            __help__, parse_mode=ParseMode.MARKDOWN)
+        update.effective_message.reply_text(__help__, parse_mode=ParseMode.MARKDOWN)
 
     else:
         update.effective_message.reply_text(
