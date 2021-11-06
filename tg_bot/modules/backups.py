@@ -1,6 +1,4 @@
-import json
-import time
-import os
+import json, time, os
 from io import BytesIO
 from telegram import ParseMode, Message
 from telegram.error import BadRequest
@@ -22,13 +20,10 @@ from tg_bot.modules.sql import disable_sql as disabledsql
 import tg_bot.modules.sql.locks_sql as locksql
 from tg_bot.modules.connection import connected
 
-
 def get_help(chat):
     return gs(chat, "backup_help")
 
-
 __mod_name__ = "Backup"
-
 
 @keicmd(command='import')
 @user_admin
@@ -46,8 +41,7 @@ def import_data(update, context):
         chat_name = dispatcher.bot.getChat(conn).title
     else:
         if update.effective_message.chat.type == "private":
-            update.effective_message.reply_text(
-                "This is a group only command!")
+            update.effective_message.reply_text("This is a group only command!")
             return ""
 
         chat = update.effective_chat
@@ -55,8 +49,7 @@ def import_data(update, context):
 
     if msg.reply_to_message and msg.reply_to_message.document:
         try:
-            file_info = context.bot.get_file(
-                msg.reply_to_message.document.file_id)
+            file_info = context.bot.get_file(msg.reply_to_message.document.file_id)
         except BadRequest:
             msg.reply_text(
                 "Try downloading and uploading the file yourself again, This one seem broken to me!",
@@ -80,18 +73,19 @@ def import_data(update, context):
             if data.get(str(chat.id)) is None:
                 if conn:
                     text = "Backup comes from another chat, I can't return another chat to chat *{}*".format(
-                        chat_name, )
+                        chat_name,
+                    )
                 else:
                     text = "Backup comes from another chat, I can't return another chat to this chat"
                 return msg.reply_text(text, parse_mode="markdown")
         except Exception:
-            return msg.reply_text(
-                "There was a problem while importing the data!")
+            return msg.reply_text("There was a problem while importing the data!")
         # Check if backup is from self
         try:
             if str(context.bot.id) != str(data[str(chat.id)]["bot"]):
                 return msg.reply_text(
-                    "Backup from another bot that is not suggested might cause the problem, documents, photos, videos, audios, records might not work as it should be.", )
+                    "Backup from another bot that is not suggested might cause the problem, documents, photos, videos, audios, records might not work as it should be.",
+                )
         except Exception:
             pass
         # Select data source
@@ -124,7 +118,6 @@ def import_data(update, context):
             text = "Backup fully restored"
         msg.reply_text(text, parse_mode="markdown")
 
-
 @keicmd(command='export')
 @user_admin
 def export_data(update, context):
@@ -141,8 +134,7 @@ def export_data(update, context):
         # chat_name = dispatcher.bot.getChat(conn).title
     else:
         if update.effective_message.chat.type == "private":
-            update.effective_message.reply_text(
-                "This is a group only command!")
+            update.effective_message.reply_text("This is a group only command!")
             return ""
         chat = update.effective_chat
         chat_id = update.effective_chat.id
@@ -158,7 +150,10 @@ def export_data(update, context):
             )
             update.effective_message.reply_text(
                 "You can only backup once a day!\nYou can backup again in about `{}`".format(
-                    timeformatt, ), parse_mode=ParseMode.MARKDOWN, )
+                    timeformatt,
+                ),
+                parse_mode=ParseMode.MARKDOWN,
+            )
             return
         else:
             if user.id != OWNER_ID:
@@ -195,28 +190,35 @@ def export_data(update, context):
                         ("{}".format(btn.name), "{}".format(btn.url), False),
                     )
             isicat += "###button###: {}<###button###>{}<###splitter###>".format(
-                note.value, str(buttonlist), )
+                note.value, str(buttonlist),
+            )
             buttonlist.clear()
         elif note.msgtype == 2:
             isicat += "###sticker###:{}<###splitter###>".format(note.file)
         elif note.msgtype == 3:
             isicat += "###file###:{}<###TYPESPLIT###>{}<###splitter###>".format(
-                note.file, note.value, )
+                note.file, note.value,
+            )
         elif note.msgtype == 4:
             isicat += "###photo###:{}<###TYPESPLIT###>{}<###splitter###>".format(
-                note.file, note.value, )
+                note.file, note.value,
+            )
         elif note.msgtype == 5:
             isicat += "###audio###:{}<###TYPESPLIT###>{}<###splitter###>".format(
-                note.file, note.value, )
+                note.file, note.value,
+            )
         elif note.msgtype == 6:
             isicat += "###voice###:{}<###TYPESPLIT###>{}<###splitter###>".format(
-                note.file, note.value, )
+                note.file, note.value,
+            )
         elif note.msgtype == 7:
             isicat += "###video###:{}<###TYPESPLIT###>{}<###splitter###>".format(
-                note.file, note.value, )
+                note.file, note.value,
+            )
         elif note.msgtype == 8:
             isicat += "###video_note###:{}<###TYPESPLIT###>{}<###splitter###>".format(
-                note.file, note.value, )
+                note.file, note.value,
+            )
         else:
             isicat += "{}<###splitter###>".format(note.value)
     notes = {
@@ -329,13 +331,9 @@ def export_data(update, context):
     tgl = time.strftime("%H:%M:%S - %d/%m/%Y", time.localtime(time.time()))
     context.bot.sendDocument(
         current_chat_id,
-        document=open(
-            "KeiRobot{}.json".format(chat_id),
-            "rb"),
+        document=open("KeiRobot{}.json".format(chat_id), "rb"),
         caption="*Successfully Exported backup:*\nChat: `{}`\nChat ID: `{}`\nOn: `{}`\n\nNote: This `KeiRobot-Backup` was specially made for notes.".format(
-            chat.title,
-            chat_id,
-            tgl,
+            chat.title, chat_id, tgl,
         ),
         timeout=360,
         reply_to_message_id=msg.message_id,

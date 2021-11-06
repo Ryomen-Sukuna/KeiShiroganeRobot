@@ -1,5 +1,4 @@
-# Module to blacklist users and prevent them from using commands by
-# @TheRealPhoenix
+# Module to blacklist users and prevent them from using commands by @TheRealPhoenix
 
 import tg_bot.modules.sql.blacklistusers_sql as sql
 from tg_bot import (
@@ -25,7 +24,6 @@ BLACKLISTWHITELIST = (
 )
 BLABLEUSERS = [OWNER_ID] + DEV_USERS
 
-
 @keicmd(command='ignore', pass_args=True)
 @dev_plus
 @gloggable
@@ -40,8 +38,7 @@ def bl_user(update: Update, context: CallbackContext) -> str:
         return ""
 
     if user_id == bot.id:
-        message.reply_text(
-            "How am I supposed to do my work if I am ignoring myself?")
+        message.reply_text("How am I supposed to do my work if I am ignoring myself?")
         return ""
 
     if user_id in BLACKLISTWHITELIST:
@@ -68,7 +65,6 @@ def bl_user(update: Update, context: CallbackContext) -> str:
         log_message += f"\n<b>Reason:</b> {reason}"
 
     return log_message
-
 
 @keicmd(command='notice', pass_args=True)
 @dev_plus
@@ -103,14 +99,14 @@ def unbl_user(update: Update, context: CallbackContext) -> str:
         log_message = (
             f"#UNBLACKLIST\n"
             f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-            f"<b>User:</b> {mention_html(target_user.id, target_user.first_name)}")
+            f"<b>User:</b> {mention_html(target_user.id, target_user.first_name)}"
+        )
 
         return log_message
 
     else:
         message.reply_text("I am not ignoring them at all though!")
         return ""
-
 
 @keicmd(command='ignoredlist', pass_args=True)
 @dev_plus
@@ -122,8 +118,7 @@ def bl_users(update: Update, context: CallbackContext):
         reason = sql.get_reason(each_user)
 
         if reason:
-            users.append(
-                f"• {mention_html(user.id, user.first_name)} :- {reason}")
+            users.append(f"• {mention_html(user.id, user.first_name)} :- {reason}")
         else:
             users.append(f"• {mention_html(user.id, user.first_name)}")
 
@@ -161,6 +156,5 @@ def __user_info__(user_id):
         text = text.format("No")
 
     return text
-
 
 __mod_name__ = "Blacklisting Users"

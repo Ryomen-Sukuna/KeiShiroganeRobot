@@ -21,8 +21,7 @@ def get_note_type(msg: Message):
     content = None
     text = ""
     raw_text = msg.text or msg.caption
-    # use python's maxsplit to separate cmd and args
-    args = raw_text.split(None, 2)
+    args = raw_text.split(None, 2)  # use python's maxsplit to separate cmd and args
     note_name = args[1]
 
     buttons = []
@@ -61,8 +60,7 @@ def get_note_type(msg: Message):
             data_type = Types.DOCUMENT
 
         elif msg.reply_to_message.photo:
-            # last elem = best quality
-            content = msg.reply_to_message.photo[-1].file_id
+            content = msg.reply_to_message.photo[-1].file_id  # last elem = best quality
             text, buttons = button_markdown_parser(msgtext, entities=entities)
             data_type = Types.PHOTO
 
@@ -90,8 +88,7 @@ def get_welcome_type(msg: Message):
     content = None
     text = ""
     raw_text = msg.text or msg.caption
-    # use python's maxsplit to separate cmd and args
-    args = raw_text.split(None, 1)
+    args = raw_text.split(None, 1)  # use python's maxsplit to separate cmd and args
 
     buttons = []
     # determine what the contents of the filter are - text, image, sticker, etc
@@ -184,8 +181,7 @@ def get_filter_type(msg: Message):
         data_type = Types.DOCUMENT
 
     elif msg.reply_to_message and msg.reply_to_message.photo:
-        # last elem = best quality
-        content = msg.reply_to_message.photo[-1].file_id
+        content = msg.reply_to_message.photo[-1].file_id  # last elem = best quality
         text = msg.reply_to_message.caption
         data_type = Types.PHOTO
 

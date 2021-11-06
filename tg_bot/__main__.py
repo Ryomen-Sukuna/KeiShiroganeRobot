@@ -5,7 +5,7 @@ from sys import argv
 from pyrogram import idle
 from telegram import Update, ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.error import (
-    TelegramError,
+    TelegramError, 
     Unauthorized,
     BadRequest,
     TimedOut,
@@ -61,8 +61,7 @@ for module_name in ALL_MODULES:
     if not imported_module.__mod_name__.lower() in IMPORTED:
         IMPORTED[imported_module.__mod_name__.lower()] = imported_module
     else:
-        raise Exception(
-            "Can't have two modules with the same name! Please change one")
+        raise Exception("Can't have two modules with the same name! Please change one")
 
     if hasattr(imported_module, "get_help") and imported_module.get_help:
         HELPABLE[imported_module.__mod_name__.lower()] = imported_module
@@ -102,18 +101,13 @@ def send_help(chat_id, text, keyboard=None):
 
     if not keyboard:
         kb = paginate_modules(0, HELPABLE, "help")
-        kb.append([InlineKeyboardButton(text='Support',
-                                        url='https://t.me/zerounions'),
-                   InlineKeyboardButton(text='Back',
-                                        callback_data='start_back'),
-                   InlineKeyboardButton(text="Try inline",
-                                        switch_inline_query_current_chat="")])
+        kb.append([InlineKeyboardButton(text='Support', url='https://t.me/zerounions'),
+        InlineKeyboardButton(text='Back', callback_data='start_back'), InlineKeyboardButton(text="Try inline", switch_inline_query_current_chat="")])
         keyboard = InlineKeyboardMarkup(kb)
     dispatcher.bot.send_message(
-        chat_id=chat_id,
-        text=text,
-        parse_mode=ParseMode.MARKDOWN,
-        reply_markup=keyboard)
+        chat_id=chat_id, text=text, parse_mode=ParseMode.MARKDOWN, reply_markup=keyboard
+    )
+
 
 
 @keicmd(command='text')
@@ -130,7 +124,6 @@ def test(update: Update, context: CallbackContext):
     update.effective_message.reply_text("This person edited a message")
     print(update.effective_message)
 
-
 @keicallback(pattern=r'start_back')
 @keicmd(command='start', pass_args=True)
 def start(update: Update, context: CallbackContext):
@@ -144,7 +137,7 @@ def start(update: Update, context: CallbackContext):
     args = context.args
 
     if hasattr(update, 'callback_query'):
-        query = update.callback_query
+        query = update.callback_query 
         if hasattr(query, 'id'):
             first_name = update.effective_user.first_name
             update.effective_message.edit_text(
@@ -169,19 +162,19 @@ def start(update: Update, context: CallbackContext):
                                 text=gs(chat.id, "src_btn"),
                                 url="https://github.com/Ryomen-Sukuna/KeiShiroganeRobot",
                             ),
-
+                            
                         ],
 
                         [
 
-                            InlineKeyboardButton(
-                                text="Try inline",
-                                switch_inline_query_current_chat="",
-                            ),
-                            InlineKeyboardButton(
+                             InlineKeyboardButton(
+                                 text="Try inline",
+                                 switch_inline_query_current_chat="",
+                             ),
+                             InlineKeyboardButton(
                                 text="Help",
                                 callback_data="help_back",
-                            ),
+                                ),
                             InlineKeyboardButton(
                                 text=gs(chat.id, "add_bot_to_group_btn"),
                                 url="t.me/{}?startgroup=true".format(
@@ -189,7 +182,7 @@ def start(update: Update, context: CallbackContext):
                                 ),
                             ),
                         ]
-
+                        
                     ]
                 ),
             )
@@ -199,8 +192,7 @@ def start(update: Update, context: CallbackContext):
     if update.effective_chat.type == "private":
         if args and len(args) >= 1:
             if args[0].lower() == "help":
-                send_help(update.effective_chat.id,
-                          (gs(chat.id, "pm_help_text")))
+                send_help(update.effective_chat.id, (gs(chat.id, "pm_help_text")))
             elif args[0].lower() == "markdownhelp":
                 IMPORTED["extras"].markdown_help_sender(update)
             elif args[0].lower() == "nations":
@@ -210,11 +202,9 @@ def start(update: Update, context: CallbackContext):
                 chat = dispatcher.bot.getChat(match.group(1))
 
                 if is_user_admin(chat, update.effective_user.id):
-                    send_settings(
-                        match.group(1), update.effective_user.id, False)
+                    send_settings(match.group(1), update.effective_user.id, False)
                 else:
-                    send_settings(
-                        match.group(1), update.effective_user.id, True)
+                    send_settings(match.group(1), update.effective_user.id, True)
 
             elif args[0][1:].isdigit() and "rules" in IMPORTED:
                 IMPORTED["rules"].send_rules(update, args[0], from_pm=True)
@@ -243,19 +233,19 @@ def start(update: Update, context: CallbackContext):
                                 text=gs(chat.id, "src_btn"),
                                 url="https://github.com/Ryomen-Sukuna/KeiShiroganeRobot",
                             ),
-
+                            
                         ],
 
                         [
 
-                            InlineKeyboardButton(
-                                text="Try inline",
-                                switch_inline_query_current_chat="",
-                            ),
-                            InlineKeyboardButton(
+                             InlineKeyboardButton(
+                                 text="Try inline",
+                                 switch_inline_query_current_chat="",
+                             ),
+                             InlineKeyboardButton(
                                 text="Help",
                                 callback_data="help_back",
-                            ),
+                                ),
                             InlineKeyboardButton(
                                 text=gs(chat.id, "add_bot_to_group_btn"),
                                 url="t.me/{}?startgroup=true".format(
@@ -263,17 +253,17 @@ def start(update: Update, context: CallbackContext):
                                 ),
                             ),
                         ]
-
+                        
                     ]
                 ),
             )
     else:
         update.effective_message.reply_text(gs(chat.id, "grp_start_text"))
-
+    
     if hasattr(update, 'callback_query'):
-        query = update.callback_query
+        query = update.callback_query 
         if hasattr(query, 'id'):
-            context.bot.answer_callback_query(query.id)
+           context.bot.answer_callback_query(query.id)
 
 
 # for test purposes
@@ -305,7 +295,6 @@ def error_callback(update, context):
     except TelegramError:
         pass
         # handle all other telegram related errors
-
 
 @keicallback(pattern=r'help_')
 def help_button(update, context):
@@ -342,7 +331,7 @@ def help_button(update, context):
             )
             help_buttons.append(
                 [InlineKeyboardButton(text="Back", callback_data="help_back"),
-                 InlineKeyboardButton(text='Support', url='https://t.me/zerounions')]
+                InlineKeyboardButton(text='Support', url='https://t.me/zerounions')]
             )
             query.message.edit_text(
                 text=text,
@@ -353,12 +342,8 @@ def help_button(update, context):
         elif prev_match:
             curr_page = int(prev_match.group(1))
             kb = paginate_modules(curr_page - 1, HELPABLE, "help")
-            kb.append([InlineKeyboardButton(text='Support',
-                                            url='https://t.me/zerounions'),
-                       InlineKeyboardButton(text='Back',
-                                            callback_data='start_back'),
-                       InlineKeyboardButton(text="Try inline",
-                                            switch_inline_query_current_chat="")])
+            kb.append([InlineKeyboardButton(text='Support', url='https://t.me/zerounions'),
+            InlineKeyboardButton(text='Back', callback_data='start_back'), InlineKeyboardButton(text="Try inline", switch_inline_query_current_chat="")])
             query.message.edit_text(
                 text=gs(chat.id, "pm_help_text"),
                 parse_mode=ParseMode.MARKDOWN,
@@ -368,12 +353,8 @@ def help_button(update, context):
         elif next_match:
             next_page = int(next_match.group(1))
             kb = paginate_modules(next_page + 1, HELPABLE, "help")
-            kb.append([InlineKeyboardButton(text='Support',
-                                            url='https://t.me/zerounions'),
-                       InlineKeyboardButton(text='Back',
-                                            callback_data='start_back'),
-                       InlineKeyboardButton(text="Try inline",
-                                            switch_inline_query_current_chat="")])
+            kb.append([InlineKeyboardButton(text='Support', url='https://t.me/zerounions'),
+            InlineKeyboardButton(text='Back', callback_data='start_back'), InlineKeyboardButton(text="Try inline", switch_inline_query_current_chat="")])
             query.message.edit_text(
                 text=gs(chat.id, "pm_help_text"),
                 parse_mode=ParseMode.MARKDOWN,
@@ -382,12 +363,8 @@ def help_button(update, context):
 
         elif back_match:
             kb = paginate_modules(0, HELPABLE, "help")
-            kb.append([InlineKeyboardButton(text='Support',
-                                            url='https://t.me/zerounions'),
-                       InlineKeyboardButton(text='Back',
-                                            callback_data='start_back'),
-                       InlineKeyboardButton(text="Try inline",
-                                            switch_inline_query_current_chat="")])
+            kb.append([InlineKeyboardButton(text='Support', url='https://t.me/zerounions'),
+            InlineKeyboardButton(text='Back', callback_data='start_back'), InlineKeyboardButton(text="Try inline", switch_inline_query_current_chat="")])
             query.message.edit_text(
                 text=gs(chat.id, "pm_help_text"),
                 parse_mode=ParseMode.MARKDOWN,
@@ -400,7 +377,6 @@ def help_button(update, context):
 
     except BadRequest:
         pass
-
 
 @keicmd(command='help')
 def get_help(update, context):
@@ -500,7 +476,6 @@ def send_settings(chat_id, user_id, user=False):
                 parse_mode=ParseMode.MARKDOWN,
             )
 
-
 @keicallback(pattern=r"stngs_")
 def settings_button(update: Update, context: CallbackContext):
     '''#TODO
@@ -546,10 +521,13 @@ def settings_button(update: Update, context: CallbackContext):
             chat = bot.get_chat(chat_id)
             query.message.reply_text(
                 "Hi there! There are quite a few settings for {} - go ahead and pick what "
-                "you're interested in.".format(
-                    chat.title), reply_markup=InlineKeyboardMarkup(
+                "you're interested in.".format(chat.title),
+                reply_markup=InlineKeyboardMarkup(
                     paginate_modules(
-                        curr_page - 1, CHAT_SETTINGS, "stngs", chat=chat_id)), )
+                        curr_page - 1, CHAT_SETTINGS, "stngs", chat=chat_id
+                    )
+                ),
+            )
 
         elif next_match:
             chat_id = next_match.group(1)
@@ -557,21 +535,25 @@ def settings_button(update: Update, context: CallbackContext):
             chat = bot.get_chat(chat_id)
             query.message.reply_text(
                 "Hi there! There are quite a few settings for {} - go ahead and pick what "
-                "you're interested in.".format(
-                    chat.title), reply_markup=InlineKeyboardMarkup(
+                "you're interested in.".format(chat.title),
+                reply_markup=InlineKeyboardMarkup(
                     paginate_modules(
-                        next_page + 1, CHAT_SETTINGS, "stngs", chat=chat_id)), )
+                        next_page + 1, CHAT_SETTINGS, "stngs", chat=chat_id
+                    )
+                ),
+            )
 
         elif back_match:
             chat_id = back_match.group(1)
             chat = bot.get_chat(chat_id)
             query.message.reply_text(
                 text="Hi there! There are quite a few settings for {} - go ahead and pick what "
-                "you're interested in.".format(
-                    escape_markdown(
-                        chat.title)), parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(
-                    paginate_modules(
-                        0, CHAT_SETTINGS, "stngs", chat=chat_id)), )
+                "you're interested in.".format(escape_markdown(chat.title)),
+                parse_mode=ParseMode.MARKDOWN,
+                reply_markup=InlineKeyboardMarkup(
+                    paginate_modules(0, CHAT_SETTINGS, "stngs", chat=chat_id)
+                ),
+            )
 
         # ensure no spinny white circle
         bot.answer_callback_query(query.id)
@@ -585,7 +567,6 @@ def settings_button(update: Update, context: CallbackContext):
             pass
         else:
             log.exception("Exception in settings buttons. %s", str(query.data))
-
 
 @keicmd(command='settings')
 def get_settings(update: Update, context: CallbackContext):
@@ -625,7 +606,6 @@ def get_settings(update: Update, context: CallbackContext):
     else:
         send_settings(chat.id, user.id, True)
 
-
 @keicmd(command='donate')
 def donate(update: Update, context: CallbackContext):
     '''#TODO
@@ -636,7 +616,6 @@ def donate(update: Update, context: CallbackContext):
     '''
 
     update.effective_message.reply_text("I'm free for everyone! >_<")
-
 
 @keimsg((Filters.status_update.migrate))
 def migrate_chats(update: Update, context: CallbackContext):
@@ -674,30 +653,21 @@ def main():
         updater.start_webhook(listen="127.0.0.1", port=PORT, url_path=TOKEN)
 
         if CERT_PATH:
-            updater.bot.set_webhook(
-                url=URL + TOKEN,
-                certificate=open(
-                    CERT_PATH,
-                    "rb"))
+            updater.bot.set_webhook(url=URL + TOKEN, certificate=open(CERT_PATH, "rb"))
         else:
             updater.bot.set_webhook(url=URL + TOKEN)
 
     else:
-        log.info(
-            f"Kei started, Using long polling. | BOT: [@{dispatcher.bot.username}]")
+        log.info(f"Kei started, Using long polling. | BOT: [@{dispatcher.bot.username}]")
         KeiINIT.bot_id = dispatcher.bot.id
         KeiINIT.bot_username = dispatcher.bot.username
         KeiINIT.bot_name = dispatcher.bot.first_name
-        updater.start_polling(
-            timeout=15,
-            read_latency=4,
-            drop_pending_updates=True)
+        updater.start_polling(timeout=15, read_latency=4, drop_pending_updates=True)
     if len(argv) not in (1, 3, 4):
         telethn.disconnect()
     else:
         telethn.run_until_disconnected()
     updater.idle()
-
 
 if __name__ == "__main__":
     kp.start()

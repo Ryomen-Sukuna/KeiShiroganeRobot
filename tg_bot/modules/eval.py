@@ -31,17 +31,14 @@ def namespace_of(chat, update, bot):
 def log_input(update):
     user = update.effective_user.id
     chat = update.effective_chat.id
-    LOGGER.info(
-        f"IN: {update.effective_message.text} (user={user}, chat={chat})")
+    LOGGER.info(f"IN: {update.effective_message.text} (user={user}, chat={chat})")
 
 
 def send(msg, bot, update):
     if len(str(msg)) > 2000:
         with io.BytesIO(str.encode(msg)) as out_file:
             out_file.name = "output.txt"
-            bot.send_document(
-                chat_id=update.effective_chat.id,
-                document=out_file)
+            bot.send_document(chat_id=update.effective_chat.id, document=out_file)
     else:
         LOGGER.info(f"OUT: '{msg}'")
         bot.send_message(
@@ -51,14 +48,14 @@ def send(msg, bot, update):
         )
 
 
+
 @keicmd(command=("e", "ev", "eva", "eval"), filters=Filters.user(SYS_ADMIN))
 def evaluate(update: Update, context: CallbackContext):
     bot = context.bot
     send(do(eval, bot, update), bot, update)
 
 
-@keicmd(command=("x", "ex", "exe", "exec", "py"),
-        filters=Filters.user(SYS_ADMIN))
+@keicmd(command=("x", "ex", "exe", "exec", "py"), filters=Filters.user(SYS_ADMIN))
 def execute(update: Update, context: CallbackContext):
     bot = context.bot
     send(do(exec, bot, update), bot, update)
@@ -108,12 +105,13 @@ def do(func, bot, update):
             else:
                 try:
                     result = f"{repr(eval(body, env))}"
-                except BaseException:
+                except:
                     pass
         else:
             result = f"{value}{func_return}"
         if result:
             return result
+
 
 
 @keicmd(command="clearlocals", filters=Filters.user(SYS_ADMIN))

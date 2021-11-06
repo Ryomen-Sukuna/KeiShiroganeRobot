@@ -1,4 +1,3 @@
-from tg_bot.modules.language import gs
 import html
 import json
 import os
@@ -23,7 +22,6 @@ from tg_bot.modules.log_channel import gloggable
 from tg_bot.modules.sql import nation_sql as sql
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
-
 def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
     bot = context.bot
     if not user_id:
@@ -35,7 +33,6 @@ def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
     else:
         reply = None
     return reply
-
 
 @keicmd(command='addsudo')
 @dev_plus
@@ -173,7 +170,8 @@ def addwhitelist(update: Update, context: CallbackContext) -> str:
     WHITELIST_USERS.append(user_id)
 
     update.effective_message.reply_text(
-        rt + f"\nSuccessfully promoted {user_member.first_name} to a Whitelist user!")
+        rt + f"\nSuccessfully promoted {user_member.first_name} to a Whitelist user!"
+    )
 
     log_message = (
         f"#WHITELIST\n"
@@ -224,7 +222,8 @@ def addsardegna(update: Update, context: CallbackContext) -> str:
     SARDEGNA_USERS.append(user_id)
 
     update.effective_message.reply_text(
-        rt + f"\nSuccessfully promoted {user_member.first_name} to a Sardegna Nation!")
+        rt + f"\nSuccessfully promoted {user_member.first_name} to a Sardegna Nation!"
+    )
 
     log_message = (
         f"#SARDEGNA\n"
@@ -255,8 +254,7 @@ def removesudo(update: Update, context: CallbackContext) -> str:
         return ""
 
     if user_id in SUDO_USERS:
-        message.reply_text(
-            "Requested Zero Unions to demote this user to Civilian")
+        message.reply_text("Requested Zero Unions to demote this user to Civilian")
         SUDO_USERS.remove(user_id)
         sql.remove_royal(user_id)
 
@@ -267,8 +265,7 @@ def removesudo(update: Update, context: CallbackContext) -> str:
         )
 
         if chat.type != "private":
-            log_message = "<b>{}:</b>\n".format(
-                html.escape(chat.title)) + log_message
+            log_message = "<b>{}:</b>\n".format(html.escape(chat.title)) + log_message
 
         return log_message
 
@@ -294,15 +291,15 @@ def removesupport(update: Update, context: CallbackContext) -> str:
         return ""
 
     if user_id in SUPPORT_USERS:
-        message.reply_text(
-            "Requested Zero Unions to demote this user to Civilian")
+        message.reply_text("Requested Zero Unions to demote this user to Civilian")
         SUPPORT_USERS.remove(user_id)
         sql.remove_royal(user_id)
 
         log_message = (
             f"#UNSUPPORT\n"
             f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
-            f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}")
+            f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}"
+        )
 
         if chat.type != "private":
             log_message = f"<b>{html.escape(chat.title)}:</b>\n" + log_message
@@ -338,7 +335,8 @@ def removewhitelist(update: Update, context: CallbackContext) -> str:
         log_message = (
             f"#UNWHITELIST\n"
             f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
-            f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}")
+            f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}"
+        )
 
         if chat.type != "private":
             log_message = f"<b>{html.escape(chat.title)}:</b>\n" + log_message
@@ -373,7 +371,8 @@ def removesardegna(update: Update, context: CallbackContext) -> str:
         log_message = (
             f"#UNSARDEGNA\n"
             f"<b>Admin:</b> {mention_html(user.id, html.escape(user.first_name))}\n"
-            f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}")
+            f"<b>User:</b> {mention_html(user_member.id, html.escape(user_member.first_name))}"
+        )
 
         if chat.type != "private":
             log_message = f"<b>{html.escape(chat.title)}:</b>\n" + log_message
@@ -382,7 +381,6 @@ def removesardegna(update: Update, context: CallbackContext) -> str:
     else:
         message.reply_text("This user is not a Sardegna Nation!")
         return ""
-
 
 # I added extra new lines
 nations = """ Kei has bot access levels we call as *"Nation Levels"*
@@ -403,7 +401,6 @@ def send_nations(update):
         nations, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
     )
 
-
 @keicmd(command='removesardegna')
 @whitelist_plus
 def whitelistlist(update: Update, context: CallbackContext):
@@ -419,7 +416,6 @@ def whitelistlist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
-
 @keicmd(command='sardegnas')
 @whitelist_plus
 def Sardegnalist(update: Update, context: CallbackContext):
@@ -434,7 +430,6 @@ def Sardegnalist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
-
 @keicmd(command=["supportlist", "sakuras"])
 @whitelist_plus
 def supportlist(update: Update, context: CallbackContext):
@@ -448,7 +443,6 @@ def supportlist(update: Update, context: CallbackContext):
         except TelegramError:
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
-
 
 @keicmd(command=["sudolist", "royals"])
 @whitelist_plus
@@ -465,7 +459,6 @@ def sudolist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
-
 @keicmd(command=["devlist", "eagle"])
 @whitelist_plus
 def devlist(update: Update, context: CallbackContext):
@@ -481,6 +474,8 @@ def devlist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
+
+from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "nation_help")

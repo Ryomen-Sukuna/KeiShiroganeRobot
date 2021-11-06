@@ -19,7 +19,8 @@ class RSS(BASE):
 
     def __repr__(self):
         return "<RSS for chatID {} at feed_link {} with old_entry_link {}>".format(
-            self.chat_id, self.feed_link, self.old_entry_link)
+            self.chat_id, self.feed_link, self.old_entry_link
+        )
 
 
 RSS.__table__.create(checkfirst=True)
@@ -47,8 +48,7 @@ def add_url(tg_chat_id, tg_feed_link, tg_old_entry_link):
 
 def remove_url(tg_chat_id, tg_feed_link):
     with INSERTION_LOCK:
-        # this loops to delete any possible duplicates for the same TG User ID,
-        # TG Chat ID and link
+        # this loops to delete any possible duplicates for the same TG User ID, TG Chat ID and link
         for row in check_url_availability(tg_chat_id, tg_feed_link):
             # add the action to the DB query
             SESSION.delete(row)

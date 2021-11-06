@@ -16,11 +16,9 @@ class ErrorsDict(dict):
         super().__init__(*args, **kwargs)
 
     def __contains__(self, error):
-        error.identifier = "".join(
-            random.choices(
-                "ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=5))
+        error.identifier = "".join(random.choices("ABCDEFGHIJKLMNOPQRSTUVWXYZ", k=5))
         for e in self:
-            if isinstance(e, type(error)) and e.args == error.args:
+            if type(e) is type(error) and e.args == error.args:
                 self[e] += 1
                 return True
         self[error] = 0
@@ -45,7 +43,8 @@ def error_callback(update: Update, context: CallbackContext):
         "Chat: {} {}\n"
         "Callback data: {}\n"
         "Message: {}\n\n"
-        "Full Traceback: {}").format(
+        "Full Traceback: {}"
+    ).format(
         update.effective_user.id,
         update.effective_chat.title if update.effective_chat else "",
         update.effective_chat.id if update.effective_chat else "",
@@ -62,9 +61,7 @@ def error_callback(update: Update, context: CallbackContext):
             f.write(pretty_message)
         context.bot.send_document(
             OWNER_ID,
-            open(
-                "error.txt",
-                "rb"),
+            open("error.txt", "rb"),
             caption=f"#{context.error.identifier}\n<b>Your sugar mommy got an error for you, you cute guy:</b>\n<code>{e}</code>",
             parse_mode="html",
         )

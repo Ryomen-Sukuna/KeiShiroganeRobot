@@ -1,4 +1,3 @@
-from tg_bot.modules.language import gs
 import html
 import re
 from typing import Optional
@@ -90,14 +89,16 @@ def warn(
             reply = (
                 f"<code>❕</code><b>Kick Event</b>\n"
                 f"<code> </code><b>•  User:</b> {mention_html(user.id, user.first_name)}\n"
-                f"<code> </code><b>•  Count:</b> {limit}")
+                f"<code> </code><b>•  Count:</b> {limit}"
+            )
 
         else:  # ban
             chat.kick_member(user.id)
             reply = (
                 f"<code>❕</code><b>Ban Event</b>\n"
                 f"<code> </code><b>•  User:</b> {mention_html(user.id, user.first_name)}\n"
-                f"<code> </code><b>•  Count:</b> {limit}")
+                f"<code> </code><b>•  Count:</b> {limit}"
+            )
 
         for warn_reason in reasons:
             reply += f"\n - {html.escape(warn_reason)}"
@@ -114,13 +115,21 @@ def warn(
         )
 
     else:
-        keyboard = InlineKeyboardMarkup([[InlineKeyboardButton(
-            "🔘 Remove warn", callback_data="rm_warn({})".format(user.id))]])
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "🔘 Remove warn", callback_data="rm_warn({})".format(user.id)
+                    )
+                ]
+            ]
+        )
 
         reply = (
             f"<code>❕</code><b>Warn Event</b>\n"
             f"<code> </code><b>•  User:</b> {mention_html(user.id, user.first_name)}\n"
-            f"<code> </code><b>•  Count:</b> {num_warns}/{limit}")
+            f"<code> </code><b>•  Count:</b> {num_warns}/{limit}"
+        )
         if reason:
             reply += f"\n<code> </code><b>•  Reason:</b> {html.escape(reason)}"
 
@@ -134,18 +143,13 @@ def warn(
         )
 
     try:
-        message.reply_text(
-            reply,
-            reply_markup=keyboard,
-            parse_mode=ParseMode.HTML)
+        message.reply_text(reply, reply_markup=keyboard, parse_mode=ParseMode.HTML)
     except BadRequest as excp:
         if excp.message == "Reply message not found":
             # Do not reply
             message.reply_text(
-                reply,
-                reply_markup=keyboard,
-                parse_mode=ParseMode.HTML,
-                quote=False)
+                reply, reply_markup=keyboard, parse_mode=ParseMode.HTML, quote=False
+            )
         else:
             raise
     return log_reason
@@ -164,10 +168,7 @@ def button(update: Update, context: CallbackContext) -> str:
         res = sql.remove_warn(user_id, chat.id)
         if res:
             update.effective_message.edit_text(
-                "Warn removed by {}.".format(
-                    mention_html(
-                        user.id,
-                        user.first_name)),
+                "Warn removed by {}.".format(mention_html(user.id, user.first_name)),
                 parse_mode=ParseMode.HTML,
             )
             user_member = chat.get_member(user_id)
@@ -175,7 +176,8 @@ def button(update: Update, context: CallbackContext) -> str:
                 f"<b>{html.escape(chat.title)}:</b>\n"
                 f"#UNWARN\n"
                 f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-                f"<b>User:</b> {mention_html(user_member.user.id, user_member.user.first_name)}")
+                f"<b>User:</b> {mention_html(user_member.user.id, user_member.user.first_name)}"
+            )
         else:
             update.effective_message.edit_text(
                 "User already has no warns.", parse_mode=ParseMode.HTML
@@ -208,8 +210,7 @@ def warn_user(update: Update, context: CallbackContext) -> str:
                 warner,
             )
         else:
-            return warn(chat.get_member(user_id).user,
-                        chat, reason, message, warner)
+            return warn(chat.get_member(user_id).user, chat, reason, message, warner)
     else:
         message.reply_text("That looks like an invalid User ID to me.")
     return ""
@@ -267,8 +268,7 @@ def warns(update: Update, context: CallbackContext):
                 f"User has {num_warns}/{limit} warns, but no reasons for any of them."
             )
     else:
-        update.effective_message.reply_text(
-            "This user doesn't have any warns!")
+        update.effective_message.reply_text("This user doesn't have any warns!")
 
 
 # Dispatcher handler stop - do not async
@@ -287,8 +287,7 @@ def add_warn_filter(update: Update, context: CallbackContext):
     extracted = split_quotes(args[1])
 
     if len(extracted) >= 2:
-        # set trigger -> lower, so as to avoid adding duplicate filters with
-        # different cases
+        # set trigger -> lower, so as to avoid adding duplicate filters with different cases
         keyword = extracted[0].lower()
         content = extracted[1]
 
@@ -347,23 +346,20 @@ def list_warn_filters(update: Update, context: CallbackContext):
     all_handlers = sql.get_chat_warn_triggers(chat.id)
 
     if not all_handlers:
-        update.effective_message.reply_text(
-            "No warning filters are active here!")
+        update.effective_message.reply_text("No warning filters are active here!")
         return
 
     filter_list = CURRENT_WARNING_FILTER_STRING
     for keyword in all_handlers:
         entry = f" - {html.escape(keyword)}\n"
         if len(entry) + len(filter_list) > telegram.MAX_MESSAGE_LENGTH:
-            update.effective_message.reply_text(
-                filter_list, parse_mode=ParseMode.HTML)
+            update.effective_message.reply_text(filter_list, parse_mode=ParseMode.HTML)
             filter_list = entry
         else:
             filter_list += entry
 
     if filter_list != CURRENT_WARNING_FILTER_STRING:
-        update.effective_message.reply_text(
-            filter_list, parse_mode=ParseMode.HTML)
+        update.effective_message.reply_text(filter_list, parse_mode=ParseMode.HTML)
 
 
 @loggable
@@ -472,7 +468,8 @@ def set_warn_strength(update: Update, context: CallbackContext):
 def __stats__():
     return (
         f"• {sql.num_warns()} overall warns, across {sql.num_warn_chats()} chats.\n"
-        f"• {sql.num_warn_filters()} warn filters, across {sql.num_warn_filter_chats()} chats.")
+        f"• {sql.num_warn_filters()} warn filters, across {sql.num_warn_filter_chats()} chats."
+    )
 
 
 def __import_data__(chat_id, data):
@@ -490,19 +487,18 @@ def __chat_settings__(chat_id, user_id):
     limit, soft_warn = sql.get_warn_setting(chat_id)
     return (
         f"This chat has `{num_warn_filters}` warn filters. "
-        f"It takes `{limit}` warns before the user gets *{'kicked' if soft_warn else 'banned'}*.")
+        f"It takes `{limit}` warns before the user gets *{'kicked' if soft_warn else 'banned'}*."
+    )
 
+
+from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "warns_help")
 
-
 __mod_name__ = "Warnings"
 
-WARN_HANDLER = CommandHandler(
-    "warn",
-    warn_user,
-    filters=Filters.chat_type.groups)
+WARN_HANDLER = CommandHandler("warn", warn_user, filters=Filters.chat_type.groups)
 RESET_WARN_HANDLER = CommandHandler(
     ["resetwarn", "resetwarns"], reset_warns, filters=Filters.chat_type.groups
 )

@@ -1,6 +1,5 @@
 import html
-import re
-import os
+import re, os
 import time
 from typing import List
 import git
@@ -66,7 +65,6 @@ This will create two buttons on a single line, instead of one button per line.
 Keep in mind that your message <b>MUST</b> contain some text other than just a button!
 """
 
-
 @keicmd(command='id', pass_args=True)
 def get_id(update: Update, context: CallbackContext):
     bot, args = context.bot, context.args
@@ -101,14 +99,13 @@ def get_id(update: Update, context: CallbackContext):
 
         if chat.type == "private":
             msg.reply_text(
-                f"Your id is <code>{chat.id}</code>.",
-                parse_mode=ParseMode.HTML)
+                f"Your id is <code>{chat.id}</code>.", parse_mode=ParseMode.HTML
+            )
 
         else:
             msg.reply_text(
-                f"This group's id is <code>{chat.id}</code>.",
-                parse_mode=ParseMode.HTML)
-
+                f"This group's id is <code>{chat.id}</code>.", parse_mode=ParseMode.HTML
+            )
 
 @keicmd(command='gifid')
 def gifid(update: Update, _):
@@ -119,9 +116,7 @@ def gifid(update: Update, _):
             parse_mode=ParseMode.HTML,
         )
     else:
-        update.effective_message.reply_text(
-            "Please reply to a gif to get its ID.")
-
+        update.effective_message.reply_text("Please reply to a gif to get its ID.")
 
 @keicmd(command='info', pass_args=True)
 def info(update: Update, context: CallbackContext):
@@ -175,11 +170,10 @@ def info(update: Update, context: CallbackContext):
             text += "\nAppeal at @SpamWatchSupport"
         else:
             text += "<b>\n\nSpamWatch:</b>\n Not banned"
-    except BaseException:
+    except:
         pass  # don't crash if api is down somehow...
 
-    apst = requests.get(
-        f'https://api.intellivoid.net/spamprotection/v1/lookup?query={context.bot.username}')
+    apst = requests.get(f'https://api.intellivoid.net/spamprotection/v1/lookup?query={context.bot.username}')
     api_status = apst.status_code
     if (api_status == 200):
         try:
@@ -236,6 +230,7 @@ def info(update: Update, context: CallbackContext):
     except BadRequest:
         pass
 
+
     if user.id == OWNER_ID:
         text += f"\nThis person is my owner"
         Nation_level_present = True
@@ -256,8 +251,7 @@ def info(update: Update, context: CallbackContext):
         Nation_level_present = True
 
     if Nation_level_present:
-        text += ' [<a href="https://t.me/{}?start=nations">?</a>]'.format(
-            bot.username)
+        text += ' [<a href="https://t.me/{}?start=nations">?</a>]'.format(bot.username)
 
     text += "\n"
     for mod in USER_INFO:
@@ -296,7 +290,6 @@ def info(update: Update, context: CallbackContext):
             text, parse_mode=ParseMode.HTML, disable_web_page_preview=True
         )
 
-
 @keicmd(command='echo', pass_args=True, filters=Filters.chat_type.groups)
 @user_admin
 def echo(update: Update, _):
@@ -316,12 +309,10 @@ def shell(command):
     stdout, stderr = process.communicate()
     return (stdout, stderr)
 
-
 @keicmd(command='markdownhelp', filters=Filters.chat_type.private)
 def markdown_help(update: Update, _):
     chat = update.effective_chat
-    update.effective_message.reply_text(
-        (gs(chat.id, "markdown_help_text")), parse_mode=ParseMode.HTML)
+    update.effective_message.reply_text((gs(chat.id, "markdown_help_text")), parse_mode=ParseMode.HTML)
     update.effective_message.reply_text(
         "Try forwarding the following message to me, and you'll see!"
     )
@@ -330,7 +321,6 @@ def markdown_help(update: Update, _):
         "[URL](example.com) [button](buttonurl:github.com) "
         "[button2](buttonurl://google.com:same)"
     )
-
 
 def get_readable_time(seconds: int) -> str:
     count = 0
@@ -359,18 +349,13 @@ def get_readable_time(seconds: int) -> str:
 
     return ping_time
 
-
 stats_str = '''
 '''
-
-
 @keicmd(command='stats', can_disable=False)
 @sudo_plus
 def stats(update, context):
-    db_size = SESSION.execute(
-        "SELECT pg_size_pretty(pg_database_size(current_database()))").scalar_one_or_none()
-    uptime = datetime.datetime.fromtimestamp(
-        boot_time()).strftime("%Y-%m-%d %H:%M:%S")
+    db_size = SESSION.execute("SELECT pg_size_pretty(pg_database_size(current_database()))").scalar_one_or_none()
+    uptime = datetime.datetime.fromtimestamp(boot_time()).strftime("%Y-%m-%d %H:%M:%S")
     botuptime = get_readable_time((time.time() - StartTime))
     status = "*╒═══「 System statistics: 」*\n\n"
     status += "*• System Start time:* " + str(uptime) + "\n"
@@ -392,38 +377,28 @@ def stats(update, context):
     status += "*• Uptime:* " + str(botuptime) + "\n"
     status += "*• Database size:* " + str(db_size) + "\n"
     kb = [
-        [
-            InlineKeyboardButton('Channel', url='t.me/KeiUpdates'),
-            InlineKeyboardButton('Support', url='t.me/zerounions')
-        ]
+          [
+           InlineKeyboardButton('Channel', url='t.me/KeiUpdates'),
+           InlineKeyboardButton('Support', url='t.me/zerounions')
+          ]
     ]
     repo = git.Repo(search_parent_directories=True)
     sha = repo.head.object.hexsha
     status += f"*• Commit*: `{sha[0:9]}`\n"
     try:
-        update.effective_message.reply_text(
-            status +
-            "\n*Bot statistics*:\n" +
-            "\n".join(
-                [
-                    mod.__stats__() for mod in STATS]) +
+        update.effective_message.reply_text(status +
+            "\n*Bot statistics*:\n"
+            + "\n".join([mod.__stats__() for mod in STATS]) +
             "\n\n[⍙ GitHub](https://github.com/Ryomen-Sukuna/Kei)\n\n" +
             "╘══「 by [ZERO](github.com/Ryomen-Sukuna)」\n",
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=InlineKeyboardMarkup(kb),
-            disable_web_page_preview=True)
+        parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(kb), disable_web_page_preview=True)
     except BaseException:
         update.effective_message.reply_text(
-            "\n*Bot statistics*:\n" +
-            "\n".join(
-                [
-                    mod.__stats__() for mod in STATS]) +
-            "\n\n⍙ [GitHub](https://github.com/Ryomen-Sukuna/Kei)\n\n" +
-            "╘══「 by [ZERO](github.com/Ryomen-Sukuna)」\n",
-            parse_mode=ParseMode.MARKDOWN,
-            reply_markup=InlineKeyboardMarkup(kb),
-            disable_web_page_preview=True)
-
+        "\n*Bot statistics*:\n"
+        + "\n".join([mod.__stats__() for mod in STATS]) +
+        "\n\n⍙ [GitHub](https://github.com/Ryomen-Sukuna/Kei)\n\n" +
+        "╘══「 by [ZERO](github.com/Ryomen-Sukuna)」\n",
+        parse_mode=ParseMode.MARKDOWN, reply_markup=InlineKeyboardMarkup(kb), disable_web_page_preview=True)
 
 @keicmd(command='ping')
 def ping(update: Update, _):
@@ -439,6 +414,7 @@ def ping(update: Update, _):
 
 def get_help(chat):
     return gs(chat, "misc_help")
+
 
 
 __mod_name__ = "Misc"

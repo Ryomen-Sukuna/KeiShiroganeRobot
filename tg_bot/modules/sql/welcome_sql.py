@@ -35,7 +35,7 @@ DEFAULT_WELCOME_MESSAGES = [
     "{first} just showed up. Hold my beer.",
     "Challenger approaching! {first} has appeared!",
     "It's a bird! It's a plane! Nevermind, it's just {first}.",
-    r"It's {first}! Praise the sun! \o/",
+    "It's {first}! Praise the sun! \o/",
     "Never gonna give {first} up. Never gonna let {first} down.",
     "Ha! {first} has joined! You activated my trap card!",
     "Hey! Listen! {first} has joined!",
@@ -85,8 +85,7 @@ DEFAULT_WELCOME_MESSAGES = [
     "Everyone stop what you’re doing, We are now in the presence of {first}.",
     "Hey {first}, Do you wanna know how I got these scars?",
     "Welcome {first}, drop your weapons and proceed to the spy scanner.",
-    # Corona memes lmao
-    "Stay safe {first}, Keep 3 meters social distances between your messages.",
+    "Stay safe {first}, Keep 3 meters social distances between your messages.",  # Corona memes lmao
     "You’re here now {first}, Resistance is futile",
     "{first} just arrived, the force is strong with this one.",
     "{first} just joined on president’s orders.",
@@ -129,8 +128,7 @@ DEFAULT_WELCOME_MESSAGES = [
     "Kaizoku ou ni...nvm wrong anime.",  # op
     "{first} just joined! Gear.....second!",  # Op
     "Omae wa mou....shindeiru",
-    "Hey {first}, the leaf village lotus blooms twice!",
-    # Naruto stuff begins from here
+    "Hey {first}, the leaf village lotus blooms twice!",  # Naruto stuff begins from here
     "{first} Joined! Omote renge!",
     "{first} joined!, Gate of Opening...open!",
     "{first} joined!, Gate of Healing...open!",
@@ -145,8 +143,7 @@ DEFAULT_WELCOME_MESSAGES = [
     "{first}, welcome to the hidden leaf village!",  # Naruto thingies end here
     "In the jungle you must wait...until the dice read five or eight.",  # Jumanji stuff
     "Dr.{first} Famed archeologist and international explorer,\nWelcome to Jumanji!\nJumanji's Fate is up to you now.",
-    # End of jumanji stuff
-    "{first}, this will not be an easy mission - monkeys slow the expedition.",
+    "{first}, this will not be an easy mission - monkeys slow the expedition.",  # End of jumanji stuff
 ]
 DEFAULT_GOODBYE_MESSAGES = [
     "{first} will be missed.",
@@ -210,8 +207,7 @@ DEFAULT_GOODBYE_MESSAGES = [
     "Go outside",
     "Always your head in the clouds",
 ]
-# Line 111 to 152 are references from
-# https://bindingofisaac.fandom.com/wiki/Fortune_Telling_Machine
+# Line 111 to 152 are references from https://bindingofisaac.fandom.com/wiki/Fortune_Telling_Machine
 
 
 class Welcome(BASE):
@@ -226,9 +222,7 @@ class Welcome(BASE):
     )
     welcome_type = Column(Integer, default=Types.TEXT.value)
 
-    custom_leave = Column(
-        UnicodeText,
-        default=random.choice(DEFAULT_GOODBYE_MESSAGES))
+    custom_leave = Column(UnicodeText, default=random.choice(DEFAULT_GOODBYE_MESSAGES))
     leave_type = Column(Integer, default=Types.TEXT.value)
 
     clean_welcome = Column(BigInteger)
@@ -344,8 +338,7 @@ def set_welcome_mutes(chat_id, welcomemutes):
 
 def set_human_checks(user_id, chat_id):
     with INSERTION_LOCK:
-        human_check = SESSION.query(
-            WelcomeMuteUsers).get((user_id, str(chat_id)))
+        human_check = SESSION.query(WelcomeMuteUsers).get((user_id, str(chat_id)))
         if not human_check:
             human_check = WelcomeMuteUsers(user_id, str(chat_id), True)
 
@@ -360,8 +353,7 @@ def set_human_checks(user_id, chat_id):
 
 def get_human_checks(user_id, chat_id):
     try:
-        human_check = SESSION.query(
-            WelcomeMuteUsers).get((user_id, str(chat_id)))
+        human_check = SESSION.query(WelcomeMuteUsers).get((user_id, str(chat_id)))
         if not human_check:
             return None
         human_check = human_check.human_check
