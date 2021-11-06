@@ -59,6 +59,7 @@ weebyfont = [
     "乙",
 ]
 
+
 @keicmd(command='weebify')
 def weebify(update: Update, context: CallbackContext):
     args = context.args
@@ -72,7 +73,9 @@ def weebify(update: Update, context: CallbackContext):
         string = "  ".join(args).lower()
 
     if not string:
-        message.reply_text("Usage is `/weebify <text>`", parse_mode=ParseMode.MARKDOWN)
+        message.reply_text(
+            "Usage is `/weebify <text>`",
+            parse_mode=ParseMode.MARKDOWN)
         return
 
     for normiecharacter in string:

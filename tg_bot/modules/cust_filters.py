@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 import re
 from html import escape
 
@@ -56,7 +57,7 @@ def list_handlers(update, context):
     user = update.effective_user
 
     conn = connected(context.bot, update, chat, user.id, need_admin=False)
-    if not conn is False:
+    if conn is not False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
         filter_list = "*Filter in {}:*\n"
@@ -72,9 +73,8 @@ def list_handlers(update, context):
     all_handlers = sql.get_chat_triggers(chat_id)
 
     if not all_handlers:
-        send_message(
-            update.effective_message, "No filters saved in {}!".format(chat_name)
-        )
+        send_message(update.effective_message,
+                     "No filters saved in {}!".format(chat_name))
         return
 
     for keyword in all_handlers:
@@ -109,7 +109,7 @@ def filters(update, context):
     )  # use python's maxsplit to separate Cmd, keyword, and reply_text
 
     conn = connected(context.bot, update, chat, user.id)
-    if not conn is False:
+    if conn is not False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
@@ -139,7 +139,8 @@ def filters(update, context):
         extracted = split_quotes(args[1])
         if len(extracted) < 1:
             return
-        # set trigger -> lower, so as to avoid adding duplicate filters with different cases
+        # set trigger -> lower, so as to avoid adding duplicate filters with
+        # different cases
         keyword = extracted[0].lower()
 
     # Add the filter
@@ -211,7 +212,14 @@ def filters(update, context):
         send_message(update.effective_message, "Invalid filter!")
         return
 
-    add = addnew_filter(update, chat_id, keyword, text, file_type, file_id, buttons)
+    add = addnew_filter(
+        update,
+        chat_id,
+        keyword,
+        text,
+        file_type,
+        file_id,
+        buttons)
     # This is an old method
     # sql.add_filter(chat_id, keyword, content, is_sticker, is_document, is_image, is_audio, is_voice, is_video, buttons)
 
@@ -234,7 +242,7 @@ def stop_filter(update, context):
     args = update.effective_message.text.split(None, 1)
 
     conn = connected(context.bot, update, chat, user.id)
-    if not conn is False:
+    if conn is not False:
         chat_id = conn
         chat_name = dispatcher.bot.getChat(conn).title
     else:
@@ -268,6 +276,7 @@ def stop_filter(update, context):
         update.effective_message,
         "That's not a filter - Click: /filters to get currently active filters.",
     )
+
 
 @keimsg((CustomFilters.has_text & ~Filters.update.edited_message))
 def reply_filter(update, context):
@@ -358,7 +367,8 @@ def reply_filter(update, context):
                                     reply_markup=keyboard,
                                 )
                             except BadRequest as excp:
-                                log.exception("Error in filters: " + excp.message)
+                                log.exception(
+                                    "Error in filters: " + excp.message)
                                 send_message(
                                     update.effective_message,
                                     get_exception(excp, filt, chat),
@@ -428,7 +438,8 @@ def reply_filter(update, context):
                                     "again...",
                                 )
                             except BadRequest as excp:
-                                log.exception("Error in filters: " + excp.message)
+                                log.exception(
+                                    "Error in filters: " + excp.message)
                                 pass
                         elif excp.message == "Reply message not found":
                             try:
@@ -440,7 +451,8 @@ def reply_filter(update, context):
                                     reply_markup=keyboard,
                                 )
                             except BadRequest as excp:
-                                log.exception("Error in filters: " + excp.message)
+                                log.exception(
+                                    "Error in filters: " + excp.message)
                                 pass
                         else:
                             try:
@@ -449,11 +461,12 @@ def reply_filter(update, context):
                                     "This message couldn't be sent as it's incorrectly formatted.",
                                 )
                             except BadRequest as excp:
-                                log.exception("Error in filters: " + excp.message)
+                                log.exception(
+                                    "Error in filters: " + excp.message)
                                 pass
                             log.warning(
-                                "Message %s could not be parsed", str(filt.reply)
-                            )
+                                "Message %s could not be parsed", str(
+                                    filt.reply))
                             log.exception(
                                 "Could not parse filter %s in chat %s",
                                 str(filt.keyword),
@@ -461,13 +474,15 @@ def reply_filter(update, context):
                             )
 
                 else:
-                    # LEGACY - all new filters will have has_markdown set to True.
+                    # LEGACY - all new filters will have has_markdown set to
+                    # True.
                     try:
                         send_message(update.effective_message, filt.reply)
                     except BadRequest as excp:
                         log.exception("Error in filters: " + excp.message)
                         pass
                 break
+
 
 @keicmd(command="removeallfilters", filters=Filters.chat_type.groups)
 def rmall_filters(update, context):
@@ -494,6 +509,7 @@ def rmall_filters(update, context):
             reply_markup=buttons,
             parse_mode=ParseMode.MARKDOWN,
         )
+
 
 @keicallback(pattern=r"filters_.*")
 def rmall_callback(update, context):
@@ -543,8 +559,9 @@ def get_exception(excp, filt, chat):
     else:
         log.warning("Message %s could not be parsed", str(filt.reply))
         log.exception(
-            "Could not parse filter %s in chat %s", str(filt.keyword), str(chat.id)
-        )
+            "Could not parse filter %s in chat %s", str(
+                filt.keyword), str(
+                chat.id))
         return "This data could not be sent because it is incorrectly formatted."
 
 
@@ -561,7 +578,8 @@ def addnew_filter(update, chat_id, keyword, text, file_type, file_id, buttons):
 
 
 def __stats__():
-    return "• {} filters, across {} chats.".format(sql.num_filters(), sql.num_chats())
+    return "• {} filters, across {} chats.".format(
+        sql.num_filters(), sql.num_chats())
 
 
 def __import_data__(chat_id, data):
@@ -579,9 +597,9 @@ def __chat_settings__(chat_id, user_id):
     cust_filters = sql.get_chat_triggers(chat_id)
     return "There are `{}` custom filters here.".format(len(cust_filters))
 
-from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "cust_filters_help")
+
 
 __mod_name__ = "Filters"

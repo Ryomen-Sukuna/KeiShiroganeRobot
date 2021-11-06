@@ -50,12 +50,12 @@ def generate_time(to_find: str, findtype: List[str]) -> str:
             f"<b>Day:</b> <code>{current_day}</code>\n"
             f"<b>Current Time:</b> <code>{current_time}</code>\n"
             f"<b>Current Date:</b> <code>{current_date}</code>\n"
-            '<b>Timezones:</b> <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">List here</a>'
-        )
-    except:
+            '<b>Timezones:</b> <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">List here</a>')
+    except BaseException:
         result = None
 
     return result
+
 
 @keicmd(command='time')
 def gettime(update: Update, context: CallbackContext):
@@ -63,8 +63,9 @@ def gettime(update: Update, context: CallbackContext):
 
     try:
         query = message.text.strip().split(" ", 1)[1]
-    except:
-        message.reply_text("Provide a country name/abbreviation/timezone to find.")
+    except BaseException:
+        message.reply_text(
+            "Provide a country name/abbreviation/timezone to find.")
         return
     send_message = message.reply_text(
         f"Finding timezone info for <b>{query}</b>", parse_mode=ParseMode.HTML
@@ -88,5 +89,6 @@ def gettime(update: Update, context: CallbackContext):
     send_message.edit_text(
         result, parse_mode=ParseMode.HTML, disable_web_page_preview=True
     )
+
 
 __mod_name__ = "Time"

@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 import html
 from typing import List
 
@@ -9,6 +10,7 @@ import tg_bot.modules.sql.userinfo_sql as sql
 from tg_bot import dispatcher, SUDO_USERS, DEV_USERS
 from tg_bot.modules.helper_funcs.extraction import extract_user
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @keicmd(command='me', pass_args=True)
 def about_me(update: Update, context: CallbackContext):
@@ -47,7 +49,8 @@ def set_about_me(update: Update, context: CallbackContext):
     if message.reply_to_message:
         repl_message = message.reply_to_message
         repl_user_id = repl_message.from_user.id
-        if repl_user_id == bot.id and (user_id in SUDO_USERS or user_id in DEV_USERS):
+        if repl_user_id == bot.id and (
+                user_id in SUDO_USERS or user_id in DEV_USERS):
             user_id = repl_user_id
 
     text = message.text
@@ -66,6 +69,7 @@ def set_about_me(update: Update, context: CallbackContext):
                     MAX_MESSAGE_LENGTH // 4, len(info[1])
                 )
             )
+
 
 @keicmd(command='bio', pass_args=True)
 def about_bio(update: Update, context: CallbackContext):
@@ -122,8 +126,8 @@ def about_bio(update: Update, context: CallbackContext):
             if len(bio[1]) < MAX_MESSAGE_LENGTH // 4:
                 sql.set_user_bio(user_id, bio[1])
                 message.reply_text(
-                    "Updated {}'s bio!".format(repl_message.from_user.first_name)
-                )
+                    "Updated {}'s bio!".format(
+                        repl_message.from_user.first_name))
             else:
                 message.reply_text(
                     "A bio needs to be under {} characters! You tried to set {}.".format(
@@ -132,6 +136,7 @@ def about_bio(update: Update, context: CallbackContext):
                 )
     else:
         message.reply_text("Reply to someone's message to set their bio!")
+
 
 @keicmd(command='setbio')
 def set_about_bio(update: Update, context: CallbackContext):
@@ -157,20 +162,20 @@ def set_about_bio(update: Update, context: CallbackContext):
             return
 
         if user_id == bot.id and sender_id not in DEV_USERS:
-            message.reply_text("Erm... yeah, I only trust Eagle Union to set my bio.")
+            message.reply_text(
+                "Erm... yeah, I only trust Eagle Union to set my bio.")
             return
 
         text = message.text
-        bio = text.split(
-            None, 1
-        )  # use python's maxsplit to only remove the cmd, hence keeping newlines.
+        # use python's maxsplit to only remove the cmd, hence keeping newlines.
+        bio = text.split(None, 1)
 
         if len(bio) == 2:
             if len(bio[1]) < MAX_MESSAGE_LENGTH // 4:
                 sql.set_user_bio(user_id, bio[1])
                 message.reply_text(
-                    "Updated {}'s bio!".format(repl_message.from_user.first_name)
-                )
+                    "Updated {}'s bio!".format(
+                        repl_message.from_user.first_name))
             else:
                 message.reply_text(
                     "Bio needs to be under {} characters! You tried to set {}.".format(
@@ -193,8 +198,6 @@ def __user_info__(user_id):
     else:
         return "\n"
 
-
-from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "userinfo_help")

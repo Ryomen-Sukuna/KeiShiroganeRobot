@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 import html
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot import dispatcher, SUDO_USERS
@@ -10,6 +11,7 @@ from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, Upda
 from telegram.utils.helpers import mention_html
 from telegram.error import BadRequest
 from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
+
 
 @keicmd(command='approve', filters=Filters.chat_type.groups)
 @loggable
@@ -54,6 +56,7 @@ def approve(update, context):
 
     return log_message
 
+
 @keicmd(command='unapprove', filters=Filters.chat_type.groups)
 @loggable
 @user_admin
@@ -89,6 +92,7 @@ def disapprove(update, context):
         f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}")
 
     return log_message
+
 
 @keicmd(command='approved', filters=Filters.chat_type.groups)
 @user_admin
@@ -157,6 +161,7 @@ def unapproveall(update: Update, context: CallbackContext):
             parse_mode=ParseMode.MARKDOWN,
         )
 
+
 @keicallback(pattern=r"unapproveall_.*")
 def unapproveall_btn(update: Update, context: CallbackContext):
     query = update.callback_query
@@ -187,9 +192,9 @@ def unapproveall_btn(update: Update, context: CallbackContext):
         if member.status == "member":
             query.answer("You need to be admin to do this.")
 
-from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "approve_help")
+
 
 __mod_name__ = "Approvals"

@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 import html
 import re
 from typing import Optional, List
@@ -47,7 +48,9 @@ from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 
 FLOOD_GROUP = -5
 
-@keimsg((Filters.all & ~Filters.status_update & Filters.chat_type.groups), group=FLOOD_GROUP)
+
+@keimsg((Filters.all & ~Filters.status_update &
+         Filters.chat_type.groups), group=FLOOD_GROUP)
 @connection_status
 @loggable
 def check_flood(update, context) -> str:
@@ -87,8 +90,8 @@ def check_flood(update, context) -> str:
             tag = "KICKED"
         elif getmode == 3:
             context.bot.restrict_chat_member(
-                chat.id, user.id, permissions=ChatPermissions(can_send_messages=False)
-            )
+                chat.id, user.id, permissions=ChatPermissions(
+                    can_send_messages=False))
             execstrings = "Muted"
             tag = "MUTED"
         elif getmode == 4:
@@ -106,18 +109,17 @@ def check_flood(update, context) -> str:
             )
             execstrings = "Muted for {}".format(getvalue)
             tag = "TMUTE"
-        send_message(
-            update.effective_message, "Beep Boop! Boop Beep!\n{}!".format(execstrings)
-        )
+        send_message(update.effective_message,
+                     "Beep Boop! Boop Beep!\n{}!".format(execstrings))
 
         return (
             "<b>{}:</b>"
             "\n#{}"
             "\n<b>User:</b> {}"
             "\nFlooded the group.".format(
-                tag, html.escape(chat.title), mention_html(user.id, user.first_name)
-            )
-        )
+                tag, html.escape(
+                    chat.title), mention_html(
+                    user.id, user.first_name)))
 
     except BadRequest:
         msg.reply_text(
@@ -159,8 +161,9 @@ def flood_button(update: Update, context: CallbackContext):
                 f"Unmuted by {mention_html(user.id, user.first_name)}.",
                 parse_mode="HTML",
             )
-        except:
+        except BaseException:
             pass
+
 
 @keicmd(command='setflood', pass_args=True, filters=Filters.chat_type.groups)
 @connection_status
@@ -213,9 +216,10 @@ def set_flood(update, context) -> str:
                     "\n#SETFLOOD"
                     "\n<b>Admin:</b> {}"
                     "\nDisable antiflood.".format(
-                        html.escape(chat_name), mention_html(user.id, user.first_name)
-                    )
-                )
+                        html.escape(chat_name),
+                        mention_html(
+                            user.id,
+                            user.first_name)))
 
             elif amount <= 3:
                 send_message(
@@ -234,8 +238,7 @@ def set_flood(update, context) -> str:
                     )
                 else:
                     text = message.reply_text(
-                        "Successfully updated anti-flood limit to {}!".format(amount)
-                    )
+                        "Successfully updated anti-flood limit to {}!".format(amount))
                 return (
                     "<b>{}:</b>"
                     "\n#SETFLOOD"
@@ -248,12 +251,11 @@ def set_flood(update, context) -> str:
                 )
 
         else:
-            message.reply_text("Invalid argument please use a number, 'off' or 'no'")
+            message.reply_text(
+                "Invalid argument please use a number, 'off' or 'no'")
     else:
         message.reply_text(
-            (
-                "Use `/setflood number` to enable anti-flood.\nOr use `/setflood off` to disable antiflood!."
-            ),
+            ("Use `/setflood number` to enable anti-flood.\nOr use `/setflood off` to disable antiflood!."),
             parse_mode="markdown",
         )
     return ""
@@ -292,9 +294,7 @@ def flood(update, context):
         if conn:
             text = msg.reply_text(
                 "I'm currently restricting members after {} consecutive messages in {}.".format(
-                    limit, chat_name
-                )
-            )
+                    limit, chat_name))
         else:
             text = msg.reply_text(
                 "I'm currently restricting members after {} consecutive messages.".format(
@@ -302,7 +302,9 @@ def flood(update, context):
                 )
             )
 
-@keicmd(command="setfloodmode", pass_args=True, filters=Filters.chat_type.groups)
+
+@keicmd(command="setfloodmode", pass_args=True,
+        filters=Filters.chat_type.groups)
 @user_admin
 def set_flood_mode(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
@@ -340,7 +342,10 @@ def set_flood_mode(update, context):
             if len(args) == 1:
                 teks = """It looks like you tried to set time value for antiflood but you didn't specified time; Try, `/setfloodmode tban <timevalue>`.
 Examples of time value: 4m = 4 minutes, 3h = 3 hours, 6d = 6 days, 5w = 5 weeks."""
-                send_message(update.effective_message, teks, parse_mode="markdown")
+                send_message(
+                    update.effective_message,
+                    teks,
+                    parse_mode="markdown")
                 return
             settypeflood = "tban for {}".format(args[1])
             sql.set_flood_strength(chat_id, 4, str(args[1]))
@@ -351,21 +356,21 @@ Examples of time value: 4m = 4 minutes, 3h = 3 hours, 6d = 6 days, 5w = 5 weeks.
                     """It looks like you tried to set time value for antiflood but you didn't specified time; Try, `/setfloodmode tmute <timevalue>`.
 Examples of time value: 4m = 4 minutes, 3h = 3 hours, 6d = 6 days, 5w = 5 weeks.""",
                 )
-                send_message(update.effective_message, teks, parse_mode="markdown")
+                send_message(
+                    update.effective_message,
+                    teks,
+                    parse_mode="markdown")
                 return
             settypeflood = "tmute for {}".format(args[1])
             sql.set_flood_strength(chat_id, 5, str(args[1]))
         else:
-            send_message(
-                update.effective_message, "I only understand ban/kick/mute/tban/tmute!"
-            )
+            send_message(update.effective_message,
+                         "I only understand ban/kick/mute/tban/tmute!")
             return
         if conn:
             text = msg.reply_text(
                 "Exceeding consecutive flood limit will result in {} in {}!".format(
-                    settypeflood, chat_name
-                )
-            )
+                    settypeflood, chat_name))
         else:
             text = msg.reply_text(
                 "Exceeding consecutive flood limit will result in {}!".format(
@@ -396,9 +401,7 @@ Examples of time value: 4m = 4 minutes, 3h = 3 hours, 6d = 6 days, 5w = 5 weeks.
         if conn:
             text = msg.reply_text(
                 "Sending more messages than flood limit will result in {} in {}.".format(
-                    settypeflood, chat_name
-                )
-            )
+                    settypeflood, chat_name))
         else:
             text = msg.reply_text(
                 "Sending more message than flood limit will result in {}.".format(
@@ -419,9 +422,9 @@ def __chat_settings__(chat_id, user_id):
     else:
         return "Antiflood has been set to`{}`.".format(limit)
 
-from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "antiflood_help")
+
 
 __mod_name__ = "Anti-Flood"

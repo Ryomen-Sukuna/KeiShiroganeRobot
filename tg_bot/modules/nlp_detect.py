@@ -3,7 +3,9 @@ from tg_bot import kp, log, KInit
 from pyrogram.handlers import MessageHandler
 from pyrogram.types import ChatPermissions, Message
 from pyrogram.errors import BadRequest
-import aiohttp, json, asyncio
+import aiohttp
+import json
+import asyncio
 import tg_bot.modules.sql.nlp_detect_sql as sql
 from tg_bot.modules.language import gs
 
@@ -29,6 +31,7 @@ async def admin_check(message: Message) -> bool:
 
 __mod_name__ = "NLP"
 
+
 def get_help(chat):
     return gs(chat, "nlp_help")
 
@@ -38,7 +41,7 @@ async def nlp_mode(client, message):
     is_admin = await admin_check(message)
     args = message.text.split(None, 1)
 
-    if is_admin == True:
+    if is_admin:
         if len(args) > 1:
             if args[1].lower() in ["on", "yes"]:
                 sql.enable_nlp(message.chat.id)
@@ -76,26 +79,26 @@ async def detect_spam(client, message):
 
     from tg_bot import SPB_MODE, CF_API_KEY
     chat_state = sql.does_chat_nlp(chat.id)
-    if SPB_MODE and CF_API_KEY and chat_state == True:
+    if SPB_MODE and CF_API_KEY and chat_state:
         try:
             payload = {'access_key': CF_API_KEY, 'input': msg}
             data = await session.post(url, data=payload)
             res_json = await data.json()
             if res_json['success']:
                 spam_check = res_json['results']['spam_prediction']['is_spam']
-                if spam_check == True:
+                if spam_check:
                     pred = res_json['results']['spam_prediction']['prediction']
                     try:
                         await kp.restrict_chat_member(chat.id, user.id, ChatPermissions(can_send_messages=False))
                         await message.reply_text(
-                        f"**⚠ SPAM DETECTED!**\nSpam Prediction: `{pred}`\nUser: `{user.id}` was muted.",
-                        parse_mode="md",
-                    )
+                            f"**⚠ SPAM DETECTED!**\nSpam Prediction: `{pred}`\nUser: `{user.id}` was muted.",
+                            parse_mode="md",
+                        )
                     except BadRequest:
                         await message.reply_text(
-                        f"**⚠ SPAM DETECTED!**\nSpam Prediction: `{pred}`\nUser: `{user.id}`\nUser could not be restricted due to insufficient admin perms.",
-                        parse_mode="md",
-                    )
+                            f"**⚠ SPAM DETECTED!**\nSpam Prediction: `{pred}`\nUser: `{user.id}`\nUser could not be restricted due to insufficient admin perms.",
+                            parse_mode="md",
+                        )
 
             elif res_json['error']['error_code'] == 21:
                 reduced_msg = msg[0:170]

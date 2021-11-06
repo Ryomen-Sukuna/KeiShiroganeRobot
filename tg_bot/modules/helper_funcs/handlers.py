@@ -11,7 +11,7 @@ from pyrate_limiter import (
 
 try:
     from tg_bot import CUSTOM_CMD
-except:
+except BaseException:
     CUSTOM_CMD = False
 
 if CUSTOM_CMD:
@@ -29,7 +29,9 @@ class AntiSpam:
             + (SUPPORT_USERS or [])
             + (SARDEGNA_USERS or [])
         )
-        # Values are HIGHLY experimental, its recommended you pay attention to our commits as we will be adjusting the values over time with what suits best.
+        # Values are HIGHLY experimental, its recommended you pay attention to
+        # our commits as we will be adjusting the values over time with what
+        # suits best.
         Duration.CUSTOM = 15  # Custom duration, 15 seconds
         self.sec_limit = RequestRate(6, Duration.CUSTOM)  # 6 / Per 15 Seconds
         self.min_limit = RequestRate(20, Duration.MINUTE)  # 20 / Per minute
@@ -72,7 +74,7 @@ class CustomCommandHandler(tg.CommandHandler):
 
             try:
                 user_id = update.effective_user.id
-            except:
+            except BaseException:
                 user_id = None
 
             if message.text and len(message.text) > 1:

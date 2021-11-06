@@ -8,6 +8,7 @@ from tg_bot.modules.helper_funcs.decorators import keicmd
 
 # Wallpapers module by @TheRealPhoenix using wall.alphacoders.com
 
+
 @keicmd(command='wall')
 def wall(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
@@ -26,7 +27,8 @@ def wall(update: Update, context: CallbackContext):
             f"https://wall.alphacoders.com/api2.0/get.php?auth={WALL_API}&method=search&term={term}"
         ).json()
         if not json_rep.get("success"):
-            msg.reply_text(f"An error occurred! Report this @YorkTownEagleUnion")
+            msg.reply_text(
+                f"An error occurred! Report this @YorkTownEagleUnion")
         else:
             wallpapers = json_rep.get("wallpapers")
             if not wallpapers:
