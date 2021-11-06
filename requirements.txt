@@ -1,4 +1,4 @@
-aiohttp>=2.2.5
+aiohttp==3.8.0
 alphabet_detector
 beautifulsoup4
 bleach
@@ -16,10 +16,10 @@ intellivoid-SPB
 markdown2
 multicolorcaptcha
 nltk
-pillow>=4.2.0
+pillow==8.4.0
 psutil
 psycopg2-binary
-pyYAML>=5.1.2
+pyYAML==6.0
 pyrate-limiter
 pyrogram
 python-telegram-bot==13.5
