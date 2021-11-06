@@ -28,7 +28,7 @@ rich
 spamwatch
 speedtest-cli
 spongemock
-sqlalchemy==1.4.11
+sqlalchemy==1.4.26
 telethon==1.16.4
 tgcrypto
 tswift
