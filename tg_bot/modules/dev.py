@@ -11,6 +11,7 @@ from statistics import mean
 from time import monotonic as time
 from telethon import events
 
+
 @dev_plus
 def leave(update: Update, context: CallbackContext):
     bot = context.bot
@@ -21,7 +22,8 @@ def leave(update: Update, context: CallbackContext):
             bot.leave_chat(int(chat_id))
             update.effective_message.reply_text("Left chat.")
         except TelegramError:
-            update.effective_message.reply_text("Failed to leave chat for some reason.")
+            update.effective_message.reply_text(
+                "Failed to leave chat for some reason.")
     else:
         update.effective_message.reply_text("Send a valid chat ID")
 
@@ -44,6 +46,7 @@ def gitpull(update: Update, context: CallbackContext):
     os.system("restart.bat")
     os.execv("start.bat", sys.argv)
 
+
 @dev_plus
 def restart(update: Update, context: CallbackContext):
     update.effective_message.reply_text(
@@ -52,6 +55,7 @@ def restart(update: Update, context: CallbackContext):
 
     os.system("restart.bat")
     os.execv("start.bat", sys.argv)
+
 
 class Store:
     def __init__(self, func):
@@ -77,6 +81,7 @@ class Store:
                 self.calls[-1] += 1
         await self.func(event)
 
+
 async def nothing(event):
     pass
 
@@ -94,7 +99,7 @@ telethn.add_event_handler(callback_queries, events.CallbackQuery())
 async def getstats(event):
     await event.reply(
         f"**__KEI EVENT STATISTICS__**\n**Average messages:** {messages.average()}/s\n**Average Callback Queries:** {callback_queries.average()}/s\n**Average Inline Queries:** {inline_queries.average()}/s", parse_mode='md'
-        )
+    )
 
 
 LEAVE_HANDLER = CommandHandler("leave", leave, run_async=True)
