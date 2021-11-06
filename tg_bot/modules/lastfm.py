@@ -9,6 +9,7 @@ from tg_bot import dispatcher, LASTFM_API_KEY
 from tg_bot.modules.helper_funcs.decorators import keicmd
 import tg_bot.modules.sql.last_fm_sql as sql
 
+
 @keicmd(command='setuser')
 def set_user(update: Update, context: CallbackContext):
     args = context.args
@@ -23,6 +24,7 @@ def set_user(update: Update, context: CallbackContext):
             "That's not how this works...\nRun /setuser followed by your username!"
         )
 
+
 @keicmd(command='clearuser')
 def clear_user(update: Update, _):
     user = update.effective_user.id
@@ -30,6 +32,7 @@ def clear_user(update: Update, _):
     update.effective_message.reply_text(
         "Last.fm username successfully cleared from my database!"
     )
+
 
 @keicmd(command='lastfm')
 def last_fm(update: Update, _):
@@ -58,7 +61,8 @@ def last_fm(update: Update, _):
         return
     if first_track.get("@attr"):
         # Ensures the track is now playing
-        image = first_track.get("image")[3].get("#text")  # Grab URL of 300x300 image
+        image = first_track.get("image")[3].get(
+            "#text")  # Grab URL of 300x300 image
         artist = first_track.get("artist").get("name")
         song = first_track.get("name")
         loved = int(first_track.get("loved"))
@@ -71,9 +75,8 @@ def last_fm(update: Update, _):
             rep += f"<a href='{image}'>\u200c</a>"
     else:
         tracks = res.json().get("recenttracks").get("track")
-        track_dict = {
-            tracks[i].get("artist").get("name"): tracks[i].get("name") for i in range(3)
-        }
+        track_dict = {tracks[i].get("artist").get(
+            "name"): tracks[i].get("name") for i in range(3)}
         rep = f"{user} was listening to:\n"
         for artist, song in track_dict.items():
             rep += f"🎧  <code>{artist} - {song}</code>\n"
@@ -86,10 +89,9 @@ def last_fm(update: Update, _):
         )
         scrobbles = last_user.get("playcount")
         rep += f"\n(<code>{scrobbles}</code> scrobbles so far)"
-        
-    buttons = InlineKeyboardMarkup(
-        [[InlineKeyboardButton("📺 Youtube", url=f'https://www.youtube.com/results?search_query={artist}+-+{song}')]]
-        )
+
+    buttons = InlineKeyboardMarkup([[InlineKeyboardButton(
+        "📺 Youtube", url=f'https://www.youtube.com/results?search_query={artist}+-+{song}')]])
     msg.reply_text(rep, reply_markup=buttons, parse_mode=ParseMode.HTML)
 
 

@@ -5,6 +5,7 @@ from telegram import ParseMode, Update
 from telegram.ext import Filters, CallbackContext
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
+
 @keicmd(command='sh', filters=Filters.user(SYS_ADMIN))
 def shell(update: Update, context: CallbackContext):
     message = update.effective_message

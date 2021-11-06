@@ -5,8 +5,6 @@ from sqlalchemy import Column, UnicodeText, Integer, String, Boolean
 from tg_bot.modules.sql import BASE, SESSION
 
 
-
-
 class NLPSettings(BASE):
     __tablename__ = "chat_nlp_settings"
     chat_id = Column(String(14), primary_key=True)
@@ -55,13 +53,11 @@ def does_chat_nlp(chat_id):
     return str(chat_id) not in NLPSTAT_LIST
 
 
-
 def __load_nlp_stat_list():
     global NLPSTAT_LIST
     try:
-        NLPSTAT_LIST = {
-            x.chat_id for x in SESSION.query(NLPSettings).all() if not x.setting
-        }
+        NLPSTAT_LIST = {x.chat_id for x in SESSION.query(
+            NLPSettings).all() if not x.setting}
     finally:
         SESSION.close()
 

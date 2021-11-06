@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 from typing import Optional
 
 import tg_bot.modules.sql.rules_sql as sql
@@ -45,8 +46,10 @@ def send_rules(update, chat_id, from_pm=False):
 
     if from_pm and rules:
         bot.send_message(
-            user.id, text, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
-        )
+            user.id,
+            text,
+            parse_mode=ParseMode.MARKDOWN,
+            disable_web_page_preview=True)
     elif from_pm:
         bot.send_message(
             user.id,
@@ -72,22 +75,27 @@ def send_rules(update, chat_id, from_pm=False):
             "This probably doesn't mean it's lawless though...!"
         )
 
+
 @keicmd(command='setrules', filters=Filters.chat_type.groups)
 @user_admin
 def set_rules(update: Update, context: CallbackContext):
     chat_id = update.effective_chat.id
     msg = update.effective_message  # type: Optional[Message]
     raw_text = msg.text
-    args = raw_text.split(None, 1)  # use python's maxsplit to separate cmd and args
+    # use python's maxsplit to separate cmd and args
+    args = raw_text.split(None, 1)
     if len(args) == 2:
         txt = args[1]
-        offset = len(txt) - len(raw_text)  # set correct offset relative to command
+        # set correct offset relative to command
+        offset = len(txt) - len(raw_text)
         markdown_rules = markdown_parser(
             txt, entities=msg.parse_entities(), offset=offset
         )
 
         sql.set_rules(chat_id, markdown_rules)
-        update.effective_message.reply_text("Successfully set rules for this group.")
+        update.effective_message.reply_text(
+            "Successfully set rules for this group.")
+
 
 @keicmd(command='clearrules', filters=Filters.chat_type.groups)
 @user_admin
@@ -114,7 +122,6 @@ def __migrate__(old_chat_id, new_chat_id):
 def __chat_settings__(chat_id, user_id):
     return f"This chat has had it's rules set: `{bool(sql.get_rules(chat_id))}`"
 
-from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "rules_help")

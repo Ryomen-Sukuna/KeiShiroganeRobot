@@ -94,7 +94,11 @@ def log_user(update: Update, context: CallbackContext):
     chat = update.effective_chat
     msg = update.effective_message
 
-    sql.update_user(msg.from_user.id, msg.from_user.username, chat.id, chat.title)
+    sql.update_user(
+        msg.from_user.id,
+        msg.from_user.username,
+        chat.id,
+        chat.title)
 
     if msg.reply_to_message:
         sql.update_user(
@@ -122,7 +126,7 @@ def chats(update: Update, context: CallbackContext):
                 P, chat.chat_name, chat.chat_id, chat_members
             )
             P += 1
-        except:
+        except BaseException:
             pass
 
     with BytesIO(str.encode(chatfile)) as output:
@@ -136,7 +140,8 @@ def chats(update: Update, context: CallbackContext):
 
 def chat_checker(update: Update, context: CallbackContext):
     bot = context.bot
-    if update.effective_message.chat.get_member(bot.id).can_send_messages is False:
+    if update.effective_message.chat.get_member(
+            bot.id).can_send_messages is False:
         bot.leaveChat(update.effective_message.chat.id)
 
 

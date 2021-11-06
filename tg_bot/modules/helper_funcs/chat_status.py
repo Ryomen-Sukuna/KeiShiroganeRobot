@@ -1,3 +1,4 @@
+from tg_bot.modules import connection
 from functools import wraps
 
 from tg_bot import (
@@ -17,7 +18,10 @@ from telegram.ext import CallbackContext
 ADMIN_CACHE = TTLCache(maxsize=512, ttl=60 * 10)
 
 
-def is_whitelist_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
+def is_whitelist_plus(
+        chat: Chat,
+        user_id: int,
+        member: ChatMember = None) -> bool:
     return any(
         user_id in user
         for user in [
@@ -30,7 +34,10 @@ def is_whitelist_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bo
     )
 
 
-def is_support_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
+def is_support_plus(
+        chat: Chat,
+        user_id: int,
+        member: ChatMember = None) -> bool:
     return user_id in SUPPORT_USERS or user_id in SUDO_USERS or user_id in DEV_USERS
 
 
@@ -63,7 +70,10 @@ def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
             return user_id in admin_list
 
 
-def is_bot_admin(chat: Chat, bot_id: int, bot_member: ChatMember = None) -> bool:
+def is_bot_admin(
+        chat: Chat,
+        bot_id: int,
+        bot_member: ChatMember = None) -> bool:
     if chat.type == "private" or chat.all_members_are_administrators:
         return True
 
@@ -77,7 +87,10 @@ def can_delete(chat: Chat, bot_id: int) -> bool:
     return chat.get_member(bot_id).can_delete_messages
 
 
-def is_user_ban_protected(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
+def is_user_ban_protected(
+        chat: Chat,
+        user_id: int,
+        member: ChatMember = None) -> bool:
     if (
         chat.type == "private"
         or user_id in SUDO_USERS
@@ -102,7 +115,11 @@ def is_user_in_chat(chat: Chat, user_id: int) -> bool:
 
 def dev_plus(func):
     @wraps(func)
-    def is_dev_plus_func(update: Update, context: CallbackContext, *args, **kwargs):
+    def is_dev_plus_func(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         user = update.effective_user
 
@@ -113,7 +130,7 @@ def dev_plus(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except BaseException:
                 pass
         else:
             update.effective_message.reply_text(
@@ -126,7 +143,11 @@ def dev_plus(func):
 
 def sudo_plus(func):
     @wraps(func)
-    def is_sudo_plus_func(update: Update, context: CallbackContext, *args, **kwargs):
+    def is_sudo_plus_func(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         user = update.effective_user
         chat = update.effective_chat
@@ -138,7 +159,7 @@ def sudo_plus(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except BaseException:
                 pass
         else:
             update.effective_message.reply_text(
@@ -150,7 +171,11 @@ def sudo_plus(func):
 
 def support_plus(func):
     @wraps(func)
-    def is_support_plus_func(update: Update, context: CallbackContext, *args, **kwargs):
+    def is_support_plus_func(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         user = update.effective_user
         chat = update.effective_chat
@@ -160,7 +185,7 @@ def support_plus(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except BaseException:
                 pass
 
     return is_support_plus_func
@@ -199,7 +224,7 @@ def user_admin(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except BaseException:
                 pass
         else:
             update.effective_message.reply_text(
@@ -225,7 +250,7 @@ def user_admin_no_reply(func):
         elif DEL_CMDS and " " not in update.effective_message.text:
             try:
                 update.effective_message.delete()
-            except:
+            except BaseException:
                 pass
 
     return is_not_admin_no_reply
@@ -233,7 +258,11 @@ def user_admin_no_reply(func):
 
 def user_not_admin(func):
     @wraps(func)
-    def is_not_admin(update: Update, context: CallbackContext, *args, **kwargs):
+    def is_not_admin(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         user = update.effective_user
         chat = update.effective_chat
@@ -260,14 +289,19 @@ def bot_admin(func):
         if is_bot_admin(chat, bot.id):
             return func(update, context, *args, **kwargs)
         else:
-            update.effective_message.reply_text(not_admin, parse_mode=ParseMode.HTML)
+            update.effective_message.reply_text(
+                not_admin, parse_mode=ParseMode.HTML)
 
     return is_admin
 
 
 def bot_can_delete(func):
     @wraps(func)
-    def delete_rights(update: Update, context: CallbackContext, *args, **kwargs):
+    def delete_rights(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         chat = update.effective_chat
         update_chat_title = chat.title
@@ -281,7 +315,8 @@ def bot_can_delete(func):
         if can_delete(chat, bot.id):
             return func(update, context, *args, **kwargs)
         else:
-            update.effective_message.reply_text(cant_delete, parse_mode=ParseMode.HTML)
+            update.effective_message.reply_text(
+                cant_delete, parse_mode=ParseMode.HTML)
 
     return delete_rights
 
@@ -304,14 +339,19 @@ def can_pin(func):
         if chat.get_member(bot.id).can_pin_messages:
             return func(update, context, *args, **kwargs)
         else:
-            update.effective_message.reply_text(cant_pin, parse_mode=ParseMode.HTML)
+            update.effective_message.reply_text(
+                cant_pin, parse_mode=ParseMode.HTML)
 
     return pin_rights
 
 
 def can_promote(func):
     @wraps(func)
-    def promote_rights(update: Update, context: CallbackContext, *args, **kwargs):
+    def promote_rights(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         chat = update.effective_chat
         update_chat_title = chat.title
@@ -322,20 +362,24 @@ def can_promote(func):
         else:
             cant_promote = (
                 f"I can't promote/demote people in <b>{update_chat_title}</b>!\n"
-                f"Make sure I'm admin there and can appoint new admins."
-            )
+                f"Make sure I'm admin there and can appoint new admins.")
 
         if chat.get_member(bot.id).can_promote_members:
             return func(update, context, *args, **kwargs)
         else:
-            update.effective_message.reply_text(cant_promote, parse_mode=ParseMode.HTML)
+            update.effective_message.reply_text(
+                cant_promote, parse_mode=ParseMode.HTML)
 
     return promote_rights
 
 
 def can_restrict(func):
     @wraps(func)
-    def restrict_rights(update: Update, context: CallbackContext, *args, **kwargs):
+    def restrict_rights(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         chat = update.effective_chat
         update_chat_title = chat.title
@@ -358,7 +402,11 @@ def can_restrict(func):
 
 def user_can_ban(func):
     @wraps(func)
-    def user_is_banhammer(update: Update, context: CallbackContext, *args, **kwargs):
+    def user_is_banhammer(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         bot = context.bot
         user = update.effective_user.id
         member = update.effective_chat.get_member(user)
@@ -380,7 +428,11 @@ def user_can_ban(func):
 
 def connection_status(func):
     @wraps(func)
-    def connected_status(update: Update, context: CallbackContext, *args, **kwargs):
+    def connected_status(
+            update: Update,
+            context: CallbackContext,
+            *args,
+            **kwargs):
         conn = connected(
             context.bot,
             update,
@@ -404,6 +456,5 @@ def connection_status(func):
 
 
 # Workaround for circular import with connection.py
-from tg_bot.modules import connection
 
 connected = connection.connected

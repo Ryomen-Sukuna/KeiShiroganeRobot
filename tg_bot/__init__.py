@@ -1,6 +1,9 @@
+from tg_bot.modules.helper_funcs.handlers import CustomCommandHandler
+from tg_bot.modules.sql import SESSION
 import logging
 import os
-import sys, json
+import sys
+import json
 import time
 import spamwatch
 import telegram.ext as tg
@@ -15,15 +18,22 @@ from ptbcontrib.postgres_persistence import PostgresPersistence
 
 StartTime = time.time()
 
+
 def get_user_list(key):
     # Import here to evade a circular import
     from tg_bot.modules.sql import nation_sql
     royals = nation_sql.get_royals(key)
     return [a.user_id for a in royals]
 
+
 # enable logging
 FORMAT = "[ZERO] %(message)s"
-logging.basicConfig(handlers=[RichHandler()], level=logging.INFO, format=FORMAT, datefmt="[%X]")
+logging.basicConfig(
+    handlers=[
+        RichHandler()],
+    level=logging.INFO,
+    format=FORMAT,
+    datefmt="[%X]")
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 log = logging.getLogger("rich")
 
@@ -42,6 +52,7 @@ if sys.version_info[0] < 3 or sys.version_info[1] < 7:
 parser = ConfigParser()
 parser.read("config.ini")
 keiconfig = parser["keiconfig"]
+
 
 class KeiINIT:
     def __init__(self, parser):
@@ -74,11 +85,10 @@ class KeiINIT:
         self.TIME_API_KEY = self.parser.get('TIME_API_KEY', None)
         self.WALL_API = self.parser.get('WALL_API', None)
         self.LASTFM_API_KEY = self.parser.get('LASTFM_API_KEY', None)
-        self.CF_API_KEY =  self.parser.get("CF_API_KEY", None)
-        self.bot_id = 0 #placeholder
-        self.bot_name = "Kei" #placeholder
-        self.bot_username = "KeiRobot" #placeholder
-
+        self.CF_API_KEY = self.parser.get("CF_API_KEY", None)
+        self.bot_id = 0  # placeholder
+        self.bot_name = "Kei"  # placeholder
+        self.bot_username = "KeiRobot"  # placeholder
 
     def init_sw(self):
         if self.spamwatch_api is None:
@@ -88,7 +98,7 @@ class KeiINIT:
             try:
                 sw = spamwatch.Client(spamwatch_api)
                 return sw
-            except:
+            except BaseException:
                 sw = None
                 log.warning("Can't connect to SpamWatch!")
                 return sw
@@ -134,13 +144,28 @@ SPB_MODE = keiconfig.getboolean('SPB_MODE', False)
 # SpamWatch
 sw = KInit.init_sw()
 
-from tg_bot.modules.sql import SESSION
 
-updater = tg.Updater(TOKEN, workers=min(32, os.cpu_count() + 4), request_kwargs={"read_timeout": 10, "connect_timeout": 10}, persistence=PostgresPersistence(SESSION))
+updater = tg.Updater(
+    TOKEN,
+    workers=min(
+        32,
+        os.cpu_count() + 4),
+    request_kwargs={
+        "read_timeout": 10,
+        "connect_timeout": 10},
+    persistence=PostgresPersistence(SESSION))
 telethn = TelegramClient(MemorySession(), APP_ID, API_HASH)
 dispatcher = updater.dispatcher
 
-kp = Client(":memory:", api_id=APP_ID, api_hash=API_HASH, bot_token=TOKEN, workers=min(32, os.cpu_count() + 4))
+kp = Client(
+    ":memory:",
+    api_id=APP_ID,
+    api_hash=API_HASH,
+    bot_token=TOKEN,
+    workers=min(
+        32,
+        os.cpu_count() +
+        4))
 apps = [kp]
 
 
@@ -171,7 +196,6 @@ async def get_entity(client, entity):
     return entity, entity_client
 
 # Load at end to ensure all prev variables have been set
-from tg_bot.modules.helper_funcs.handlers import CustomCommandHandler
 
 if CUSTOM_CMD and len(CUSTOM_CMD) >= 1:
     tg.CommandHandler = CustomCommandHandler

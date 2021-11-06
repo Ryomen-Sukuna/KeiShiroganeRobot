@@ -24,7 +24,6 @@ def check_user(user_id: int, bot: Bot, chat: Chat) -> Optional[str]:
     if not user_id:
         return "You don't seem to be referring to a user or the ID specified is incorrect.."
 
-
     try:
         member = chat.get_member(user_id)
     except BadRequest as excp:
@@ -40,6 +39,7 @@ def check_user(user_id: int, bot: Bot, chat: Chat) -> Optional[str]:
         return "Can't. Find someone else to mute but not this one."
 
     return None
+
 
 @keicmd(command='mute')
 @connection_status
@@ -88,6 +88,7 @@ def mute(update: Update, context: CallbackContext) -> str:
 
     return ""
 
+
 @keicmd(command='unmute')
 @connection_status
 @bot_admin
@@ -111,15 +112,14 @@ def unmute(update: Update, context: CallbackContext) -> str:
     if member.status in ["kicked", "left"]:
         message.reply_text(
             "This user isn't even in the chat, unmuting them won't make them talk more than they "
-            "already do!"
-        )
+            "already do!")
 
     elif (
-            member.can_send_messages
-            and member.can_send_media_messages
-            and member.can_send_other_messages
-            and member.can_add_web_page_previews
-        ):
+        member.can_send_messages
+        and member.can_send_media_messages
+        and member.can_send_other_messages
+        and member.can_add_web_page_previews
+    ):
         message.reply_text("This user already has the right to speak.")
     else:
         chat_permissions = ChatPermissions(
@@ -145,9 +145,9 @@ def unmute(update: Update, context: CallbackContext) -> str:
             f"<b>{html.escape(chat.title)}:</b>\n"
             f"#UNMUTE\n"
             f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-            f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
-        )
+            f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}")
     return ""
+
 
 @keicmd(command=['tmute', 'tempmute'])
 @connection_status
@@ -171,7 +171,8 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
     member = chat.get_member(user_id)
 
     if not reason:
-        message.reply_text("You haven't specified a time to mute this user for!")
+        message.reply_text(
+            "You haven't specified a time to mute this user for!")
         return ""
 
     split_reason = reason.split(None, 1)
@@ -188,8 +189,7 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
         f"#TEMP MUTED\n"
         f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
         f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}\n"
-        f"<b>Time:</b> {time_val}"
-    )
+        f"<b>Time:</b> {time_val}")
     if reason:
         log += f"\n<b>Reason:</b> {reason}"
 
@@ -226,7 +226,9 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
 
     return ""
 
+
 def get_help(chat):
     return gs(chat, "muting_help")
+
 
 __mod_name__ = "Muting"

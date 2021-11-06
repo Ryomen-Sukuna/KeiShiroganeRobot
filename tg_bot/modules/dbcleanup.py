@@ -9,7 +9,10 @@ from telegram.error import BadRequest, Unauthorized
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 
 
-def get_invalid_chats(update: Update, context: CallbackContext, remove: bool = False):
+def get_invalid_chats(
+        update: Update,
+        context: CallbackContext,
+        remove: bool = False):
     bot = context.bot
     chat_id = update.effective_chat.id
     chats = user_sql.get_all_chats()
@@ -26,7 +29,7 @@ def get_invalid_chats(update: Update, context: CallbackContext, remove: bool = F
                     bot.editMessageText(
                         progress_bar, chat_id, progress_message.message_id
                     )
-                except:
+                except BaseException:
                     pass
             else:
                 progress_message = bot.sendMessage(chat_id, progress_bar)
@@ -39,12 +42,12 @@ def get_invalid_chats(update: Update, context: CallbackContext, remove: bool = F
         except (BadRequest, Unauthorized):
             kicked_chats += 1
             chat_list.append(cid)
-        except:
+        except BaseException:
             pass
 
     try:
         progress_message.delete()
-    except:
+    except BaseException:
         pass
 
     if remove:
@@ -55,7 +58,10 @@ def get_invalid_chats(update: Update, context: CallbackContext, remove: bool = F
     return kicked_chats
 
 
-def get_invalid_gban(update: Update, context: CallbackContext, remove: bool = False):
+def get_invalid_gban(
+        update: Update,
+        context: CallbackContext,
+        remove: bool = False):
     bot = context.bot
     banned = gban_sql.get_gban_list()
     ungbanned_users = 0
@@ -69,7 +75,7 @@ def get_invalid_gban(update: Update, context: CallbackContext, remove: bool = Fa
         except BadRequest:
             ungbanned_users += 1
             ungban_list.append(user_id)
-        except:
+        except BaseException:
             pass
 
     if remove:
@@ -93,7 +99,8 @@ def dbcleanup(update: Update, context: CallbackContext):
     reply = f"Total invalid chats - {invalid_chat_count}\n"
     reply += f"Total invalid gbanned users - {invalid_gban_count}"
 
-    buttons = [[InlineKeyboardButton("Cleanup DB", callback_data="db_cleanup")]]
+    buttons = [[InlineKeyboardButton(
+        "Cleanup DB", callback_data="db_cleanup")]]
 
     update.effective_message.reply_text(
         reply, reply_markup=InlineKeyboardMarkup(buttons)
@@ -132,7 +139,8 @@ def callback_button(update: Update, context: CallbackContext):
 
 
 DB_CLEANUP_HANDLER = CommandHandler("dbcleanup", dbcleanup, run_async=True)
-BUTTON_HANDLER = CallbackQueryHandler(callback_button, pattern="db_.*", run_async=True)
+BUTTON_HANDLER = CallbackQueryHandler(
+    callback_button, pattern="db_.*", run_async=True)
 
 dispatcher.add_handler(DB_CLEANUP_HANDLER)
 dispatcher.add_handler(BUTTON_HANDLER)

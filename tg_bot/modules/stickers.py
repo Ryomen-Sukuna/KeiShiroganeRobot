@@ -50,10 +50,10 @@ def getsticker(update: Update, context: CallbackContext):
         filename = "animated_sticker.tgs.rename_me" if is_animated else "sticker.png"
         # Send the document
         bot.send_document(chat_id,
-            document=sticker_data,
-            filename=filename,
-            disable_content_type_detection=True
-        )
+                          document=sticker_data,
+                          filename=filename,
+                          disable_content_type_detection=True
+                          )
     else:
         update.effective_message.reply_text(
             "Please reply to a sticker for me to upload its PNG."
@@ -77,7 +77,8 @@ def kang(update: Update, context: CallbackContext):
 
     # first check if we're syntactically correct.
     if not msg.reply_to_message and not args:
-        # this is quite a bit more difficult, we need to get all their packs managed by us.
+        # this is quite a bit more difficult, we need to get all their packs
+        # managed by us.
         packs = ""
         # start with finding non-animated packs.
         packnum = 0
@@ -105,7 +106,9 @@ def kang(update: Update, context: CallbackContext):
                     last_set = True
                 else:
                     print(e)
-                    break # something went wrong, leave the loop and send what we have.
+                    # something went wrong, leave the loop and send what we
+                    # have.
+                    break
 
             # If we're done checking bot animated and non-animated packs
             # exit the loop and send our pack message.
@@ -157,7 +160,7 @@ def kang(update: Update, context: CallbackContext):
         sticker_data = kang_file.download(out=BytesIO())
         # move to the front of the buffer.
         sticker_data.seek(0)
-    else: # user sent /kang with url
+    else:  # user sent /kang with url
         url = args[0]
         # set the emoji if they specify it.
         if len(args) >= 2:
@@ -170,7 +173,12 @@ def kang(update: Update, context: CallbackContext):
 
             # check the mime-type first, you can't kang a .html file.
             mime = resp.getheader('Content-Type')
-            if mime not in ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'application/x-tgsticker']:
+            if mime not in [
+                'image/jpeg',
+                'image/jpg',
+                'image/png',
+                'image/webp',
+                    'application/x-tgsticker']:
                 msg.reply_text("I can only kang images m8.")
                 return
 
@@ -266,8 +274,8 @@ def kang(update: Update, context: CallbackContext):
             emojis=sticker_emoji,
         )
         msg.reply_text(
-            f"Sticker successfully added to [pack](t.me/addstickers/{packname})"
-            + f"\nEmoji is: {sticker_emoji}",
+            f"Sticker successfully added to [pack](t.me/addstickers/{packname})" +
+            f"\nEmoji is: {sticker_emoji}",
             parse_mode=ParseMode.MARKDOWN,
         )
     except TelegramError as e:
@@ -291,12 +299,14 @@ def kang(update: Update, context: CallbackContext):
             msg.reply_text("I can't kang with that emoji!")
         elif e.message == "Internal Server Error: sticker set not found (500)":
             msg.reply_text(
-                f"Sticker successfully added to [pack](t.me/addstickers/{packname})\n"
-                + f"Emoji is: {sticker_emoji}", parse_mode=ParseMode.MARKDOWN
-            )
+                f"Sticker successfully added to [pack](t.me/addstickers/{packname})\n" +
+                f"Emoji is: {sticker_emoji}",
+                parse_mode=ParseMode.MARKDOWN)
         else:
-            msg.reply_text(f"Oops! looks like something happened that shouldn't happen! ({e.message})")
+            msg.reply_text(
+                f"Oops! looks like something happened that shouldn't happen! ({e.message})")
             raise
+
 
 def makepack_internal(
     update,
@@ -325,9 +335,8 @@ def makepack_internal(
         print(e)
         if e.message == "Sticker set name is already occupied":
             msg.reply_text(
-                "Your pack can be found [here](t.me/addstickers/%s)" % packname,
-                parse_mode=ParseMode.MARKDOWN,
-            )
+                "Your pack can be found [here](t.me/addstickers/%s)" %
+                packname, parse_mode=ParseMode.MARKDOWN, )
             return
         elif e.message in ("Peer_id_invalid", "bot was blocked by the user"):
             msg.reply_text(
@@ -354,4 +363,5 @@ def makepack_internal(
             parse_mode=ParseMode.MARKDOWN,
         )
     else:
-        msg.reply_text("Failed to create sticker pack. Possibly due to blek mejik.")
+        msg.reply_text(
+            "Failed to create sticker pack. Possibly due to blek mejik.")

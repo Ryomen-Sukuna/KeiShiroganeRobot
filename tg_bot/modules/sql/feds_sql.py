@@ -16,7 +16,14 @@ class Federations(BASE):
     fed_log = Column(UnicodeText)
     fed_users = Column(UnicodeText)
 
-    def __init__(self, owner_id, fed_name, fed_id, fed_rules, fed_log, fed_users):
+    def __init__(
+            self,
+            owner_id,
+            fed_name,
+            fed_id,
+            fed_rules,
+            fed_log,
+            fed_users):
         self.owner_id = owner_id
         self.fed_name = fed_name
         self.fed_id = fed_id
@@ -47,7 +54,15 @@ class BansF(BASE):
     reason = Column(UnicodeText, default="")
     time = Column(Integer, default=0)
 
-    def __init__(self, fed_id, user_id, first_name, last_name, user_name, reason, time):
+    def __init__(
+            self,
+            fed_id,
+            user_id,
+            first_name,
+            last_name,
+            user_name,
+            reason,
+            time):
         self.fed_id = fed_id
         self.user_id = user_id
         self.first_name = first_name
@@ -491,7 +506,7 @@ def fban_user(fed_id, user_id, first_name, last_name, user_name, reason, time):
         SESSION.add(r)
         try:
             SESSION.commit()
-        except:
+        except BaseException:
             SESSION.rollback()
             return False
         finally:
@@ -541,7 +556,7 @@ def multi_fban_user(
             print(counter)
     try:
         SESSION.commit()
-    except:
+    except BaseException:
         SESSION.rollback()
         return False
     finally:
@@ -559,7 +574,7 @@ def un_fban_user(fed_id, user_id):
                 SESSION.delete(I)
         try:
             SESSION.commit()
-        except:
+        except BaseException:
             SESSION.rollback()
             return False
         finally:
@@ -753,7 +768,7 @@ def __load_all_feds():
         for x in feds:  # remove tuple by ( ,)
             # Fed by Owner
             check = FEDERATION_BYOWNER.get(x.owner_id)
-            if check == None:
+            if check is None:
                 FEDERATION_BYOWNER[x.owner_id] = []
             FEDERATION_BYOWNER[str(x.owner_id)] = {
                 "fid": str(x.fed_id),
@@ -797,7 +812,7 @@ def __load_all_feds_chats():
         for x in qall:
             # Federation Chats
             check = FEDERATION_CHATS.get(x.chat_id)
-            if check == None:
+            if check is None:
                 FEDERATION_CHATS[x.chat_id] = {}
             FEDERATION_CHATS[x.chat_id] = {
                 "chat_name": x.chat_name,
@@ -820,7 +835,7 @@ def __load_all_feds_banned():
         qall = SESSION.query(BansF).all()
         for x in qall:
             check = FEDERATION_BANNED_USERID.get(x.fed_id)
-            if check == None:
+            if check is None:
                 FEDERATION_BANNED_USERID[x.fed_id] = []
             if int(x.user_id) not in FEDERATION_BANNED_USERID[x.fed_id]:
                 FEDERATION_BANNED_USERID[x.fed_id].append(int(x.user_id))

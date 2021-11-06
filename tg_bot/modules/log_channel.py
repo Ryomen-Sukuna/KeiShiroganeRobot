@@ -6,8 +6,10 @@ from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.misc import is_module_loaded
 from tg_bot.modules.language import gs
 
+
 def get_help(chat):
     return gs(chat, "log_help")
+
 
 FILENAME = __name__.rsplit(".", 1)[-1]
 
@@ -66,8 +68,10 @@ if is_module_loaded(FILENAME):
         return glog_action
 
     def send_log(
-        context: CallbackContext, log_chat_id: str, orig_chat_id: str, result: str
-    ):
+            context: CallbackContext,
+            log_chat_id: str,
+            orig_chat_id: str,
+            result: str):
         bot = context.bot
         try:
             bot.send_message(
@@ -79,8 +83,8 @@ if is_module_loaded(FILENAME):
         except BadRequest as excp:
             if excp.message == "Chat not found":
                 bot.send_message(
-                    orig_chat_id, "This log channel has been deleted - unsetting."
-                )
+                    orig_chat_id,
+                    "This log channel has been deleted - unsetting.")
                 sql.stop_chat_logging(orig_chat_id)
             else:
                 log.warning(excp.message)
@@ -89,8 +93,8 @@ if is_module_loaded(FILENAME):
 
                 bot.send_message(
                     log_chat_id,
-                    result
-                    + "\n\nFormatting has been disabled due to an unexpected error.",
+                    result +
+                    "\n\nFormatting has been disabled due to an unexpected error.",
                 )
 
     @user_admin

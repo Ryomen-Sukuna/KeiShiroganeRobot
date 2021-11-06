@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 import html
 
 from telegram import Message, Chat, ParseMode, MessageEntity
@@ -94,8 +95,13 @@ REST_GROUP = 2
 
 # NOT ASYNC
 def restr_members(
-    bot, chat_id, members, messages=False, media=False, other=False, previews=False
-):
+        bot,
+        chat_id,
+        members,
+        messages=False,
+        media=False,
+        other=False,
+        previews=False):
     for mem in members:
         try:
             bot.restrict_chat_member(
@@ -127,6 +133,7 @@ def unrestr_members(
         except TelegramError:
             pass
 
+
 @keicmd(command='locktypes')
 def locktypes(update, context):
     update.effective_message.reply_text(
@@ -154,12 +161,18 @@ def lock(update, context) -> str:
             ltype = args[0].lower()
             if ltype in LOCK_TYPES:
                 # Connection check
-                conn = connected(context.bot, update, chat, user.id, need_admin=True)
+                conn = connected(
+                    context.bot,
+                    update,
+                    chat,
+                    user.id,
+                    need_admin=True)
                 if conn:
                     chat = dispatcher.bot.getChat(conn)
                     chat_id = conn
                     chat_name = chat.title
-                    text = "Locked {} for non-admins in {}!".format(ltype, chat_name)
+                    text = "Locked {} for non-admins in {}!".format(
+                        ltype, chat_name)
                 else:
                     if update.effective_message.chat.type == "private":
                         send_message(
@@ -172,7 +185,10 @@ def lock(update, context) -> str:
                     chat_name = update.effective_message.chat.title
                     text = "Locked {} for non-admins!".format(ltype)
                 sql.update_lock(chat.id, ltype, locked=True)
-                send_message(update.effective_message, text, parse_mode="markdown")
+                send_message(
+                    update.effective_message,
+                    text,
+                    parse_mode="markdown")
 
                 return (
                     "<b>{}:</b>"
@@ -187,7 +203,12 @@ def lock(update, context) -> str:
 
             elif ltype in LOCK_CHAT_RESTRICTION:
                 # Connection check
-                conn = connected(context.bot, update, chat, user.id, need_admin=True)
+                conn = connected(
+                    context.bot,
+                    update,
+                    chat,
+                    user.id,
+                    need_admin=True)
                 if conn:
                     chat = dispatcher.bot.getChat(conn)
                     chat_id = conn
@@ -216,7 +237,10 @@ def lock(update, context) -> str:
                     ),
                 )
 
-                send_message(update.effective_message, text, parse_mode="markdown")
+                send_message(
+                    update.effective_message,
+                    text,
+                    parse_mode="markdown")
                 return (
                     "<b>{}:</b>"
                     "\n#Permission_LOCK"
@@ -234,7 +258,9 @@ def lock(update, context) -> str:
                     "What are you trying to lock...? Try /locktypes for the list of lockables",
                 )
         else:
-            send_message(update.effective_message, "What are you trying to lock...?")
+            send_message(
+                update.effective_message,
+                "What are you trying to lock...?")
 
     else:
         send_message(
@@ -259,12 +285,18 @@ def unlock(update, context) -> str:
             ltype = args[0].lower()
             if ltype in LOCK_TYPES:
                 # Connection check
-                conn = connected(context.bot, update, chat, user.id, need_admin=True)
+                conn = connected(
+                    context.bot,
+                    update,
+                    chat,
+                    user.id,
+                    need_admin=True)
                 if conn:
                     chat = dispatcher.bot.getChat(conn)
                     chat_id = conn
                     chat_name = chat.title
-                    text = "Unlocked {} for everyone in {}!".format(ltype, chat_name)
+                    text = "Unlocked {} for everyone in {}!".format(
+                        ltype, chat_name)
                 else:
                     if update.effective_message.chat.type == "private":
                         send_message(
@@ -277,7 +309,10 @@ def unlock(update, context) -> str:
                     chat_name = update.effective_message.chat.title
                     text = "Unlocked {} for everyone!".format(ltype)
                 sql.update_lock(chat.id, ltype, locked=False)
-                send_message(update.effective_message, text, parse_mode="markdown")
+                send_message(
+                    update.effective_message,
+                    text,
+                    parse_mode="markdown")
                 return (
                     "<b>{}:</b>"
                     "\n#UNLOCK"
@@ -291,12 +326,18 @@ def unlock(update, context) -> str:
 
             elif ltype in UNLOCK_CHAT_RESTRICTION:
                 # Connection check
-                conn = connected(context.bot, update, chat, user.id, need_admin=True)
+                conn = connected(
+                    context.bot,
+                    update,
+                    chat,
+                    user.id,
+                    need_admin=True)
                 if conn:
                     chat = dispatcher.bot.getChat(conn)
                     chat_id = conn
                     chat_name = chat.title
-                    text = "Unlocked {} for everyone in {}!".format(ltype, chat_name)
+                    text = "Unlocked {} for everyone in {}!".format(
+                        ltype, chat_name)
                 else:
                     if update.effective_message.chat.type == "private":
                         send_message(
@@ -318,7 +359,10 @@ def unlock(update, context) -> str:
                     ),
                 )
 
-                send_message(update.effective_message, text, parse_mode="markdown")
+                send_message(
+                    update.effective_message,
+                    text,
+                    parse_mode="markdown")
 
                 return (
                     "<b>{}:</b>"
@@ -337,7 +381,9 @@ def unlock(update, context) -> str:
                 )
 
         else:
-            send_message(update.effective_message, "What are you trying to unlock...?")
+            send_message(
+                update.effective_message,
+                "What are you trying to unlock...?")
 
     return ""
 
@@ -352,7 +398,11 @@ def del_lockables(update, context):
         return
     for lockable, filter in LOCK_TYPES.items():
         if lockable == "rtl":
-            if sql.is_locked(chat.id, lockable) and can_delete(chat, context.bot.id):
+            if sql.is_locked(
+                    chat.id,
+                    lockable) and can_delete(
+                    chat,
+                    context.bot.id):
                 if message.caption:
                     check = ad.detect_alphabet(u"{}".format(message.caption))
                     if "ARABIC" in check:
@@ -459,10 +509,15 @@ def build_lock_message(chat_id):
         locklist.append("inline = `{}`".format(locks.inline))
     permissions = dispatcher.bot.get_chat(chat_id).permissions
     permslist.append("messages = `{}`".format(permissions.can_send_messages))
-    permslist.append("media = `{}`".format(permissions.can_send_media_messages))
+    permslist.append(
+        "media = `{}`".format(
+            permissions.can_send_media_messages))
     permslist.append("poll = `{}`".format(permissions.can_send_polls))
-    permslist.append("other = `{}`".format(permissions.can_send_other_messages))
-    permslist.append("previews = `{}`".format(permissions.can_add_web_page_previews))
+    permslist.append(
+        "other = `{}`".format(
+            permissions.can_send_other_messages))
+    permslist.append("previews = `{}`".format(
+        permissions.can_add_web_page_previews))
     permslist.append("info = `{}`".format(permissions.can_change_info))
     permslist.append("invite = `{}`".format(permissions.can_invite_users))
     permslist.append("pin = `{}`".format(permissions.can_pin_messages))
@@ -542,9 +597,8 @@ def __chat_settings__(chat_id, user_id):
     return build_lock_message(chat_id)
 
 
-from tg_bot.modules.language import gs
-
 def get_help(chat):
     return gs(chat, "locks_help")
+
 
 __mod_name__ = "Locks"

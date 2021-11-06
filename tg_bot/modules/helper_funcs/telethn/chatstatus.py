@@ -5,7 +5,11 @@ from telethon.tl.types import ChannelParticipantsAdmins
 
 async def user_is_ban_protected(user_id: int, message):
     status = False
-    if message.is_private or user_id in (HIGHER_AUTH + SUPPORT_USERS + SARDEGNA_USERS + WHITELIST_USERS):
+    if message.is_private or user_id in (
+            HIGHER_AUTH +
+            SUPPORT_USERS +
+            SARDEGNA_USERS +
+            WHITELIST_USERS):
         return True
 
     async for user in telethn.iter_participants(

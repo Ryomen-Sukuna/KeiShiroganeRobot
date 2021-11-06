@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 import html
 from typing import List
 
@@ -31,6 +32,7 @@ from tg_bot.modules.helper_funcs.extraction import extract_user_and_text
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.log_channel import loggable, gloggable
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @connection_status
 @bot_admin
@@ -72,7 +74,8 @@ def ban(update, context):
         elif user_id in SUPPORT_USERS:
             message.reply_text("My support users are ban immune")
         elif user_id in SARDEGNA_USERS:
-            message.reply_text("Bring an order from Eagle Union to fight a Sardegna.")
+            message.reply_text(
+                "Bring an order from Eagle Union to fight a Sardegna.")
         elif user_id in WHITELIST_USERS:
             message.reply_text("Neptunians are ban immune!")
         else:
@@ -89,7 +92,8 @@ def ban(update, context):
 
     try:
         chat.kick_member(user_id)
-        # context.bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie sticker
+        # context.bot.send_sticker(chat.id, BAN_STICKER)  # banhammer marie
+        # sticker
         context.bot.sendMessage(
             chat.id,
             "let {} walk the plank.".format(
@@ -153,7 +157,8 @@ def temp_ban(update: Update, context: CallbackContext) -> str:
         return log_message
 
     if not reason:
-        message.reply_text("You haven't specified a time to ban this user for!")
+        message.reply_text(
+            "You haven't specified a time to ban this user for!")
         return log_message
 
     split_reason = reason.split(None, 1)
@@ -170,8 +175,7 @@ def temp_ban(update: Update, context: CallbackContext) -> str:
         "#TEMP BANNED\n"
         f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
         f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}\n"
-        f"<b>Time:</b> {time_val}"
-    )
+        f"<b>Time:</b> {time_val}")
     if reason:
         log += "\n<b>Reason:</b> {}".format(reason)
 
@@ -253,8 +257,7 @@ def kick(update: Update, context: CallbackContext) -> str:
             f"<b>{html.escape(chat.title)}:</b>\n"
             f"#KICKED\n"
             f"<b>Admin:</b> {mention_html(user.id, user.first_name)}\n"
-            f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
-        )
+            f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}")
         if reason:
             log += f"\n<b>Reason:</b> {reason}"
 
@@ -272,10 +275,12 @@ def kick(update: Update, context: CallbackContext) -> str:
 def kickme(update: Update, context: CallbackContext):
     user_id = update.effective_message.from_user.id
     if is_user_admin(update.effective_chat, user_id):
-        update.effective_message.reply_text("I wish I could... but you're an admin.")
+        update.effective_message.reply_text(
+            "I wish I could... but you're an admin.")
         return
 
-    res = update.effective_chat.unban_member(user_id)  # unban on current user = kick
+    res = update.effective_chat.unban_member(
+        user_id)  # unban on current user = kick
     if res:
         update.effective_message.reply_text("*kicks you out of the group*")
     else:
@@ -345,7 +350,7 @@ def selfunban(context: CallbackContext, update: Update) -> str:
 
     try:
         chat_id = int(args[0])
-    except:
+    except BaseException:
         message.reply_text("Give a valid chat ID.")
         return
 
@@ -375,11 +380,9 @@ def selfunban(context: CallbackContext, update: Update) -> str:
 
     return log
 
-from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "bans_help")
-
 
 
 __mod_name__ = "Bans"

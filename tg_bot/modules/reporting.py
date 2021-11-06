@@ -1,3 +1,4 @@
+from tg_bot.modules.language import gs
 import html
 
 from tg_bot import log, SUDO_USERS, SARDEGNA_USERS, WHITELIST_USERS, dispatcher
@@ -17,6 +18,7 @@ from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 REPORT_GROUP = 12
 REPORT_IMMUNE_USERS = SUDO_USERS + SARDEGNA_USERS + WHITELIST_USERS
 
+
 @keicmd(command='reports')
 @user_admin
 def report_setting(update: Update, context: CallbackContext):
@@ -34,7 +36,8 @@ def report_setting(update: Update, context: CallbackContext):
 
             elif args[0] in ("no", "off"):
                 sql.set_user_setting(chat.id, False)
-                msg.reply_text("Turned off reporting! You wont get any reports.")
+                msg.reply_text(
+                    "Turned off reporting! You wont get any reports.")
         else:
             msg.reply_text(
                 f"Your current report preference is: `{sql.user_should_report(chat.id)}`",
@@ -46,8 +49,7 @@ def report_setting(update: Update, context: CallbackContext):
             sql.set_chat_setting(chat.id, True)
             msg.reply_text(
                 "Turned on reporting! Admins who have turned on reports will be notified when /report "
-                "or @admin is called."
-            )
+                "or @admin is called.")
 
         elif args[0] in ("no", "off"):
             sql.set_chat_setting(chat.id, False)
@@ -101,8 +103,7 @@ def report(update: Update, context: CallbackContext) -> str:
             msg = (
                 f"<b>⚠️ Report: </b>{html.escape(chat.title)}\n"
                 f"<b> • Report by:</b> {mention_html(user.id, user.first_name)}(<code>{user.id}</code>)\n"
-                f"<b> • Reported user:</b> {mention_html(reported_user.id, reported_user.first_name)} (<code>{reported_user.id}</code>)\n"
-            )
+                f"<b> • Reported user:</b> {mention_html(reported_user.id, reported_user.first_name)} (<code>{reported_user.id}</code>)\n")
             link = f'<b> • Reported message:</b> <a href="https://t.me/{chat.username}/{message.reply_to_message.message_id}">click here</a>'
             should_forward = False
             keyboard = [
@@ -133,8 +134,7 @@ def report(update: Update, context: CallbackContext) -> str:
         else:
             reported = (
                 f"{mention_html(user.id, user.first_name)} reported "
-                f"{mention_html(reported_user.id, reported_user.first_name)} to the admins!"
-            )
+                f"{mention_html(reported_user.id, reported_user.first_name)} to the admins!")
 
             msg = f'{mention_html(user.id, user.first_name)} is calling for admins in "{html.escape(chat_name)}"!'
             link = ""
@@ -148,8 +148,7 @@ def report(update: Update, context: CallbackContext) -> str:
                 try:
                     if chat.type != Chat.SUPERGROUP:
                         bot.send_message(
-                            admin.user.id, msg + link, parse_mode=ParseMode.HTML
-                        )
+                            admin.user.id, msg + link, parse_mode=ParseMode.HTML)
 
                         if should_forward:
                             message.reply_to_message.forward(admin.user.id)
@@ -160,8 +159,7 @@ def report(update: Update, context: CallbackContext) -> str:
                                 message.forward(admin.user.id)
                     if not chat.username:
                         bot.send_message(
-                            admin.user.id, msg + link, parse_mode=ParseMode.HTML
-                        )
+                            admin.user.id, msg + link, parse_mode=ParseMode.HTML)
 
                         if should_forward:
                             message.reply_to_message.forward(admin.user.id)
@@ -193,8 +191,9 @@ def report(update: Update, context: CallbackContext) -> str:
                     log.exception("Exception while reporting user")
 
         try:
-            update.effective_message.reply_sticker("CAACAgUAAx0CRSKHWwABAXGoYB2UJauytkH4RJWSStz9DTlxQg0AAlcHAAKAUF41_sNx9Y1z2DQeBA")
-        except:
+            update.effective_message.reply_sticker(
+                "CAACAgUAAx0CRSKHWwABAXGoYB2UJauytkH4RJWSStz9DTlxQg0AAlcHAAKAUF41_sNx9Y1z2DQeBA")
+        except BaseException:
             pass
         message.reply_to_message.reply_text(
             f"{mention_html(user.id, user.first_name)} reported the message to the admins.",
@@ -219,6 +218,7 @@ def __user_settings__(user_id):
         if sql.user_should_report(user_id) is True
         else "You will *not* receive reports from chats you're admin."
     )
+
 
 @keicallback(pattern=r"report_")
 def buttons(update: Update, context: CallbackContext):
@@ -263,8 +263,6 @@ def buttons(update: Update, context: CallbackContext):
             )
             query.answer("🛑 Failed to delete message!")
 
-
-from tg_bot.modules.language import gs
 
 def get_help(chat):
     return gs(chat, "reports_help")
