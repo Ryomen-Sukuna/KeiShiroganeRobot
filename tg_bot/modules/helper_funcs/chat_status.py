@@ -44,7 +44,7 @@ def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
         or user_id in SUDO_USERS
         or user_id in DEV_USERS
         or chat.all_members_are_administrators
-        or user_id in [777000, 1087968824]
+        or user_id in {777000, 1087968824}
     ):  # Count telegram and Group Anonymous as admin
         return True
 
@@ -60,9 +60,7 @@ def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
             admin_list = [x.user.id for x in chat_admins]
             ADMIN_CACHE[chat.id] = admin_list
 
-            if user_id in admin_list:
-                return True
-            return False
+            return user_id in admin_list
 
 
 def is_bot_admin(chat: Chat, bot_id: int, bot_member: ChatMember = None) -> bool:
@@ -87,7 +85,7 @@ def is_user_ban_protected(chat: Chat, user_id: int, member: ChatMember = None) -
         or user_id in WHITELIST_USERS
         or user_id in SARDEGNA_USERS
         or chat.all_members_are_administrators
-        or user_id in [777000, 1087968824]
+        or user_id in {777000, 1087968824}
     ):  # Count telegram and Group Anonymous as admin
         return True
 
@@ -181,7 +179,7 @@ def whitelist_plus(func):
             return func(update, context, *args, **kwargs)
         else:
             update.effective_message.reply_text(
-                f"You don't have access to use this.\nVisit @YorkTownEagleUnion"
+                "You don't have access to use this.\nVisit @YorkTownEagleUnion"
             )
 
     return is_whitelist_plus_func
@@ -242,8 +240,6 @@ def user_not_admin(func):
 
         if user and not is_user_admin(chat, user.id):
             return func(update, context, *args, **kwargs)
-        elif not user:
-            pass
 
     return is_not_admin
 
@@ -368,8 +364,9 @@ def user_can_ban(func):
         member = update.effective_chat.get_member(user)
 
         if (
-            not (member.can_restrict_members or member.status == "creator")
-            and not user in SUDO_USERS
+            not member.can_restrict_members
+            and member.status != "creator"
+            and user not in SUDO_USERS
         ):
             update.effective_message.reply_text(
                 "Sorry son, but you're not worthy to wield the banhammer."
@@ -395,15 +392,13 @@ def connection_status(func):
         if conn:
             chat = dispatcher.bot.getChat(conn)
             update.__setattr__("_effective_chat", chat)
-            return func(update, context, *args, **kwargs)
-        else:
-            if update.effective_message.chat.type == "private":
-                update.effective_message.reply_text(
-                    "Send /connect in a group that you and I have in common first."
-                )
-                return connected_status
+        elif update.effective_message.chat.type == "private":
+            update.effective_message.reply_text(
+                "Send /connect in a group that you and I have in common first."
+            )
+            return connected_status
 
-            return func(update, context, *args, **kwargs)
+        return func(update, context, *args, **kwargs)
 
     return connected_status
 

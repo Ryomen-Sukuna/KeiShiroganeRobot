@@ -47,12 +47,7 @@ def getsticker(update: Update, context: CallbackContext):
         sticker_data = new_file.download(out=BytesIO())
         # go back to the start of the buffer
         sticker_data.seek(0)
-        # Reply with the document. Telegram INSISTS on making anything
-        # that ends in .tgs become an animated sticker so we'll have to
-        # rename it to something the user should know how to handle.
-        filename = "sticker.png"
-        if is_animated:
-            filename = "animated_sticker.tgs.rename_me"
+        filename = "animated_sticker.tgs.rename_me" if is_animated else "sticker.png"
         # Send the document
         bot.send_document(chat_id,
             document=sticker_data,
@@ -116,7 +111,7 @@ def kang(update: Update, context: CallbackContext):
             # exit the loop and send our pack message.
             if last_set and is_animated:
                 break
-            elif last_set and not is_animated:
+            elif last_set:
                 # move to checking animated packs. Start with the first pack
                 packname = f"animated_{user.id}_by_{context.bot.username}"
                 # reset our counter
@@ -259,24 +254,22 @@ def kang(update: Update, context: CallbackContext):
 
     # actually add the damn sticker to the pack, animated or not.
     try:
-        # Add the sticker to the pack if it doesn't exist already
-        if not invalid:
-            context.bot.add_sticker_to_set(
-                user_id=user.id,
-                name=packname,
-                png_sticker=sticker_data if not is_animated else None,
-                tgs_sticker=sticker_data if is_animated else None,
-                emojis=sticker_emoji,
-            )
-            msg.reply_text(
-                f"Sticker successfully added to [pack](t.me/addstickers/{packname})"
-                + f"\nEmoji is: {sticker_emoji}",
-                parse_mode=ParseMode.MARKDOWN,
-            )
-        else:
+        if invalid:
             # Since Stickerset_invalid will also try to create a pack we might as
             # well just reuse that code and avoid typing it all again.
             raise TelegramError("Stickerset_invalid")
+        context.bot.add_sticker_to_set(
+            user_id=user.id,
+            name=packname,
+            png_sticker=sticker_data if not is_animated else None,
+            tgs_sticker=sticker_data if is_animated else None,
+            emojis=sticker_emoji,
+        )
+        msg.reply_text(
+            f"Sticker successfully added to [pack](t.me/addstickers/{packname})"
+            + f"\nEmoji is: {sticker_emoji}",
+            parse_mode=ParseMode.MARKDOWN,
+        )
     except TelegramError as e:
         if e.message == "Stickerset_invalid":
             # if we need to make a sticker pack, make one and make this the
@@ -318,17 +311,16 @@ def makepack_internal(
 ):
     name = user.first_name[:50]
     try:
-        extra_version = ""
-        if packnum > 0:
-            extra_version = f" {packnum}"
+        extra_version = f" {packnum}" if packnum > 0 else ""
         success = context.bot.create_new_sticker_set(
             user.id,
             packname,
             f"{name}s {'animated ' if tgs_sticker else ''}kang pack{extra_version}",
-            tgs_sticker=tgs_sticker if tgs_sticker else None,
-            png_sticker=png_sticker if png_sticker else None,
+            tgs_sticker=tgs_sticker or None,
+            png_sticker=png_sticker or None,
             emojis=emoji,
         )
+
     except TelegramError as e:
         print(e)
         if e.message == "Sticker set name is already occupied":
