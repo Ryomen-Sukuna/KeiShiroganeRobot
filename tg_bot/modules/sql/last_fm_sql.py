@@ -34,9 +34,6 @@ def set_user(user_id, username):
 
 def get_user(user_id):
     user = SESSION.query(LastFMUsers).get(str(user_id))
-    rep = ""
-    if user:
-        rep = str(user.username)
-
+    rep = str(user.username) if user else ""
     SESSION.close()
     return rep

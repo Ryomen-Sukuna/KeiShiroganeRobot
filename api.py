@@ -26,10 +26,7 @@ def read_item(user_id: int):
             areason = None
 
         b = sql2.is_user_blacklisted(user_id)
-        if b:
-            breason = sql2.get_reason(user_id)
-        else:
-            breason = None
+        breason = sql2.get_reason(user_id) if b else None
         return {"status": "ok", "user_id": user_id, "gbanned": a, "gban_reason" : areason, "blacklisted" : b, "blacklist_reason" : breason}
     except Exception:
         a = None

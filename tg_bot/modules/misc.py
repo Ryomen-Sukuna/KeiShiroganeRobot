@@ -95,17 +95,15 @@ def get_id(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.HTML,
             )
 
+    elif chat.type == "private":
+        msg.reply_text(
+            f"Your id is <code>{chat.id}</code>.", parse_mode=ParseMode.HTML
+        )
+
     else:
-
-        if chat.type == "private":
-            msg.reply_text(
-                f"Your id is <code>{chat.id}</code>.", parse_mode=ParseMode.HTML
-            )
-
-        else:
-            msg.reply_text(
-                f"This group's id is <code>{chat.id}</code>.", parse_mode=ParseMode.HTML
-            )
+        msg.reply_text(
+            f"This group's id is <code>{chat.id}</code>.", parse_mode=ParseMode.HTML
+        )
 
 @keicmd(command='gifid')
 def gifid(update: Update, _):
@@ -186,10 +184,7 @@ def info(update: Update, context: CallbackContext):
             sp = status["results"]["spam_prediction"]["spam_prediction"]
             hamp = status["results"]["spam_prediction"]["ham_prediction"]
             blc = status["results"]["attributes"]["is_blacklisted"]
-            if blc:
-                blres = status["results"]["attributes"]["blacklist_reason"]
-            else:
-                blres = None
+            blres = status["results"]["attributes"]["blacklist_reason"] if blc else None
             text += "\n\n<b>SpamProtection:</b>"
             text += f"<b>\nPrivate Telegram ID:</b> <code>{ptid}</code>\n"
             if op:
@@ -232,22 +227,22 @@ def info(update: Update, context: CallbackContext):
 
 
     if user.id == OWNER_ID:
-        text += f"\nThis person is my owner"
+        text += '\nThis person is my owner'
         Nation_level_present = True
     elif user.id in DEV_USERS:
-        text += f"\nThis Person is a part of Zero Unions"
+        text += '\nThis Person is a part of Zero Unions'
         Nation_level_present = True
     elif user.id in SUDO_USERS:
-        text += f"\nThe Nation level of this person is Royal"
+        text += '\nThe Nation level of this person is Royal'
         Nation_level_present = True
     elif user.id in SUPPORT_USERS:
-        text += f"\nThe Nation level of this person is Sakura"
+        text += '\nThe Nation level of this person is Sakura'
         Nation_level_present = True
     elif user.id in SARDEGNA_USERS:
-        text += f"\nThe Nation level of this person is Sardegna"
+        text += '\nThe Nation level of this person is Sardegna'
         Nation_level_present = True
     elif user.id in WHITELIST_USERS:
-        text += f"\nThe Nation level of this person is Neptunia"
+        text += '\nThe Nation level of this person is Neptunia'
         Nation_level_present = True
 
     if Nation_level_present:
@@ -330,10 +325,7 @@ def get_readable_time(seconds: int) -> str:
 
     while count < 4:
         count += 1
-        if count < 3:
-            remainder, result = divmod(seconds, 60)
-        else:
-            remainder, result = divmod(seconds, 24)
+        remainder, result = divmod(seconds, 60) if count < 3 else divmod(seconds, 24)
         if seconds == 0 and remainder == 0:
             break
         time_list.append(int(result))
