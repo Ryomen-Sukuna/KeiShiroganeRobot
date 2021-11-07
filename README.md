@@ -4,7 +4,6 @@
 [![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
 [![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/Ryomen-Sukuna/)</br>
 
-
 ![Python Version](https://img.shields.io/badge/python-3.9-green?style=for-the-badge&logo=appveyor)
 ![Issues](https://img.shields.io/github/issues/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)
 ![Forks](https://img.shields.io/github/forks/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)
@@ -12,7 +11,6 @@
 ![LICENSE](https://img.shields.io/github/license/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)
 ![Contributors](https://img.shields.io/github/contributors/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)
 ![Repository Size](https://img.shields.io/github/repo-size/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)</br>
-
 
 [![Join Support!](https://img.shields.io/badge/Support%20Chat-IronBlood-red)](https://t.me/ironbloodnations)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/cfb691a93a064d9ea753ef2b5fccf797)](https://www.codacy.com/manual/Ryomen-Sukuna/KeiShiroganeRobot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Ryomen-Sukuna/KeiShiroganeRobot&amp;utm_campaign=Badge_Grade)
@@ -26,11 +24,7 @@ Can be found on telegram as [Kei](https://t.me/keibotrobot).
 
 The Support group can be reached out to at [Zero Unions](https://t.me/zerounions), where you can ask for help setting up your bot, discover/request new features, report bugs, and stay in the loop whenever a new update is available.
 
-
-## Setting up the bot (Read this before trying to use!):
-
-
-# How to setup
+## How to setup
 
 - `git clone https://github.com/Ryomen-Sukuna/KeiShiroganeRobot`
 - `cd KeiShiroganeRobot`
@@ -40,7 +34,6 @@ The Support group can be reached out to at [Zero Unions](https://t.me/zerounions
 - *And finally* `python3 -m tg_bot`
 
 *Enjoy!*
-
 
 For queries or any issues regarding the bot please open an issue ticket or visit us at [Iron Blood](https://t.me/ironbloodnations)  
 
