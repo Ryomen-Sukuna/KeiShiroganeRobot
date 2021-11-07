@@ -5,7 +5,7 @@
 [![ForTheBadge built-with-love](http://ForTheBadge.com/images/badges/built-with-love.svg)](https://GitHub.com/Ryomen-Sukuna/)</br>
 
 
-[![Python Version]](https://img.shields.io/badge/python-3.9-green?style=for-the-badge&logo=appveyor)
+![Python Version](https://img.shields.io/badge/python-3.9-green?style=for-the-badge&logo=appveyor)
 ![Issues](https://img.shields.io/github/issues/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)
 ![Forks](https://img.shields.io/github/forks/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)
 ![Stars](https://img.shields.io/github/stars/Ryomen-Sukuna/KeiShiroganeRobot?style=for-the-badge&logo=appveyor)
@@ -42,7 +42,7 @@ The Support group can be reached out to at [Zero Unions](https://t.me/zerounions
 *Enjoy!*
 
 
-For queries or any issues regarding the bot please open an issue ticket or visit us at [Zero Unions](https://t.me/zerounions)  
+For queries or any issues regarding the bot please open an issue ticket or visit us at [Iron Blood](https://t.me/ironbloodnations)  
 
 ## Credits
 - [Dank-del](https://github.com/Dank-del) - The bot is based from [Kigyō](https://github.com/AnimeKaizoku/EnterpriseALRobot)
