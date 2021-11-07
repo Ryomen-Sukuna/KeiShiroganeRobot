@@ -1,5 +1,6 @@
-from cachetools import TTLCache
 from functools import wraps
+
+from cachetools import TTLCache
 from telegram import Chat, ChatMember, ParseMode, Update
 from telegram.ext import CallbackContext
 

@@ -1,11 +1,12 @@
+import re
+import time
+from typing import Dict, List
+
 import bleach
 import emoji
 import markdown2
-import re
-import time
 from telegram import MessageEntity
 from telegram.utils.helpers import escape_markdown
-from typing import Dict, List
 
 # NOTE: the url \ escape may cause double escapes
 # match * (bold) (don't escape if in url)

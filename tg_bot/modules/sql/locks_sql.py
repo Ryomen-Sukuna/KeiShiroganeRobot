@@ -1,5 +1,6 @@
 # New chat added -> setup permissions
 import threading
+
 from sqlalchemy import Column, String, Boolean
 
 from tg_bot.modules.sql import SESSION, BASE

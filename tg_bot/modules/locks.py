@@ -1,4 +1,5 @@
 import html
+
 from alphabet_detector import AlphabetDetector
 from telegram import Message, Chat, ParseMode, MessageEntity
 from telegram import TelegramError, ChatPermissions
@@ -7,9 +8,8 @@ from telegram.ext import Filters
 from telegram.utils.helpers import mention_html
 
 import tg_bot.modules.sql.locks_sql as sql
-from tg_bot import dispatcher, SUDO_USERS, log
+from tg_bot import dispatcher, log
 from tg_bot.modules.connection import connected
-from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
 from tg_bot.modules.helper_funcs.chat_status import (
     can_delete,

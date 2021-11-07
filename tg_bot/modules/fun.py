@@ -1,16 +1,14 @@
 import html
 import json
 import random
-import requests
 import time
 import urllib.parse
 import urllib.request
+
 from telegram import ParseMode, Update, ChatPermissions
-from telegram.error import BadRequest
 from telegram.ext import CallbackContext
 
 import tg_bot.modules.fun_strings as fun_strings
-from tg_bot import dispatcher
 from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.extraction import extract_user

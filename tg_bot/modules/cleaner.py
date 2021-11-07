@@ -1,11 +1,11 @@
 import html
+
 from telegram import ParseMode, Update
 from telegram.ext import (
     CallbackContext,
     CommandHandler,
     Filters,
     MessageHandler,
-    run_async,
 )
 
 from tg_bot import ALLOW_EXCL, CustomCommandHandler, dispatcher

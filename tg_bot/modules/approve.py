@@ -1,12 +1,12 @@
 import html
+
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, Update
 from telegram.error import BadRequest
-from telegram.ext import CallbackContext, CallbackQueryHandler, Filters
+from telegram.ext import CallbackContext, Filters
 from telegram.utils.helpers import mention_html
 
 import tg_bot.modules.sql.approve_sql as sql
-from tg_bot import dispatcher, SUDO_USERS
-from tg_bot.modules.disable import DisableAbleCommandHandler
+from tg_bot import SUDO_USERS
 from tg_bot.modules.helper_funcs.chat_status import user_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
 from tg_bot.modules.helper_funcs.extraction import extract_user

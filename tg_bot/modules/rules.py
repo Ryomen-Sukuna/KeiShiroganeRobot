@@ -1,3 +1,5 @@
+from typing import Optional
+
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -9,7 +11,6 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, Filters
 from telegram.utils.helpers import escape_markdown
-from typing import Optional
 
 import tg_bot.modules.sql.rules_sql as sql
 from tg_bot import dispatcher

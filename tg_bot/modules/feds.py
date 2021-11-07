@@ -5,6 +5,8 @@ import re
 import time
 import uuid
 from io import BytesIO
+from typing import Optional
+
 from telegram import (
     ParseMode,
     Update,
@@ -18,7 +20,6 @@ from telegram import (
 from telegram.error import BadRequest, TelegramError, Unauthorized
 from telegram.ext import CallbackContext
 from telegram.utils.helpers import mention_html, mention_markdown
-from typing import Optional
 
 import tg_bot.modules.sql.feds_sql as sql
 from tg_bot import (

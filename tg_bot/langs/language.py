@@ -1,6 +1,7 @@
 import os
-import yaml
 from typing import Dict
+
+import yaml
 
 
 class Language:

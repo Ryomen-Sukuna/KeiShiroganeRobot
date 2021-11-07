@@ -1,6 +1,7 @@
+from typing import Optional, Union, List
+
 from telegram.ext import CommandHandler, MessageHandler, CallbackQueryHandler, InlineQueryHandler
 from telegram.ext.filters import BaseFilter
-from typing import Optional, Union, List
 
 from tg_bot import dispatcher as d, log
 from tg_bot.modules.disable import DisableAbleCommandHandler, DisableAbleMessageHandler

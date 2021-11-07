@@ -1,14 +1,12 @@
 import html
 import re
+from typing import Optional
+
 from telegram import (
     Message,
     Chat,
     Update,
-    Bot,
     User,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    ParseMode,
     ChatPermissions,
 )
 from telegram.error import BadRequest
@@ -16,19 +14,15 @@ from telegram.ext import (
     Filters,
     CallbackContext,
 )
-from telegram.utils.helpers import mention_html, escape_markdown
-from typing import Optional, List
+from telegram.utils.helpers import mention_html
 
-from tg_bot import SARDEGNA_USERS, WHITELIST_USERS, dispatcher
+from tg_bot import SARDEGNA_USERS, WHITELIST_USERS
 from tg_bot import dispatcher
 from tg_bot.modules.connection import connected
 from tg_bot.modules.helper_funcs.alternate import send_message
 from tg_bot.modules.helper_funcs.chat_status import (
     bot_admin,
-    can_restrict,
     connection_status,
-    is_user_admin,
-    user_admin,
     user_admin_no_reply,
 )
 from tg_bot.modules.helper_funcs.chat_status import (
@@ -39,8 +33,6 @@ from tg_bot.modules.helper_funcs.chat_status import (
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.log_channel import loggable
-from tg_bot.modules.log_channel import loggable
-from tg_bot.modules.sql import antiflood_sql as sql
 from tg_bot.modules.sql import antiflood_sql as sql
 from tg_bot.modules.sql.approve_sql import is_approved
 

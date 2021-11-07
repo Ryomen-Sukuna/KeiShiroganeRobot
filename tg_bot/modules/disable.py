@@ -1,8 +1,9 @@
+from typing import Union
+
 from future.utils import string_types
 from telegram import ParseMode, Update, Chat
 from telegram.ext import CommandHandler, MessageHandler
 from telegram.utils.helpers import escape_markdown
-from typing import Union
 
 from tg_bot import dispatcher
 from tg_bot.modules.connection import connected

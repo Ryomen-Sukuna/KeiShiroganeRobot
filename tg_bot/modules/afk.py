@@ -1,8 +1,9 @@
 import html
 import random
+
 from telegram import Update, MessageEntity
 from telegram.error import BadRequest
-from telegram.ext import Filters, CallbackContext, MessageHandler
+from telegram.ext import Filters, CallbackContext
 
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
 from tg_bot.modules.sql import afk_sql as sql

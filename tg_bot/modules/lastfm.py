@@ -5,7 +5,7 @@ from telegram import Update, ParseMode, InlineKeyboardMarkup, InlineKeyboardButt
 from telegram.ext import CallbackContext
 
 import tg_bot.modules.sql.last_fm_sql as sql
-from tg_bot import dispatcher, LASTFM_API_KEY
+from tg_bot import LASTFM_API_KEY
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
 

@@ -1,24 +1,22 @@
 import datetime
-import git
 import html
-import os
 import platform
-import re
-import requests
 import time
 from io import BytesIO
 from platform import python_version
+from subprocess import Popen, PIPE
+
+import git
+import requests
 from psutil import cpu_percent, virtual_memory, disk_usage, boot_time
 from pyrogram import __version__ as pyrover
 from spamprotection.errors import HostDownError
 from spamprotection.sync import SPBClient
-from subprocess import Popen, PIPE
 from telegram import Update, MessageEntity, ParseMode
 from telegram import __version__ as ptbver, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.error import BadRequest
-from telegram.ext import CommandHandler, Filters, CallbackContext
+from telegram.ext import Filters, CallbackContext
 from telegram.utils.helpers import mention_html, escape_markdown
-from typing import List
 
 import tg_bot.modules.sql.users_sql as sql
 from tg_bot import (
@@ -34,7 +32,6 @@ from tg_bot import (
     StartTime
 )
 from tg_bot.__main__ import STATS, USER_INFO, TOKEN
-from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.chat_status import user_admin, sudo_plus
 from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.extraction import extract_user

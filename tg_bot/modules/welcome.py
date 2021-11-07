@@ -4,6 +4,7 @@ import re
 import time
 from functools import partial
 from io import BytesIO
+
 from telegram import (
     ChatPermissions,
     InlineKeyboardButton,
@@ -18,7 +19,6 @@ from telegram.ext import (
     CommandHandler,
     Filters,
     MessageHandler,
-    run_async,
 )
 from telegram.utils.helpers import escape_markdown, mention_html, mention_markdown
 

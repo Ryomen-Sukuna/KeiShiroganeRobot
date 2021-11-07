@@ -1,7 +1,8 @@
 import threading
 import time
-from sqlalchemy import Column, String, Boolean, UnicodeText, Integer
 from typing import Union
+
+from sqlalchemy import Column, String, Boolean, UnicodeText, Integer
 
 from tg_bot.modules.sql import SESSION, BASE
 

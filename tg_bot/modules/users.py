@@ -1,8 +1,9 @@
 from io import BytesIO
+from time import sleep
+
 from telegram import TelegramError, Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, CommandHandler, Filters, MessageHandler
-from time import sleep
 
 import tg_bot.modules.sql.users_sql as sql
 from tg_bot import DEV_USERS, log, OWNER_ID, dispatcher

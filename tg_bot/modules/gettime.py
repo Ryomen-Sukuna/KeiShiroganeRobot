@@ -1,10 +1,11 @@
 import datetime
+from typing import List
+
 import requests
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
-from typing import List
 
-from tg_bot import TIME_API_KEY, dispatcher
+from tg_bot import TIME_API_KEY
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
 

@@ -1,11 +1,12 @@
 import html
-from telegram import Bot, Chat, ChatPermissions, ParseMode, Update
-from telegram.error import BadRequest
-from telegram.ext import CallbackContext, CommandHandler
-from telegram.utils.helpers import mention_html
 from typing import Optional
 
-from tg_bot import log, SARDEGNA_USERS, dispatcher
+from telegram import Bot, Chat, ChatPermissions, ParseMode, Update
+from telegram.error import BadRequest
+from telegram.ext import CallbackContext
+from telegram.utils.helpers import mention_html
+
+from tg_bot import SARDEGNA_USERS
 from tg_bot.modules.helper_funcs.chat_status import (
     bot_admin,
     can_restrict,

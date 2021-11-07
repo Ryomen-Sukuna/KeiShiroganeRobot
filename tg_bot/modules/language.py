@@ -1,8 +1,9 @@
 import itertools
 from collections.abc import Iterable
+from typing import Union, List, Generator
+
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CommandHandler, CallbackQueryHandler
-from typing import Union, List, Dict, Callable, Generator, Any
 
 import tg_bot.modules.sql.language_sql as sql
 from tg_bot import dispatcher

@@ -1,14 +1,14 @@
 import html
+
 from telegram import Chat, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import BadRequest, Unauthorized
 from telegram.ext import (
     CallbackContext,
-    CallbackQueryHandler,
     Filters,
 )
 from telegram.utils.helpers import mention_html
 
-from tg_bot import log, SUDO_USERS, SARDEGNA_USERS, WHITELIST_USERS, dispatcher
+from tg_bot import log, SUDO_USERS, SARDEGNA_USERS, WHITELIST_USERS
 from tg_bot.modules.helper_funcs.chat_status import user_admin, user_not_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 from tg_bot.modules.log_channel import loggable

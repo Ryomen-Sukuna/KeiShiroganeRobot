@@ -1,7 +1,9 @@
 import importlib
 import re
-from pyrogram import idle
 from sys import argv
+from typing import Optional
+
+from pyrogram import idle
 from telegram import Update, ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.error import (
     TelegramError,
@@ -17,7 +19,6 @@ from telegram.ext import (
 )
 from telegram.ext.dispatcher import DispatcherHandlerStop
 from telegram.utils.helpers import escape_markdown
-from typing import Optional
 
 from tg_bot import (
     dispatcher,

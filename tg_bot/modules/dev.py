@@ -3,11 +3,12 @@ import os
 import subprocess
 import sys
 from statistics import mean
+from time import monotonic as time
+from time import sleep
+
 from telegram import TelegramError, Update
 from telegram.ext import CallbackContext, CommandHandler
 from telethon import events
-from time import monotonic as time
-from time import sleep
 
 from tg_bot import dispatcher, telethn, OWNER_ID
 from tg_bot.modules.helper_funcs.chat_status import dev_plus

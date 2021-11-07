@@ -1,20 +1,17 @@
 import re
-import telegram
 from html import escape
+
+import telegram
 from telegram import ParseMode, InlineKeyboardMarkup, Message, InlineKeyboardButton
 from telegram.error import BadRequest
 from telegram.ext import (
-    CommandHandler,
-    MessageHandler,
     DispatcherHandlerStop,
-    CallbackQueryHandler,
     Filters,
 )
 from telegram.utils.helpers import mention_html, escape_markdown
 
 from tg_bot import dispatcher, log, SUDO_USERS
 from tg_bot.modules.connection import connected
-from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
 from tg_bot.modules.helper_funcs.chat_status import user_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback

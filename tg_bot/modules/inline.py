@@ -1,8 +1,11 @@
 import html
 import json
-import requests
 from datetime import datetime
 from platform import python_version
+from typing import List
+from uuid import uuid4
+
+import requests
 from spamprotection.errors import HostDownError
 from spamprotection.sync import SPBClient
 from telegram import InlineQueryResultArticle, ParseMode, InputTextMessageContent, Update, InlineKeyboardMarkup, \
@@ -11,8 +14,6 @@ from telegram import __version__
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext
 from telegram.utils.helpers import mention_html
-from typing import List
-from uuid import uuid4
 
 import tg_bot.modules.sql.users_sql as sql
 from tg_bot import (

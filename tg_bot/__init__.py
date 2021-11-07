@@ -1,15 +1,15 @@
-import json
 import logging
 import os
-import spamwatch
 import sys
-import telegram.ext as tg
 import time
 from configparser import ConfigParser
+
+import spamwatch
+import telegram.ext as tg
 from ptbcontrib.postgres_persistence import PostgresPersistence
-from pyrogram import Client, errors
+from pyrogram import Client
 from pyrogram.errors.exceptions.bad_request_400 import PeerIdInvalid, ChannelInvalid
-from pyrogram.types import Chat, User
+from pyrogram.types import Chat
 from rich.logging import RichHandler
 from telethon import TelegramClient
 from telethon.sessions import MemorySession

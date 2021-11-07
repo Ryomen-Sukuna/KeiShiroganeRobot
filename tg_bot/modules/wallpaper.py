@@ -1,5 +1,6 @@
-import requests as r
 from random import randint
+
+import requests as r
 from telegram import Update
 from telegram.ext import CallbackContext
 

@@ -1,13 +1,14 @@
 import math
 import urllib.request as urllib
-from PIL import Image
 from html import escape
 from io import BytesIO
+from urllib.error import HTTPError
+
+from PIL import Image
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, ParseMode,
                       TelegramError, Update)
 from telegram.ext import CallbackContext
 from telegram.utils.helpers import mention_html
-from urllib.error import HTTPError
 
 from tg_bot.modules.helper_funcs.decorators import keicmd
 

@@ -1,17 +1,12 @@
 # module to get anime info by t.me/DragSama // find him on github :  https://github.com/DragSama // he's my doraemon btw.
-import math
 import requests
-import time
 from telegram import (
-    Message,
-    Chat,
-    User,
     ParseMode,
     Update,
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-from telegram.ext import CommandHandler, CallbackContext
+from telegram.ext import CallbackContext
 
 from tg_bot.modules.helper_funcs.decorators import keicmd
 

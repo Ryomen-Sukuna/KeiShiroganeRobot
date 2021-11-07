@@ -1,8 +1,9 @@
+from typing import Dict, List
+from uuid import uuid4
+
 from telegram import MAX_MESSAGE_LENGTH, Bot, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, \
     InlineQueryResultArticle, InputTextMessageContent
 from telegram.error import TelegramError
-from typing import Dict, List
-from uuid import uuid4
 
 from tg_bot import NO_LOAD
 

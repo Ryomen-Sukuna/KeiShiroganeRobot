@@ -1,10 +1,7 @@
 import aiohttp
-import asyncio
-import json
 from pyrogram import filters
 from pyrogram.errors import BadRequest
-from pyrogram.handlers import MessageHandler
-from pyrogram.types import ChatPermissions, Message
+from pyrogram.types import ChatPermissions
 from pyrogram.types import Message
 
 import tg_bot.modules.sql.nlp_detect_sql as sql

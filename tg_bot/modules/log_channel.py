@@ -1,5 +1,6 @@
 from datetime import datetime
 from functools import wraps
+
 from telegram.ext import CallbackContext
 
 from tg_bot.modules.helper_funcs.decorators import keicmd
@@ -16,7 +17,6 @@ FILENAME = __name__.rsplit(".", 1)[-1]
 if is_module_loaded(FILENAME):
     from telegram import ParseMode, Update
     from telegram.error import BadRequest, Unauthorized
-    from telegram.ext import CommandHandler, JobQueue
     from telegram.utils.helpers import escape_markdown
 
     from tg_bot import GBAN_LOGS, log, dispatcher

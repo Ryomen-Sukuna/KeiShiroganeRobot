@@ -1,5 +1,6 @@
 import html
 import re
+
 from telegram import ParseMode, ChatPermissions
 from telegram.error import BadRequest
 from telegram.ext import Filters
@@ -8,7 +9,6 @@ from telegram.utils.helpers import mention_html
 import tg_bot.modules.sql.blacklist_sql as sql
 from tg_bot import log, dispatcher
 from tg_bot.modules.connection import connected
-from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
 from tg_bot.modules.helper_funcs.chat_status import user_admin, user_not_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg

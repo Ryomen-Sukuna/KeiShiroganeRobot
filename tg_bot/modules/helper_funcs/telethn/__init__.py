@@ -1,9 +1,5 @@
 from tg_bot import (
-    telethn,
     SUDO_USERS,
-    WHITELIST_USERS,
-    SUPPORT_USERS,
-    SARDEGNA_USERS,
     DEV_USERS,
 )
 

@@ -1,7 +1,8 @@
+from time import sleep
+
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.error import BadRequest, Unauthorized
 from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
-from time import sleep
 
 import tg_bot.modules.sql.antispam_sql as gban_sql
 import tg_bot.modules.sql.users_sql as user_sql

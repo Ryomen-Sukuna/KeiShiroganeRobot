@@ -1,13 +1,11 @@
 import html
+
 from telegram import Update, ParseMode
 from telegram.error import BadRequest
-from telegram.ext import CommandHandler, Filters, CallbackContext
+from telegram.ext import Filters, CallbackContext
 from telegram.utils.helpers import mention_html
-from typing import List
 
 from tg_bot import (
-    dispatcher,
-    log,
     DEV_USERS,
     SUDO_USERS,
     SARDEGNA_USERS,
@@ -15,7 +13,6 @@ from tg_bot import (
     OWNER_ID,
     WHITELIST_USERS,
 )
-from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.chat_status import (
     bot_admin,
     can_restrict,
@@ -24,7 +21,6 @@ from tg_bot.modules.helper_funcs.chat_status import (
     is_user_ban_protected,
     is_user_in_chat,
     user_admin,
-    user_can_ban,
 )
 from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.extraction import extract_user_and_text

@@ -1,7 +1,8 @@
 import random
 import threading
-from sqlalchemy import BigInteger, Boolean, Column, Integer, String, UnicodeText
 from typing import Union
+
+from sqlalchemy import BigInteger, Boolean, Column, Integer, String, UnicodeText
 
 from tg_bot.modules.helper_funcs.msg_types import Types
 from tg_bot.modules.sql import BASE, SESSION

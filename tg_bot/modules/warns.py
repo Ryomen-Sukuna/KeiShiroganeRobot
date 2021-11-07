@@ -1,5 +1,7 @@
 import html
 import re
+from typing import Optional
+
 import telegram
 from telegram import (
     CallbackQuery,
@@ -19,12 +21,10 @@ from telegram.ext import (
     DispatcherHandlerStop,
     Filters,
     MessageHandler,
-    run_async,
 )
 from telegram.utils.helpers import mention_html
-from typing import Optional
 
-from tg_bot import BAN_STICKER, SARDEGNA_USERS, WHITELIST_USERS, dispatcher
+from tg_bot import SARDEGNA_USERS, WHITELIST_USERS, dispatcher
 from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.chat_status import (
     bot_admin,

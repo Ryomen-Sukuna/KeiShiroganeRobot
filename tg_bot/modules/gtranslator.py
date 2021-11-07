@@ -1,19 +1,14 @@
 from gpytranslate import Translator
 from pyrogram import filters
-from pyrogram.types import Message
 from telegram import (
     Message,
-    Chat,
-    User,
-    ParseMode,
     Update,
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-from telegram.ext import CommandHandler, CallbackContext
+from telegram.ext import CallbackContext
 
-from tg_bot import dispatcher, kp
-from tg_bot.modules.disable import DisableAbleCommandHandler
+from tg_bot import kp
 from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.language import gs
 

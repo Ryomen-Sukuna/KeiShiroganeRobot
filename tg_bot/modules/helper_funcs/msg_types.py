@@ -1,4 +1,5 @@
 from enum import IntEnum, unique
+
 from telegram import Message
 
 from tg_bot.modules.helper_funcs.string_handling import button_markdown_parser

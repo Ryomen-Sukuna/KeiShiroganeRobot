@@ -1,6 +1,8 @@
 import ast
 import re
 from io import BytesIO
+from typing import Optional
+
 from telegram import (
     MAX_MESSAGE_LENGTH,
     InlineKeyboardMarkup,
@@ -12,11 +14,9 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import (
     CallbackContext,
-    CallbackQueryHandler,
     Filters,
 )
 from telegram.utils.helpers import escape_markdown, mention_markdown
-from typing import Optional
 
 import tg_bot.modules.sql.notes_sql as sql
 from tg_bot import log, dispatcher, SUDO_USERS

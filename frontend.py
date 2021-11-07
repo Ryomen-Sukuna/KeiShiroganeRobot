@@ -1,6 +1,7 @@
+from platform import python_version
+
 from dearpygui.core import *
 from dearpygui.simple import *
-from platform import python_version
 
 from tg_bot.__main__ import STATS
 

@@ -1,5 +1,6 @@
 import html
-from pyrogram import Client, filters
+
+from pyrogram import filters
 from pyrogram.errors.exceptions.bad_request_400 import MessageNotModified
 
 from tg_bot import kp, get_entity

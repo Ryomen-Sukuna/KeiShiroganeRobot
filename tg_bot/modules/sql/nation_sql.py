@@ -1,7 +1,6 @@
-import threading
 import traceback
-from sqlalchemy import Boolean, Column, Integer, String, UnicodeText, distinct, func
-from sqlalchemy.dialects import postgresql
+
+from sqlalchemy import Column, Integer, String
 
 from tg_bot.modules.sql import BASE, SESSION
 

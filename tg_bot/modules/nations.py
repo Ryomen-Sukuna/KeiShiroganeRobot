@@ -1,13 +1,11 @@
 import html
-import json
-import os
+from typing import Optional
+
 from telegram import Update, ParseMode, TelegramError
-from telegram.ext import CommandHandler, run_async, CallbackContext
+from telegram.ext import CallbackContext
 from telegram.utils.helpers import mention_html
-from typing import List, Optional
 
 from tg_bot import (
-    dispatcher,
     WHITELIST_USERS,
     SARDEGNA_USERS,
     SUPPORT_USERS,

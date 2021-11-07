@@ -1,8 +1,9 @@
 import html
-import requests
 import time
 from datetime import datetime
 from io import BytesIO
+
+import requests
 from spamprotection.errors import HostDownError
 from spamprotection.sync import SPBClient
 from spamwatch.errors import SpamWatchError, Error, UnauthorizedError, NotFoundError, Forbidden, TooManyRequests
@@ -23,8 +24,6 @@ from tg_bot import (
     sw,
     dispatcher,
     log,
-    KInit,
-    KeiINIT,
 )
 from tg_bot.modules.helper_funcs.chat_status import dev_plus
 from tg_bot.modules.helper_funcs.chat_status import (
@@ -35,7 +34,6 @@ from tg_bot.modules.helper_funcs.chat_status import (
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
 from tg_bot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from tg_bot.modules.helper_funcs.misc import send_to_list
-from tg_bot.modules.sql.users_sql import get_all_chats
 from tg_bot.modules.sql.users_sql import get_user_com_chats
 
 GBAN_ENFORCE_GROUP = -1

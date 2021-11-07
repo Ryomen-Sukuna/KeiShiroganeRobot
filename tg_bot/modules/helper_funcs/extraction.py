@@ -1,6 +1,7 @@
+from typing import List, Optional
+
 from telegram import Message, MessageEntity
 from telegram.error import BadRequest
-from typing import List, Optional
 
 from tg_bot import log
 from tg_bot.modules.users import get_user_id
