@@ -41,25 +41,24 @@ def report_setting(update: Update, context: CallbackContext):
                 parse_mode=ParseMode.MARKDOWN,
             )
 
-    else:
-        if len(args) >= 1:
-            if args[0] in ("yes", "on"):
-                sql.set_chat_setting(chat.id, True)
-                msg.reply_text(
-                    "Turned on reporting! Admins who have turned on reports will be notified when /report "
-                    "or @admin is called."
-                )
-
-            elif args[0] in ("no", "off"):
-                sql.set_chat_setting(chat.id, False)
-                msg.reply_text(
-                    "Turned off reporting! No admins will be notified on /report or @admin."
-                )
-        else:
+    elif len(args) >= 1:
+        if args[0] in ("yes", "on"):
+            sql.set_chat_setting(chat.id, True)
             msg.reply_text(
-                f"This group's current setting is: `{sql.chat_should_report(chat.id)}`",
-                parse_mode=ParseMode.MARKDOWN,
+                "Turned on reporting! Admins who have turned on reports will be notified when /report "
+                "or @admin is called."
             )
+
+        elif args[0] in ("no", "off"):
+            sql.set_chat_setting(chat.id, False)
+            msg.reply_text(
+                "Turned off reporting! No admins will be notified on /report or @admin."
+            )
+    else:
+        msg.reply_text(
+            f"This group's current setting is: `{sql.chat_should_report(chat.id)}`",
+            parse_mode=ParseMode.MARKDOWN,
+        )
 
 
 @user_not_admin
@@ -215,11 +214,11 @@ def __chat_settings__(chat_id, _):
 
 
 def __user_settings__(user_id):
-    if sql.user_should_report(user_id) is True:
-        text = "You will receive reports from chats you're admin."
-    else:
-        text = "You will *not* receive reports from chats you're admin."
-    return text
+    return (
+        "You will receive reports from chats you're admin."
+        if sql.user_should_report(user_id) is True
+        else "You will *not* receive reports from chats you're admin."
+    )
 
 @keicallback(pattern=r"report_")
 def buttons(update: Update, context: CallbackContext):

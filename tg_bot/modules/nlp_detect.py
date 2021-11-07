@@ -67,7 +67,6 @@ async def nlp_mode(client, message):
 
 @kp.on_message(filters.text & filters.group, group=3)
 async def detect_spam(client, message):
-    url = "https://api.intellivoid.net/coffeehouse/v1/nlp/spam_prediction/chatroom"
     user = message.from_user
     chat = message.chat
     msg = message.text
@@ -77,6 +76,7 @@ async def detect_spam(client, message):
     from tg_bot import SPB_MODE, CF_API_KEY
     chat_state = sql.does_chat_nlp(chat.id)
     if SPB_MODE and CF_API_KEY and chat_state == True:
+        url = "https://api.intellivoid.net/coffeehouse/v1/nlp/spam_prediction/chatroom"
         try:
             payload = {'access_key': CF_API_KEY, 'input': msg}
             data = await session.post(url, data=payload)
