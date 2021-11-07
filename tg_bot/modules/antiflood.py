@@ -1,7 +1,5 @@
 import html
 import re
-from typing import Optional, List
-
 from telegram import (
     Message,
     Chat,
@@ -13,9 +11,18 @@ from telegram import (
     ParseMode,
     ChatPermissions,
 )
+from telegram.error import BadRequest
+from telegram.ext import (
+    Filters,
+    CallbackContext,
+)
+from telegram.utils.helpers import mention_html, escape_markdown
+from typing import Optional, List
 
 from tg_bot import SARDEGNA_USERS, WHITELIST_USERS, dispatcher
-from tg_bot.modules.sql.approve_sql import is_approved
+from tg_bot import dispatcher
+from tg_bot.modules.connection import connected
+from tg_bot.modules.helper_funcs.alternate import send_message
 from tg_bot.modules.helper_funcs.chat_status import (
     bot_admin,
     can_restrict,
@@ -24,28 +31,21 @@ from tg_bot.modules.helper_funcs.chat_status import (
     user_admin,
     user_admin_no_reply,
 )
-from tg_bot.modules.log_channel import loggable
-from tg_bot.modules.sql import antiflood_sql as sql
-from telegram.error import BadRequest
-from telegram.ext import (
-    Filters,
-    CallbackContext,
-)
-from telegram.utils.helpers import mention_html, escape_markdown
-from tg_bot import dispatcher
 from tg_bot.modules.helper_funcs.chat_status import (
     is_user_admin,
     user_admin,
     can_restrict,
 )
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.log_channel import loggable
+from tg_bot.modules.log_channel import loggable
 from tg_bot.modules.sql import antiflood_sql as sql
-from tg_bot.modules.connection import connected
-from tg_bot.modules.helper_funcs.alternate import send_message
-from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
+from tg_bot.modules.sql import antiflood_sql as sql
+from tg_bot.modules.sql.approve_sql import is_approved
 
 FLOOD_GROUP = -5
+
 
 @keimsg((Filters.all & ~Filters.status_update & Filters.chat_type.groups), group=FLOOD_GROUP)
 @connection_status
@@ -59,13 +59,13 @@ def check_flood(update, context) -> str:
 
     # ignore admins and whitelists
     if (
-        is_user_admin(chat, user.id)
-        or user.id in WHITELIST_USERS
-        or user.id in SARDEGNA_USERS
+            is_user_admin(chat, user.id)
+            or user.id in WHITELIST_USERS
+            or user.id in SARDEGNA_USERS
     ):
         sql.update_flood(chat.id, None)
         return ""
-      # ignore approved users
+    # ignore approved users
     if is_approved(chat.id, user.id):
         sql.update_flood(chat.id, None)
         return
@@ -161,6 +161,7 @@ def flood_button(update: Update, context: CallbackContext):
             )
         except:
             pass
+
 
 @keicmd(command='setflood', pass_args=True, filters=Filters.chat_type.groups)
 @connection_status
@@ -301,6 +302,7 @@ def flood(update, context):
             )
         )
 
+
 @keicmd(command="setfloodmode", pass_args=True, filters=Filters.chat_type.groups)
 @user_admin
 def set_flood_mode(update, context):
@@ -418,9 +420,12 @@ def __chat_settings__(chat_id, user_id):
     else:
         return "Antiflood has been set to`{}`.".format(limit)
 
+
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "antiflood_help")
+
 
 __mod_name__ = "Anti-Flood"

@@ -1,14 +1,14 @@
 import math
 import urllib.request as urllib
+from PIL import Image
 from html import escape
 from io import BytesIO
-from urllib.error import HTTPError
-
-from PIL import Image
 from telegram import (InlineKeyboardButton, InlineKeyboardMarkup, ParseMode,
                       TelegramError, Update)
 from telegram.ext import CallbackContext
 from telegram.utils.helpers import mention_html
+from urllib.error import HTTPError
+
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
 
@@ -50,10 +50,10 @@ def getsticker(update: Update, context: CallbackContext):
         filename = "animated_sticker.tgs.rename_me" if is_animated else "sticker.png"
         # Send the document
         bot.send_document(chat_id,
-            document=sticker_data,
-            filename=filename,
-            disable_content_type_detection=True
-        )
+                          document=sticker_data,
+                          filename=filename,
+                          disable_content_type_detection=True
+                          )
     else:
         update.effective_message.reply_text(
             "Please reply to a sticker for me to upload its PNG."
@@ -105,7 +105,7 @@ def kang(update: Update, context: CallbackContext):
                     last_set = True
                 else:
                     print(e)
-                    break # something went wrong, leave the loop and send what we have.
+                    break  # something went wrong, leave the loop and send what we have.
 
             # If we're done checking bot animated and non-animated packs
             # exit the loop and send our pack message.
@@ -157,7 +157,7 @@ def kang(update: Update, context: CallbackContext):
         sticker_data = kang_file.download(out=BytesIO())
         # move to the front of the buffer.
         sticker_data.seek(0)
-    else: # user sent /kang with url
+    else:  # user sent /kang with url
         url = args[0]
         # set the emoji if they specify it.
         if len(args) >= 2:
@@ -298,16 +298,17 @@ def kang(update: Update, context: CallbackContext):
             msg.reply_text(f"Oops! looks like something happened that shouldn't happen! ({e.message})")
             raise
 
+
 def makepack_internal(
-    update,
-    context,
-    msg,
-    user,
-    emoji,
-    packname,
-    packnum,
-    png_sticker=None,
-    tgs_sticker=None,
+        update,
+        context,
+        msg,
+        user,
+        emoji,
+        packname,
+        packnum,
+        png_sticker=None,
+        tgs_sticker=None,
 ):
     name = user.first_name[:50]
     try:

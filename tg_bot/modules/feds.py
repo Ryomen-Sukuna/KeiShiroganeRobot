@@ -1,13 +1,10 @@
-from io import BytesIO
-from typing import Optional
-import uuid
-import re
-import json
-import time
 import csv
+import json
 import os
-from telegram.ext import CallbackContext
-from telegram.error import BadRequest, TelegramError, Unauthorized
+import re
+import time
+import uuid
+from io import BytesIO
 from telegram import (
     ParseMode,
     Update,
@@ -18,8 +15,12 @@ from telegram import (
     InlineKeyboardButton,
     ChatAction,
 )
+from telegram.error import BadRequest, TelegramError, Unauthorized
+from telegram.ext import CallbackContext
 from telegram.utils.helpers import mention_html, mention_markdown
+from typing import Optional
 
+import tg_bot.modules.sql.feds_sql as sql
 from tg_bot import (
     dispatcher,
     OWNER_ID,
@@ -28,22 +29,19 @@ from tg_bot import (
     GBAN_LOGS,
     log,
 )
+from tg_bot.modules.helper_funcs.alternate import (
+    send_message,
+    typing_action,
+    send_action,
+)
 from tg_bot.modules.helper_funcs.chat_status import is_user_admin
+from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
 from tg_bot.modules.helper_funcs.extraction import (
     extract_user,
     extract_unt_fedban,
     extract_user_fban,
 )
 from tg_bot.modules.helper_funcs.string_handling import markdown_parser
-
-import tg_bot.modules.sql.feds_sql as sql
-
-from tg_bot.modules.helper_funcs.alternate import (
-    send_message,
-    typing_action,
-    send_action,
-)
-from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
 
 # Hello bot owner, I spent many hours of my life for feds, Please don't remove this if you still respect MrYacha and peaktogoo and AyraHikari too
 # Federation by MrYacha 2018-2019
@@ -336,13 +334,13 @@ def user_join_fed(update, context):
         elif not msg.reply_to_message and not args:
             user = msg.from_user
         elif not msg.reply_to_message and (
-            not args
-            or (
-                len(args) >= 1
-                and not args[0].startswith("@")
-                and not args[0].isdigit()
-                and not msg.parse_entities([MessageEntity.TEXT_MENTION])
-            )
+                not args
+                or (
+                        len(args) >= 1
+                        and not args[0].startswith("@")
+                        and not args[0].isdigit()
+                        and not msg.parse_entities([MessageEntity.TEXT_MENTION])
+                )
         ):
             msg.reply_text("I cannot extract user from this message")
             return
@@ -403,13 +401,13 @@ def user_demote_fed(update, context):
             user = msg.from_user
 
         elif not msg.reply_to_message and (
-            not args
-            or (
-                len(args) >= 1
-                and not args[0].startswith("@")
-                and not args[0].isdigit()
-                and not msg.parse_entities([MessageEntity.TEXT_MENTION])
-            )
+                not args
+                or (
+                        len(args) >= 1
+                        and not args[0].startswith("@")
+                        and not args[0].isdigit()
+                        and not msg.parse_entities([MessageEntity.TEXT_MENTION])
+                )
         ):
             msg.reply_text("I cannot extract user from this message")
             return
@@ -489,7 +487,6 @@ def fed_info(update, context):
 
 @typing_action
 def fed_admin(update, context):
-
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     args = context.args
@@ -539,7 +536,6 @@ def fed_admin(update, context):
 @typing_action
 @keicmd(command=['fban', 'fedban'], pass_args=True)
 def fed_ban(update, context):
-
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     args = context.args
@@ -1168,7 +1164,6 @@ def unfban(update, context):
 
 @typing_action
 def set_frules(update, context):
-
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     args = context.args
@@ -1744,9 +1739,9 @@ def fed_import_bans(update, context):
                 "fban_{}.csv".format(msg.reply_to_message.document.file_id)
             )
             with open(
-                "fban_{}.csv".format(msg.reply_to_message.document.file_id),
-                "r",
-                encoding="utf8",
+                    "fban_{}.csv".format(msg.reply_to_message.document.file_id),
+                    "r",
+                    encoding="utf8",
             ) as csvFile:
                 reader = csv.reader(csvFile)
                 for data in reader:
@@ -2332,6 +2327,7 @@ __mod_name__ = "Federations"
 
 from tg_bot.modules.language import gs
 
+
 def fed_owner_help(update: Update, context: CallbackContext):
     update.effective_message.reply_text(
         gs(update.effective_chat.id, "FED_OWNER_HELP"),
@@ -2344,7 +2340,6 @@ def fed_admin_help(update: Update, context: CallbackContext):
         gs(update.effective_chat.id, "FED_ADMIN_HELP"),
         parse_mode=ParseMode.MARKDOWN,
     )
-
 
 
 def fed_user_help(update: Update, context: CallbackContext):
@@ -2364,13 +2359,13 @@ def fed_help(update: Update, context: CallbackContext):
     elif help_info == "admin":
         help_text = gs(update.effective_chat.id, "FED_ADMIN_HELP")
     elif help_info == "user":
-        help_text = gs(update.effective_chat.id, "FED_USER_HELP") 
+        help_text = gs(update.effective_chat.id, "FED_USER_HELP")
     query.message.edit_text(
         text=help_text,
         parse_mode=ParseMode.MARKDOWN,
         reply_markup=InlineKeyboardMarkup(
             [[InlineKeyboardButton(text="Back", callback_data=f"help_module({__mod_name__.lower()})"),
-            InlineKeyboardButton(text='Report Error', url='https://t.me/YorkTownEagleUnion')]]
+              InlineKeyboardButton(text='Report Error', url='https://t.me/YorkTownEagleUnion')]]
         ),
     )
     bot.answer_callback_query(query.id)
@@ -2378,11 +2373,11 @@ def fed_help(update: Update, context: CallbackContext):
 
 def get_help(chat):
     return [gs(chat, "feds_help"),
-    [
-        InlineKeyboardButton(text="Fedadmins", callback_data="fed_help_admin"),
-        InlineKeyboardButton(text="Fedowners", callback_data="fed_help_owner")
-    ],
-    [
-        InlineKeyboardButton(text="Users", callback_data="fed_help_user")
-    ],
-]
+            [
+                InlineKeyboardButton(text="Fedadmins", callback_data="fed_help_admin"),
+                InlineKeyboardButton(text="Fedowners", callback_data="fed_help_owner")
+            ],
+            [
+                InlineKeyboardButton(text="Users", callback_data="fed_help_user")
+            ],
+            ]

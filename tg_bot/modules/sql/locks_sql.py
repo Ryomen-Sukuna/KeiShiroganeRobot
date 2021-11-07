@@ -1,6 +1,5 @@
 # New chat added -> setup permissions
 import threading
-
 from sqlalchemy import Column, String, Boolean
 
 from tg_bot.modules.sql import SESSION, BASE
@@ -233,10 +232,10 @@ def is_restr_locked(chat_id, lock_type):
         return curr_restr.preview
     elif lock_type == "all":
         return (
-            curr_restr.messages
-            and curr_restr.media
-            and curr_restr.other
-            and curr_restr.preview
+                curr_restr.messages
+                and curr_restr.media
+                and curr_restr.other
+                and curr_restr.preview
         )
 
 

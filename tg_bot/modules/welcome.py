@@ -4,6 +4,24 @@ import re
 import time
 from functools import partial
 from io import BytesIO
+from telegram import (
+    ChatPermissions,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup,
+    ParseMode,
+    Update,
+)
+from telegram.error import BadRequest
+from telegram.ext import (
+    CallbackContext,
+    CallbackQueryHandler,
+    CommandHandler,
+    Filters,
+    MessageHandler,
+    run_async,
+)
+from telegram.utils.helpers import escape_markdown, mention_html, mention_markdown
+
 import tg_bot.modules.sql.welcome_sql as sql
 from tg_bot import (
     DEV_USERS,
@@ -28,23 +46,6 @@ from tg_bot.modules.helper_funcs.string_handling import (
 )
 from tg_bot.modules.log_channel import loggable
 from tg_bot.modules.sql.antispam_sql import is_user_gbanned
-from telegram import (
-    ChatPermissions,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    ParseMode,
-    Update,
-)
-from telegram.error import BadRequest
-from telegram.ext import (
-    CallbackContext,
-    CallbackQueryHandler,
-    CommandHandler,
-    Filters,
-    MessageHandler,
-    run_async,
-)
-from telegram.utils.helpers import escape_markdown, mention_html, mention_markdown
 
 VALID_WELCOME_FORMATTERS = [
     "first",
@@ -73,6 +74,7 @@ CAPTCHA_ANS_DICT = {}
 
 from multicolorcaptcha import CaptchaGenerator
 
+
 # do not async
 def send(update, message, keyboard, backup_message):
     chat = update.effective_chat
@@ -97,7 +99,7 @@ def send(update, message, keyboard, backup_message):
             msg = update.effective_message.reply_text(
                 markdown_parser(
                     backup_message + "\nNote: the current message has an invalid url "
-                    "in one of its buttons. Please update."
+                                     "in one of its buttons. Please update."
                 ),
                 parse_mode=ParseMode.MARKDOWN,
                 reply_to_message_id=reply,
@@ -115,8 +117,8 @@ def send(update, message, keyboard, backup_message):
             msg = update.effective_message.reply_text(
                 markdown_parser(
                     backup_message + "\nNote: the current message has buttons which "
-                    "use url protocols that are unsupported by "
-                    "telegram. Please update."
+                                     "use url protocols that are unsupported by "
+                                     "telegram. Please update."
                 ),
                 parse_mode=ParseMode.MARKDOWN,
                 reply_to_message_id=reply,
@@ -125,7 +127,7 @@ def send(update, message, keyboard, backup_message):
             msg = update.effective_message.reply_text(
                 markdown_parser(
                     backup_message + "\nNote: the current message has some bad urls. "
-                    "Please update."
+                                     "Please update."
                 ),
                 parse_mode=ParseMode.MARKDOWN,
                 reply_to_message_id=reply,
@@ -137,7 +139,7 @@ def send(update, message, keyboard, backup_message):
             msg = update.effective_message.reply_text(
                 markdown_parser(
                     backup_message + "\nNote: An error occured when sending the "
-                    "custom message. Please update."
+                                     "custom message. Please update."
                 ),
                 parse_mode=ParseMode.MARKDOWN,
                 reply_to_message_id=reply,
@@ -251,7 +253,7 @@ def new_member(update: Update, context: CallbackContext):
                     media_wel = True
 
                 first_name = (
-                    new_mem.first_name or "PersonWithNoName"
+                        new_mem.first_name or "PersonWithNoName"
                 )  # edge case of empty name - occurs for some bugs.
 
                 if cust_welcome:
@@ -305,8 +307,8 @@ def new_member(update: Update, context: CallbackContext):
 
         # User exceptions from welcomemutes
         if (
-            is_user_ban_protected(chat, new_mem.id, chat.get_member(new_mem.id))
-            or human_checks
+                is_user_ban_protected(chat, new_mem.id, chat.get_member(new_mem.id))
+                or human_checks
         ):
             should_mute = False
         # Join welcome: soft mute
@@ -408,9 +410,9 @@ def new_member(update: Update, context: CallbackContext):
                 # Get information
                 image = captcha["image"]
                 characters = captcha["characters"]
-                #print(characters)
+                # print(characters)
                 fileobj = BytesIO()
-                fileobj.name=f'captcha_{new_mem.id}.png'
+                fileobj.name = f'captcha_{new_mem.id}.png'
                 image.save(fp=fileobj)
                 fileobj.seek(0)
                 CAPTCHA_ANS_DICT[(chat.id, new_mem.id)] = int(characters)
@@ -451,20 +453,22 @@ def new_member(update: Update, context: CallbackContext):
                 nums.append(characters)
                 random.shuffle(nums)
                 to_append = []
-                #print(nums)
+                # print(nums)
                 for a in nums:
-                    to_append.append(InlineKeyboardButton(text=str(a), callback_data=f"user_captchajoin_({chat.id},{new_mem.id})_({a})"))
+                    to_append.append(InlineKeyboardButton(text=str(a),
+                                                          callback_data=f"user_captchajoin_({chat.id},{new_mem.id})_({a})"))
                     if len(to_append) > 2:
                         btn.append(to_append)
                         to_append = []
                 if to_append:
                     btn.append(to_append)
 
-                message = msg.reply_photo(fileobj, caption=f'Welcome [{escape_markdown(new_mem.first_name)}](tg://user?id={user.id}). Click the correct button to get unmuted!',
-                                reply_markup=InlineKeyboardMarkup(btn),
-                                parse_mode=ParseMode.MARKDOWN,
-                                reply_to_message_id=reply,
-                            )
+                message = msg.reply_photo(fileobj,
+                                          caption=f'Welcome [{escape_markdown(new_mem.first_name)}](tg://user?id={user.id}). Click the correct button to get unmuted!',
+                                          reply_markup=InlineKeyboardMarkup(btn),
+                                          parse_mode=ParseMode.MARKDOWN,
+                                          reply_to_message_id=reply,
+                                          )
                 bot.restrict_chat_member(
                     chat.id,
                     new_mem.id,
@@ -601,7 +605,7 @@ def left_member(update: Update, context: CallbackContext):
                 return
 
             first_name = (
-                left_mem.first_name or "PersonWithNoName"
+                    left_mem.first_name or "PersonWithNoName"
             )  # edge case of empty name - occurs for some bugs.
             if cust_goodbye:
                 if cust_goodbye == sql.DEFAULT_GOODBYE:
@@ -1052,19 +1056,19 @@ def user_button(update: Update, context: CallbackContext):
     else:
         query.answer(text="You're not allowed to do this!")
 
+
 def user_captcha_button(update: Update, context: CallbackContext):
     chat = update.effective_chat
     user = update.effective_user
     query = update.callback_query
     bot = context.bot
-    #print(query.data)
+    # print(query.data)
     match = re.match(r"user_captchajoin_\(([\d\-]+),(\d+)\)_\((\d{4})\)", query.data)
     message = update.effective_message
     join_chat = int(match.group(1))
     join_user = int(match.group(2))
     captcha_ans = int(match.group(3))
     join_usr_data = bot.getChat(join_user)
-
 
     if join_user == user.id:
         c_captcha_ans = CAPTCHA_ANS_DICT.pop((join_chat, join_user))
@@ -1211,8 +1215,10 @@ def __chat_settings__(chat_id, user_id):
 
 from tg_bot.modules.language import gs
 
+
 def get_help(chat):
     return gs(chat, "greetings_help")
+
 
 NEW_MEM_HANDLER = MessageHandler(
     Filters.status_update.new_chat_members, new_member, run_async=True

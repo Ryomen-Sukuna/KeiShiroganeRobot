@@ -1,5 +1,4 @@
 import threading
-
 from sqlalchemy import Column, UnicodeText, Boolean
 
 from tg_bot.modules.sql import BASE, SESSION
@@ -151,7 +150,7 @@ def is_command_ignored(chat_id, command):
         return True
 
     if str(chat_id) in CLEANER_CHATS and command.lower() in CLEANER_CHATS.get(
-        str(chat_id)
+            str(chat_id)
     ).get("commands"):
         return True
 

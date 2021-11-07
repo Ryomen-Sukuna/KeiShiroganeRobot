@@ -1,8 +1,10 @@
+from telegram import MAX_MESSAGE_LENGTH, Bot, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, \
+    InlineQueryResultArticle, InputTextMessageContent
+from telegram.error import TelegramError
 from typing import Dict, List
 from uuid import uuid4
+
 from tg_bot import NO_LOAD
-from telegram import MAX_MESSAGE_LENGTH, Bot, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, InlineQueryResultArticle, InputTextMessageContent
-from telegram.error import TelegramError
 
 
 class EqInlineKeyboardButton(InlineKeyboardButton):
@@ -62,7 +64,7 @@ def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
             ]
         )
 
-    pairs = [modules[i * 3 : (i + 1) * 3] for i in range((len(modules) + 3 - 1) // 3)]
+    pairs = [modules[i * 3: (i + 1) * 3] for i in range((len(modules) + 3 - 1) // 3)]
 
     round_num = len(modules) / 3
     calc = len(modules) - round(round_num)
@@ -70,15 +72,15 @@ def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
         pairs.append((modules[-1],))
     return pairs
 
-def article(
-    title: str = "",
-    description: str = "",
-    message_text: str = "",
-    thumb_url: str = None,
-    reply_markup: InlineKeyboardMarkup = None,
-    disable_web_page_preview: bool = False,
-) -> InlineQueryResultArticle:
 
+def article(
+        title: str = "",
+        description: str = "",
+        message_text: str = "",
+        thumb_url: str = None,
+        reply_markup: InlineKeyboardMarkup = None,
+        disable_web_page_preview: bool = False,
+) -> InlineQueryResultArticle:
     return InlineQueryResultArticle(
         id=uuid4(),
         title=title,
@@ -91,8 +93,9 @@ def article(
         reply_markup=reply_markup,
     )
 
+
 def send_to_list(
-    bot: Bot, send_to: list, message: str, markdown=False, html=False
+        bot: Bot, send_to: list, message: str, markdown=False, html=False
 ) -> None:
     if html and markdown:
         raise Exception("Can only send with either markdown or HTML!")

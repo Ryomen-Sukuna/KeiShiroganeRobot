@@ -1,10 +1,9 @@
 import html
-from typing import List
-
 from telegram import Update, ParseMode
 from telegram.error import BadRequest
 from telegram.ext import CommandHandler, Filters, CallbackContext
 from telegram.utils.helpers import mention_html
+from typing import List
 
 from tg_bot import (
     dispatcher,
@@ -27,10 +26,11 @@ from tg_bot.modules.helper_funcs.chat_status import (
     user_admin,
     user_can_ban,
 )
+from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.extraction import extract_user_and_text
 from tg_bot.modules.helper_funcs.string_handling import extract_time
 from tg_bot.modules.log_channel import loggable, gloggable
-from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @connection_status
 @bot_admin
@@ -375,11 +375,12 @@ def selfunban(context: CallbackContext, update: Update) -> str:
 
     return log
 
+
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "bans_help")
-
 
 
 __mod_name__ = "Bans"

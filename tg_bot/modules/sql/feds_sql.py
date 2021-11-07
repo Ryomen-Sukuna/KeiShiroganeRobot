@@ -1,5 +1,4 @@
 import threading
-
 from sqlalchemy import Column, String, UnicodeText, Integer, Boolean
 from telegram.error import BadRequest, Unauthorized
 
@@ -99,7 +98,6 @@ CHAT_FEDS_LOCK = threading.RLock()
 FEDS_SETTINGS_LOCK = threading.RLock()
 FEDS_SUBSCRIBER_LOCK = threading.RLock()
 
-
 FEDERATION_BYNAME = {}
 FEDERATION_BYOWNER = {}
 FEDERATION_BYFEDID = {}
@@ -152,7 +150,7 @@ def get_user_admin_fed_name(user_id):
         FEDERATION_BYFEDID[f]["fname"]
         for f in FEDERATION_BYFEDID
         if int(user_id)
-        in eval(eval(FEDERATION_BYFEDID[f]["fusers"])["members"])
+           in eval(eval(FEDERATION_BYFEDID[f]["fusers"])["members"])
     ]
 
 
@@ -169,7 +167,7 @@ def get_user_admin_fed_full(user_id):
         {"fed_id": f, "fed": FEDERATION_BYFEDID[f]}
         for f in FEDERATION_BYFEDID
         if int(user_id)
-        in eval(eval(FEDERATION_BYFEDID[f]["fusers"])["members"])
+           in eval(eval(FEDERATION_BYFEDID[f]["fusers"])["members"])
     ]
 
 
@@ -501,12 +499,12 @@ def fban_user(fed_id, user_id, first_name, last_name, user_name, reason, time):
 
 
 def multi_fban_user(
-    multi_fed_id,
-    multi_user_id,
-    multi_first_name,
-    multi_last_name,
-    multi_user_name,
-    multi_reason,
+        multi_fed_id,
+        multi_user_id,
+        multi_first_name,
+        multi_last_name,
+        multi_user_name,
+        multi_reason,
 ):
     counter = 0
     time = 0

@@ -1,9 +1,10 @@
 import subprocess
-
-from tg_bot import log as LOGGER, dispatcher, SYS_ADMIN
 from telegram import ParseMode, Update
 from telegram.ext import Filters, CallbackContext
+
+from tg_bot import log as LOGGER, dispatcher, SYS_ADMIN
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @keicmd(command='sh', filters=Filters.user(SYS_ADMIN))
 def shell(update: Update, context: CallbackContext):

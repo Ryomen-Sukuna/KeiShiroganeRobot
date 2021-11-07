@@ -1,18 +1,17 @@
-from typing import Union, List, Dict, Callable, Generator, Any
 import itertools
 from collections.abc import Iterable
-from telegram.ext import CommandHandler, CallbackQueryHandler
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram.ext import CommandHandler, CallbackQueryHandler
+from typing import Union, List, Dict, Callable, Generator, Any
 
-from tg_bot import dispatcher
 import tg_bot.modules.sql.language_sql as sql
-from tg_bot.modules.helper_funcs.chat_status import user_admin, user_admin_no_reply
+from tg_bot import dispatcher
 from tg_bot.langs import get_string, get_languages, get_language
-
+from tg_bot.modules.helper_funcs.chat_status import user_admin, user_admin_no_reply
 
 
 def paginate(
-    iterable: Iterable, page_size: int
+        iterable: Iterable, page_size: int
 ) -> Generator[List, None, None]:
     while True:
         i1, i2 = itertools.tee(iterable)
@@ -40,9 +39,9 @@ def set_lang(update: Update, _) -> None:
     )
 
     keyb = [InlineKeyboardButton(
-                text=name,
-                callback_data=f"setLang_{code}",
-            ) for code, name in get_languages().items()]
+        text=name,
+        callback_data=f"setLang_{code}",
+    ) for code, name in get_languages().items()]
     keyb = list(paginate(keyb, 2))
     keyb.append(
         [

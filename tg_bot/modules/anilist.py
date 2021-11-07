@@ -1,5 +1,7 @@
 # module to get anime info by t.me/DragSama // find him on github :  https://github.com/DragSama // he's my doraemon btw.
-from telegram.ext import CommandHandler, CallbackContext
+import math
+import requests
+import time
 from telegram import (
     Message,
     Chat,
@@ -9,10 +11,10 @@ from telegram import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
-import requests
-import math
-import time
+from telegram.ext import CommandHandler, CallbackContext
+
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 def shorten(description, info="anilist.co"):
     msg = ""
@@ -23,9 +25,9 @@ def shorten(description, info="anilist.co"):
         msg += f"\n*Description*:_{description}_"
     return (
         msg.replace("<br>", "")
-        .replace("</br>", "")
-        .replace("<i>", "")
-        .replace("</i>", "")
+            .replace("</br>", "")
+            .replace("<i>", "")
+            .replace("</i>", "")
     )
 
 
@@ -38,11 +40,11 @@ def t(milliseconds: int) -> str:
     hours, minutes = divmod(minutes, 60)
     days, hours = divmod(hours, 24)
     tmp = (
-        ((str(days) + " Days, ") if days else "")
-        + ((str(hours) + " Hours, ") if hours else "")
-        + ((str(minutes) + " Minutes, ") if minutes else "")
-        + ((str(seconds) + " Seconds, ") if seconds else "")
-        + ((str(milliseconds) + " ms, ") if milliseconds else "")
+            ((str(days) + " Days, ") if days else "")
+            + ((str(hours) + " Hours, ") if hours else "")
+            + ((str(minutes) + " Minutes, ") if minutes else "")
+            + ((str(seconds) + " Seconds, ") if seconds else "")
+            + ((str(milliseconds) + " ms, ") if milliseconds else "")
     )
     return tmp[:-2]
 
@@ -157,8 +159,8 @@ query ($id: Int,$search: String) {
     }
 """
 
-
 url = "https://graphql.anilist.co"
+
 
 @keicmd(command="airing")
 def airing(update: Update, context: CallbackContext):
@@ -181,6 +183,7 @@ def airing(update: Update, context: CallbackContext):
     else:
         msg += f"\n*Episode*:{response['episodes']}\n*Status*: `N/A`"
     update.effective_message.reply_text(msg, parse_mode=ParseMode.MARKDOWN)
+
 
 @keicmd(command="anime")
 def anime(update: Update, context: CallbackContext):
@@ -218,9 +221,9 @@ def anime(update: Update, context: CallbackContext):
                 trailer = "https://youtu.be/" + trailer_id
         description = (
             json.get("description", "N/A")
-            .replace("<i>", "")
-            .replace("</i>", "")
-            .replace("<br>", "")
+                .replace("<i>", "")
+                .replace("</i>", "")
+                .replace("<br>", "")
         )
         msg += shorten(description, info)
         image = json.get("bannerImage", None)
@@ -255,6 +258,7 @@ def anime(update: Update, context: CallbackContext):
                 reply_markup=InlineKeyboardMarkup(buttons),
             )
 
+
 @keicmd(command="character")
 def character(update: Update, context: CallbackContext):
     message = update.effective_message
@@ -288,6 +292,7 @@ def character(update: Update, context: CallbackContext):
             update.effective_message.reply_text(
                 msg.replace("<b>", "</b>"), parse_mode=ParseMode.MARKDOWN
             )
+
 
 @keicmd(command="manga")
 def manga(update: Update, context: CallbackContext):
@@ -358,7 +363,9 @@ def manga(update: Update, context: CallbackContext):
 
 from tg_bot.modules.language import gs
 
+
 def get_help(chat):
     return gs(chat, "anilist_help")
+
 
 __mod_name__ = "AniList"

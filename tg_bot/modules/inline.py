@@ -1,11 +1,8 @@
 import html
 import json
+import requests
 from datetime import datetime
 from platform import python_version
-from typing import List
-from uuid import uuid4
-
-import requests
 from spamprotection.errors import HostDownError
 from spamprotection.sync import SPBClient
 from telegram import InlineQueryResultArticle, ParseMode, InputTextMessageContent, Update, InlineKeyboardMarkup, \
@@ -14,6 +11,8 @@ from telegram import __version__
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext
 from telegram.utils.helpers import mention_html
+from typing import List
+from uuid import uuid4
 
 import tg_bot.modules.sql.users_sql as sql
 from tg_bot import (
@@ -25,9 +24,8 @@ from tg_bot import (
     WHITELIST_USERS,
     sw, log
 )
-from tg_bot.modules.helper_funcs.misc import article
 from tg_bot.modules.helper_funcs.decorators import keiinline
-
+from tg_bot.modules.helper_funcs.misc import article
 
 client = SPBClient()
 
@@ -36,6 +34,7 @@ def remove_prefix(text, prefix):
     if text.startswith(prefix):
         text = text.replace(prefix, "", 1)
     return text
+
 
 @keiinline()
 def inlinequery(update: Update, _) -> None:
@@ -202,7 +201,7 @@ def inlineinfo(query: str, update: Update, context: CallbackContext) -> None:
             text += f"<b>\n• Operator:</b> <code>{op}</code>\n"
             text += f"<b>• Agent:</b> <code>{ag}</code>\n"
             text += f"<b>• Whitelisted:</b> <code>{wl}</code>\n"
-            text += f"<b>• Spam/Ham Prediction:</b> <code>{round((sp/hamp*100), 3)}%</code>\n"
+            text += f"<b>• Spam/Ham Prediction:</b> <code>{round((sp / hamp * 100), 3)}%</code>\n"
             text += f"<b>• Potential Spammer:</b> <code>{ps}</code>\n"
             text += f"<b>• Blacklisted:</b> <code>{blc}</code>\n"
             text += f"<b>• Blacklist Reason:</b> <code>{blres}</code>\n"
@@ -215,9 +214,6 @@ def inlineinfo(query: str, update: Update, context: CallbackContext) -> None:
 
     num_chats = sql.get_user_num_chats(user.id)
     text += f"\n• Chat count: <code>{num_chats}</code>"
-
-
-
 
     kb = InlineKeyboardMarkup(
         [
@@ -232,7 +228,6 @@ def inlineinfo(query: str, update: Update, context: CallbackContext) -> None:
             ]
         ]
     )
-
 
     results = [
         InlineQueryResultArticle(
@@ -274,7 +269,6 @@ def about(query: str, update: Update, context: CallbackContext) -> None:
             ],
         ]
     )
-
 
     results.append(
 
@@ -357,7 +351,6 @@ def spb(query: str, update: Update, context: CallbackContext) -> None:
         ]
     )
 
-
     a = "the entity was not found"
     results = [
         InlineQueryResultArticle(
@@ -370,7 +363,6 @@ def spb(query: str, update: Update, context: CallbackContext) -> None:
     ]
 
     update.inline_query.answer(results, cache_time=5)
-
 
 
 MEDIA_QUERY = '''query ($search: String) {
@@ -439,7 +431,7 @@ def media_query(query: str, update: Update, context: CallbackContext) -> None:
                 description = description or "N/A"
 
             if len((str(description))) > 700:
-                description = description [0:700] + "....."
+                description = description[0:700] + "....."
 
             avgsc = data.get("averageScore") or "N/A"
             status = data.get("status") or "N/A"
@@ -447,7 +439,6 @@ def media_query(query: str, update: Update, context: CallbackContext) -> None:
             genres = ", ".join(genres)
             img = f"https://img.anili.st/media/{data['id']}" or "https://telegra.ph/file/cc83a0b7102ad1d7b1cb3.jpg"
             aurl = data.get("siteUrl")
-
 
             kb = InlineKeyboardMarkup(
                 [
@@ -508,7 +499,8 @@ def media_query(query: str, update: Update, context: CallbackContext) -> None:
                 (
                 id=str(uuid4()),
                 title=f"Media {query} not found",
-                input_message_content=InputTextMessageContent(f"Media {query} not found due to {e}", parse_mode=ParseMode.MARKDOWN,
+                input_message_content=InputTextMessageContent(f"Media {query} not found due to {e}",
+                                                              parse_mode=ParseMode.MARKDOWN,
                                                               disable_web_page_preview=True),
                 reply_markup=kb
             )

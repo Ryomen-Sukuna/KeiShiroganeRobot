@@ -1,6 +1,5 @@
-import time
 import re
-
+import time
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, Update, Bot
 from telegram.error import BadRequest, Unauthorized
 from telegram.ext import (
@@ -19,7 +18,6 @@ user_admin = chat_status.user_admin
 @user_admin
 @typing_action
 def allow_connections(update, context) -> str:
-
     chat = update.effective_chat
     args = context.args
 
@@ -66,7 +64,6 @@ def allow_connections(update, context) -> str:
 
 @typing_action
 def connection_chat(update, context):
-
     chat = update.effective_chat
     user = update.effective_user
 
@@ -90,7 +87,6 @@ def connection_chat(update, context):
 
 @typing_action
 def connect_chat(update, context):
-
     chat = update.effective_chat
     user = update.effective_user
     args = context.args
@@ -247,7 +243,6 @@ def connect_chat(update, context):
 
 
 def disconnect_chat(update, context):
-
     if update.effective_chat.type == "private":
         disconnection_status = sql.disconnect(update.effective_message.from_user.id)
         if disconnection_status:
@@ -274,17 +269,17 @@ def connected(bot: Bot, update: Update, chat, user_id, need_admin=True):
         isallow = sql.allow_connect_to_chat(conn_id)
 
         if (
-            (isadmin)
-            or (isallow and ismember)
-            or (user.id in SUDO_USERS)
-            or (user.id in DEV_USERS)
+                (isadmin)
+                or (isallow and ismember)
+                or (user.id in SUDO_USERS)
+                or (user.id in DEV_USERS)
         ):
             if need_admin is not True:
                 return conn_id
             if (
-                getstatusadmin.status in ("administrator", "creator")
-                or user_id in SUDO_USERS
-                or user.id in DEV_USERS
+                    getstatusadmin.status in ("administrator", "creator")
+                    or user_id in SUDO_USERS
+                    or user.id in DEV_USERS
             ):
                 return conn_id
             else:
@@ -316,7 +311,6 @@ CONN_HELP = """
 
 
 def help_connect_chat(update, context):
-
     args = context.args
 
     if update.effective_message.chat.type != "private":
@@ -327,7 +321,6 @@ def help_connect_chat(update, context):
 
 
 def connect_button(update, context):
-
     query = update.callback_query
     chat = update.effective_chat
     user = update.effective_user
@@ -384,8 +377,10 @@ def connect_button(update, context):
 
 from tg_bot.modules.language import gs
 
+
 def get_help(chat):
     return gs(chat, "connections_help")
+
 
 CONNECT_CHAT_HANDLER = CommandHandler("connect", connect_chat, pass_args=True)
 CONNECTION_CHAT_HANDLER = CommandHandler("connection", connection_chat, run_async=True)

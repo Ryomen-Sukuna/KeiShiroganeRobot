@@ -1,15 +1,17 @@
 import html
-from tg_bot.modules.disable import DisableAbleCommandHandler
-from tg_bot import dispatcher, SUDO_USERS
-from tg_bot.modules.helper_funcs.extraction import extract_user
-from telegram.ext import CallbackContext, CallbackQueryHandler, Filters
-import tg_bot.modules.sql.approve_sql as sql
-from tg_bot.modules.helper_funcs.chat_status import user_admin
-from tg_bot.modules.log_channel import loggable
 from telegram import ParseMode, InlineKeyboardMarkup, InlineKeyboardButton, Update
-from telegram.utils.helpers import mention_html
 from telegram.error import BadRequest
+from telegram.ext import CallbackContext, CallbackQueryHandler, Filters
+from telegram.utils.helpers import mention_html
+
+import tg_bot.modules.sql.approve_sql as sql
+from tg_bot import dispatcher, SUDO_USERS
+from tg_bot.modules.disable import DisableAbleCommandHandler
+from tg_bot.modules.helper_funcs.chat_status import user_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd, keicallback
+from tg_bot.modules.helper_funcs.extraction import extract_user
+from tg_bot.modules.log_channel import loggable
+
 
 @keicmd(command='approve', filters=Filters.chat_type.groups)
 @loggable
@@ -54,6 +56,7 @@ def approve(update, context):
 
     return log_message
 
+
 @keicmd(command='unapprove', filters=Filters.chat_type.groups)
 @loggable
 @user_admin
@@ -89,6 +92,7 @@ def disapprove(update, context):
         f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}")
 
     return log_message
+
 
 @keicmd(command='approved', filters=Filters.chat_type.groups)
 @user_admin
@@ -157,6 +161,7 @@ def unapproveall(update: Update, context: CallbackContext):
             parse_mode=ParseMode.MARKDOWN,
         )
 
+
 @keicallback(pattern=r"unapproveall_.*")
 def unapproveall_btn(update: Update, context: CallbackContext):
     query = update.callback_query
@@ -185,9 +190,12 @@ def unapproveall_btn(update: Update, context: CallbackContext):
         if member.status == "member":
             query.answer("You need to be admin to do this.")
 
+
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "approve_help")
+
 
 __mod_name__ = "Approvals"

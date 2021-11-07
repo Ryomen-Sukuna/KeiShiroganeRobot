@@ -1,8 +1,8 @@
 import threading
-
-from tg_bot.modules.sql import BASE, SESSION
 from sqlalchemy import Boolean, Column, Integer, String, UnicodeText, distinct, func
 from sqlalchemy.dialects import postgresql
+
+from tg_bot.modules.sql import BASE, SESSION
 
 
 class Warns(BASE):
@@ -243,8 +243,8 @@ def num_warn_chat_filters(chat_id):
     try:
         return (
             SESSION.query(WarnFilters.chat_id)
-            .filter(WarnFilters.chat_id == str(chat_id))
-            .count()
+                .filter(WarnFilters.chat_id == str(chat_id))
+                .count()
         )
     finally:
         SESSION.close()
@@ -289,8 +289,8 @@ def migrate_chat(old_chat_id, new_chat_id):
     with WARN_FILTER_INSERTION_LOCK:
         chat_filters = (
             SESSION.query(WarnFilters)
-            .filter(WarnFilters.chat_id == str(old_chat_id))
-            .all()
+                .filter(WarnFilters.chat_id == str(old_chat_id))
+                .all()
         )
         for filt in chat_filters:
             filt.chat_id = str(new_chat_id)
@@ -301,8 +301,8 @@ def migrate_chat(old_chat_id, new_chat_id):
     with WARN_SETTINGS_LOCK:
         chat_settings = (
             SESSION.query(WarnSettings)
-            .filter(WarnSettings.chat_id == str(old_chat_id))
-            .all()
+                .filter(WarnSettings.chat_id == str(old_chat_id))
+                .all()
         )
         for setting in chat_settings:
             setting.chat_id = str(new_chat_id)

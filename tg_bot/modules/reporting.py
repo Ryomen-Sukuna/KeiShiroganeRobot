@@ -1,9 +1,4 @@
 import html
-
-from tg_bot import log, SUDO_USERS, SARDEGNA_USERS, WHITELIST_USERS, dispatcher
-from tg_bot.modules.helper_funcs.chat_status import user_admin, user_not_admin
-from tg_bot.modules.log_channel import loggable
-from tg_bot.modules.sql import reporting_sql as sql
 from telegram import Chat, InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Update
 from telegram.error import BadRequest, Unauthorized
 from telegram.ext import (
@@ -12,10 +7,16 @@ from telegram.ext import (
     Filters,
 )
 from telegram.utils.helpers import mention_html
+
+from tg_bot import log, SUDO_USERS, SARDEGNA_USERS, WHITELIST_USERS, dispatcher
+from tg_bot.modules.helper_funcs.chat_status import user_admin, user_not_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
+from tg_bot.modules.log_channel import loggable
+from tg_bot.modules.sql import reporting_sql as sql
 
 REPORT_GROUP = 12
 REPORT_IMMUNE_USERS = SUDO_USERS + SARDEGNA_USERS + WHITELIST_USERS
+
 
 @keicmd(command='reports')
 @user_admin
@@ -155,7 +156,7 @@ def report(update: Update, context: CallbackContext) -> str:
                             message.reply_to_message.forward(admin.user.id)
 
                             if (
-                                len(message.text.split()) > 1
+                                    len(message.text.split()) > 1
                             ):  # If user is giving a reason, send his message too
                                 message.forward(admin.user.id)
                     if not chat.username:
@@ -167,7 +168,7 @@ def report(update: Update, context: CallbackContext) -> str:
                             message.reply_to_message.forward(admin.user.id)
 
                             if (
-                                len(message.text.split()) > 1
+                                    len(message.text.split()) > 1
                             ):  # If user is giving a reason, send his message too
                                 message.forward(admin.user.id)
 
@@ -183,7 +184,7 @@ def report(update: Update, context: CallbackContext) -> str:
                             message.reply_to_message.forward(admin.user.id)
 
                             if (
-                                len(message.text.split()) > 1
+                                    len(message.text.split()) > 1
                             ):  # If user is giving a reason, send his message too
                                 message.forward(admin.user.id)
 
@@ -193,7 +194,8 @@ def report(update: Update, context: CallbackContext) -> str:
                     log.exception("Exception while reporting user")
 
         try:
-            update.effective_message.reply_sticker("CAACAgUAAx0CRSKHWwABAXGoYB2UJauytkH4RJWSStz9DTlxQg0AAlcHAAKAUF41_sNx9Y1z2DQeBA")
+            update.effective_message.reply_sticker(
+                "CAACAgUAAx0CRSKHWwABAXGoYB2UJauytkH4RJWSStz9DTlxQg0AAlcHAAKAUF41_sNx9Y1z2DQeBA")
         except:
             pass
         message.reply_to_message.reply_text(
@@ -219,6 +221,7 @@ def __user_settings__(user_id):
         if sql.user_should_report(user_id) is True
         else "You will *not* receive reports from chats you're admin."
     )
+
 
 @keicallback(pattern=r"report_")
 def buttons(update: Update, context: CallbackContext):
@@ -265,6 +268,7 @@ def buttons(update: Update, context: CallbackContext):
 
 
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "reports_help")

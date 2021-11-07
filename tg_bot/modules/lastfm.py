@@ -1,13 +1,13 @@
 # Last.fm module by @TheRealPhoenix - https://github.com/rsktg
 
 import requests
-
 from telegram import Update, ParseMode, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import CallbackContext
 
+import tg_bot.modules.sql.last_fm_sql as sql
 from tg_bot import dispatcher, LASTFM_API_KEY
 from tg_bot.modules.helper_funcs.decorators import keicmd
-import tg_bot.modules.sql.last_fm_sql as sql
+
 
 @keicmd(command='setuser')
 def set_user(update: Update, context: CallbackContext):
@@ -23,6 +23,7 @@ def set_user(update: Update, context: CallbackContext):
             "That's not how this works...\nRun /setuser followed by your username!"
         )
 
+
 @keicmd(command='clearuser')
 def clear_user(update: Update, _):
     user = update.effective_user.id
@@ -30,6 +31,7 @@ def clear_user(update: Update, _):
     update.effective_message.reply_text(
         "Last.fm username successfully cleared from my database!"
     )
+
 
 @keicmd(command='lastfm')
 def last_fm(update: Update, _):
@@ -81,15 +83,15 @@ def last_fm(update: Update, _):
             requests.get(
                 f"{base_url}?method=user.getinfo&user={username}&api_key={LASTFM_API_KEY}&format=json"
             )
-            .json()
-            .get("user")
+                .json()
+                .get("user")
         )
         scrobbles = last_user.get("playcount")
         rep += f"\n(<code>{scrobbles}</code> scrobbles so far)"
-        
+
     buttons = InlineKeyboardMarkup(
         [[InlineKeyboardButton("📺 Youtube", url=f'https://www.youtube.com/results?search_query={artist}+-+{song}')]]
-        )
+    )
     msg.reply_text(rep, reply_markup=buttons, parse_mode=ParseMode.HTML)
 
 

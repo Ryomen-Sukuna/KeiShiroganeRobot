@@ -1,6 +1,7 @@
-from tg_bot.modules.helper_funcs.telethn import HIGHER_AUTH, telethn
-from tg_bot import SUPPORT_USERS, SARDEGNA_USERS, WHITELIST_USERS
 from telethon.tl.types import ChannelParticipantsAdmins
+
+from tg_bot import SUPPORT_USERS, SARDEGNA_USERS, WHITELIST_USERS
+from tg_bot.modules.helper_funcs.telethn import HIGHER_AUTH, telethn
 
 
 async def user_is_ban_protected(user_id: int, message):
@@ -100,7 +101,6 @@ async def can_add_admins(message):
 
 
 async def can_delete_messages(message):
-
     if message.is_private:
         return True
     elif message.chat.admin_rights:

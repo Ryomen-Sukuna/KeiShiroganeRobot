@@ -1,4 +1,7 @@
+from cachetools import TTLCache
 from functools import wraps
+from telegram import Chat, ChatMember, ParseMode, Update
+from telegram.ext import CallbackContext
 
 from tg_bot import (
     DEL_CMDS,
@@ -9,9 +12,6 @@ from tg_bot import (
     WHITELIST_USERS,
     dispatcher,
 )
-from cachetools import TTLCache
-from telegram import Chat, ChatMember, ParseMode, Update
-from telegram.ext import CallbackContext
 
 # stores admemes in memory for 10 min.
 ADMIN_CACHE = TTLCache(maxsize=512, ttl=60 * 10)
@@ -40,11 +40,11 @@ def is_sudo_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
 
 def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
     if (
-        chat.type == "private"
-        or user_id in SUDO_USERS
-        or user_id in DEV_USERS
-        or chat.all_members_are_administrators
-        or user_id in {777000, 1087968824}
+            chat.type == "private"
+            or user_id in SUDO_USERS
+            or user_id in DEV_USERS
+            or chat.all_members_are_administrators
+            or user_id in {777000, 1087968824}
     ):  # Count telegram and Group Anonymous as admin
         return True
 
@@ -79,13 +79,13 @@ def can_delete(chat: Chat, bot_id: int) -> bool:
 
 def is_user_ban_protected(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
     if (
-        chat.type == "private"
-        or user_id in SUDO_USERS
-        or user_id in DEV_USERS
-        or user_id in WHITELIST_USERS
-        or user_id in SARDEGNA_USERS
-        or chat.all_members_are_administrators
-        or user_id in {777000, 1087968824}
+            chat.type == "private"
+            or user_id in SUDO_USERS
+            or user_id in DEV_USERS
+            or user_id in WHITELIST_USERS
+            or user_id in SARDEGNA_USERS
+            or chat.all_members_are_administrators
+            or user_id in {777000, 1087968824}
     ):  # Count telegram and Group Anonymous as admin
         return True
 
@@ -169,7 +169,7 @@ def support_plus(func):
 def whitelist_plus(func):
     @wraps(func)
     def is_whitelist_plus_func(
-        update: Update, context: CallbackContext, *args, **kwargs
+            update: Update, context: CallbackContext, *args, **kwargs
     ):
         bot = context.bot
         user = update.effective_user
@@ -212,7 +212,7 @@ def user_admin(func):
 def user_admin_no_reply(func):
     @wraps(func)
     def is_not_admin_no_reply(
-        update: Update, context: CallbackContext, *args, **kwargs
+            update: Update, context: CallbackContext, *args, **kwargs
     ):
         bot = context.bot
         user = update.effective_user
@@ -364,9 +364,9 @@ def user_can_ban(func):
         member = update.effective_chat.get_member(user)
 
         if (
-            not member.can_restrict_members
-            and member.status != "creator"
-            and user not in SUDO_USERS
+                not member.can_restrict_members
+                and member.status != "creator"
+                and user not in SUDO_USERS
         ):
             update.effective_message.reply_text(
                 "Sorry son, but you're not worthy to wield the banhammer."

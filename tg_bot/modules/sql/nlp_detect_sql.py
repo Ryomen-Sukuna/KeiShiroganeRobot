@@ -1,10 +1,7 @@
 import threading
-
 from sqlalchemy import Column, UnicodeText, Integer, String, Boolean
 
 from tg_bot.modules.sql import BASE, SESSION
-
-
 
 
 class NLPSettings(BASE):
@@ -53,7 +50,6 @@ def disable_nlp(chat_id):
 
 def does_chat_nlp(chat_id):
     return str(chat_id) not in NLPSTAT_LIST
-
 
 
 def __load_nlp_stat_list():

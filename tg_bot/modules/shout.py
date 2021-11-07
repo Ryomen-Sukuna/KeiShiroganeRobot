@@ -1,7 +1,9 @@
-from tg_bot import dispatcher
 from telegram import Update
 from telegram.ext import CallbackContext
+
+from tg_bot import dispatcher
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @keicmd(command='shout')
 def shout(update: Update, context: CallbackContext):

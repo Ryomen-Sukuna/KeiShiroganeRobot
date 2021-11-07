@@ -1,4 +1,8 @@
 import html
+from telegram import Bot, Chat, ChatPermissions, ParseMode, Update
+from telegram.error import BadRequest
+from telegram.ext import CallbackContext, CommandHandler
+from telegram.utils.helpers import mention_html
 from typing import Optional
 
 from tg_bot import log, SARDEGNA_USERS, dispatcher
@@ -9,21 +13,16 @@ from tg_bot.modules.helper_funcs.chat_status import (
     is_user_admin,
     user_admin,
 )
+from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from tg_bot.modules.helper_funcs.string_handling import extract_time
-from tg_bot.modules.log_channel import loggable
-from telegram import Bot, Chat, ChatPermissions, ParseMode, Update
-from telegram.error import BadRequest
-from telegram.ext import CallbackContext, CommandHandler
-from telegram.utils.helpers import mention_html
 from tg_bot.modules.language import gs
-from tg_bot.modules.helper_funcs.decorators import keicmd
+from tg_bot.modules.log_channel import loggable
 
 
 def check_user(user_id: int, bot: Bot, chat: Chat) -> Optional[str]:
     if not user_id:
         return "You don't seem to be referring to a user or the ID specified is incorrect.."
-
 
     try:
         member = chat.get_member(user_id)
@@ -40,6 +39,7 @@ def check_user(user_id: int, bot: Bot, chat: Chat) -> Optional[str]:
         return "Can't. Find someone else to mute but not this one."
 
     return None
+
 
 @keicmd(command='mute')
 @connection_status
@@ -88,6 +88,7 @@ def mute(update: Update, context: CallbackContext) -> str:
 
     return ""
 
+
 @keicmd(command='unmute')
 @connection_status
 @bot_admin
@@ -119,7 +120,7 @@ def unmute(update: Update, context: CallbackContext) -> str:
             and member.can_send_media_messages
             and member.can_send_other_messages
             and member.can_add_web_page_previews
-        ):
+    ):
         message.reply_text("This user already has the right to speak.")
     else:
         chat_permissions = ChatPermissions(
@@ -148,6 +149,7 @@ def unmute(update: Update, context: CallbackContext) -> str:
             f"<b>User:</b> {mention_html(member.user.id, member.user.first_name)}"
         )
     return ""
+
 
 @keicmd(command=['tmute', 'tempmute'])
 @connection_status
@@ -226,7 +228,9 @@ def temp_mute(update: Update, context: CallbackContext) -> str:
 
     return ""
 
+
 def get_help(chat):
     return gs(chat, "muting_help")
+
 
 __mod_name__ = "Muting"

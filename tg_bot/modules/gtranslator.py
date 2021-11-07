@@ -1,5 +1,6 @@
 from gpytranslate import Translator
-from telegram.ext import CommandHandler, CallbackContext
+from pyrogram import filters
+from pyrogram.types import Message
 from telegram import (
     Message,
     Chat,
@@ -9,19 +10,19 @@ from telegram import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
 )
+from telegram.ext import CommandHandler, CallbackContext
+
 from tg_bot import dispatcher, kp
-from pyrogram import filters
-from pyrogram.types import Message
 from tg_bot.modules.disable import DisableAbleCommandHandler
-from tg_bot.modules.language import gs
 from tg_bot.modules.helper_funcs.decorators import keicmd
+from tg_bot.modules.language import gs
 
 
 def get_help(chat):
     return gs(chat, "gtranslate_help")
 
-__mod_name__ = "Translator"
 
+__mod_name__ = "Translator"
 
 trans = Translator()
 
@@ -50,9 +51,10 @@ async def translate(_, message: Message) -> None:
     translation = await trans(to_translate,
                               sourcelang=source, targetlang=dest)
     reply = f"<b>Translated from {source} to {dest}</b>:\n" \
-        f"<code>{translation.text}</code>"
+            f"<code>{translation.text}</code>"
 
     await message.reply_text(reply, parse_mode="html")
+
 
 @keicmd(command='langs')
 def languages(update: Update, context: CallbackContext) -> None:
@@ -64,9 +66,9 @@ def languages(update: Update, context: CallbackContext) -> None:
                     InlineKeyboardButton(
                         text="Language codes",
                         url="https://telegra.ph/Lang-Codes-03-19-3"
-                        ),
+                    ),
                 ],
             ],
-        disable_web_page_preview=True
-    )
+            disable_web_page_preview=True
         )
+    )

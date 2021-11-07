@@ -1,9 +1,9 @@
+from telegram import Message, MessageEntity
+from telegram.error import BadRequest
 from typing import List, Optional
 
 from tg_bot import log
 from tg_bot.modules.users import get_user_id
-from telegram import Message, MessageEntity
-from telegram.error import BadRequest
 
 
 def id_from_reply(message):
@@ -22,7 +22,7 @@ def extract_user(message: Message, args: List[str]) -> Optional[int]:
 
 
 def extract_user_and_text(
-    message: Message, args: List[str]
+        message: Message, args: List[str]
 ) -> (Optional[int], Optional[str]):
     prev_message = message.reply_to_message
     split_text = message.text.split(None, 1)
@@ -40,7 +40,7 @@ def extract_user_and_text(
     if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
-        text = message.text[ent.offset + ent.length :]
+        text = message.text[ent.offset + ent.length:]
 
     elif len(args) >= 1 and args[0][0] == "@":
         user = args[0]
@@ -89,14 +89,14 @@ def extract_user_and_text(
 
 def extract_text(message) -> str:
     return (
-        message.text
-        or message.caption
-        or (message.sticker.emoji if message.sticker else None)
+            message.text
+            or message.caption
+            or (message.sticker.emoji if message.sticker else None)
     )
 
 
 def extract_unt_fedban(
-    message: Message, args: List[str]
+        message: Message, args: List[str]
 ) -> (Optional[int], Optional[str]):
     prev_message = message.reply_to_message
     split_text = message.text.split(None, 1)
@@ -114,7 +114,7 @@ def extract_unt_fedban(
     if entities and ent and ent.offset == len(message.text) - len(text_to_parse):
         ent = entities[0]
         user_id = ent.user.id
-        text = message.text[ent.offset + ent.length :]
+        text = message.text[ent.offset + ent.length:]
 
     elif len(args) >= 1 and args[0][0] == "@":
         user = args[0]
@@ -148,7 +148,7 @@ def extract_unt_fedban(
         message.bot.get_chat(user_id)
     except BadRequest as excp:
         if excp.message in ("User_id_invalid", "Chat not found") and not isinstance(
-            user_id, int
+                user_id, int
         ):
             message.reply_text(
                 "I seem to have never interacted with this user "

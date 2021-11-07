@@ -1,9 +1,3 @@
-from typing import Optional
-
-import tg_bot.modules.sql.rules_sql as sql
-from tg_bot import dispatcher
-from tg_bot.modules.helper_funcs.chat_status import user_admin
-from tg_bot.modules.helper_funcs.string_handling import markdown_parser
 from telegram import (
     InlineKeyboardButton,
     InlineKeyboardMarkup,
@@ -15,7 +9,13 @@ from telegram import (
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, Filters
 from telegram.utils.helpers import escape_markdown
+from typing import Optional
+
+import tg_bot.modules.sql.rules_sql as sql
+from tg_bot import dispatcher
+from tg_bot.modules.helper_funcs.chat_status import user_admin
 from tg_bot.modules.helper_funcs.decorators import keicmd
+from tg_bot.modules.helper_funcs.string_handling import markdown_parser
 
 
 @keicmd(command='rules', filters=Filters.chat_type.groups)
@@ -72,6 +72,7 @@ def send_rules(update, chat_id, from_pm=False):
             "This probably doesn't mean it's lawless though...!"
         )
 
+
 @keicmd(command='setrules', filters=Filters.chat_type.groups)
 @user_admin
 def set_rules(update: Update, context: CallbackContext):
@@ -88,6 +89,7 @@ def set_rules(update: Update, context: CallbackContext):
 
         sql.set_rules(chat_id, markdown_rules)
         update.effective_message.reply_text("Successfully set rules for this group.")
+
 
 @keicmd(command='clearrules', filters=Filters.chat_type.groups)
 @user_admin
@@ -114,7 +116,9 @@ def __migrate__(old_chat_id, new_chat_id):
 def __chat_settings__(chat_id, user_id):
     return f"This chat has had it's rules set: `{bool(sql.get_rules(chat_id))}`"
 
+
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "rules_help")

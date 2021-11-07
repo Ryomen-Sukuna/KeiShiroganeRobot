@@ -1,10 +1,10 @@
 import datetime
-from typing import List
-
 import requests
-from tg_bot import TIME_API_KEY, dispatcher
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
+from typing import List
+
+from tg_bot import TIME_API_KEY, dispatcher
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
 
@@ -53,6 +53,7 @@ def generate_time(to_find: str, findtype: List[str]) -> str:
 
     return result
 
+
 @keicmd(command='time')
 def gettime(update: Update, context: CallbackContext):
     message = update.effective_message
@@ -84,5 +85,6 @@ def gettime(update: Update, context: CallbackContext):
     send_message.edit_text(
         result, parse_mode=ParseMode.HTML, disable_web_page_preview=True
     )
+
 
 __mod_name__ = "Time"

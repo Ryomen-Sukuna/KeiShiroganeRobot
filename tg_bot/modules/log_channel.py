@@ -1,13 +1,15 @@
 from datetime import datetime
 from functools import wraps
-
 from telegram.ext import CallbackContext
+
 from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.misc import is_module_loaded
 from tg_bot.modules.language import gs
 
+
 def get_help(chat):
     return gs(chat, "log_help")
+
 
 FILENAME = __name__.rsplit(".", 1)[-1]
 
@@ -20,6 +22,7 @@ if is_module_loaded(FILENAME):
     from tg_bot import GBAN_LOGS, log, dispatcher
     from tg_bot.modules.helper_funcs.chat_status import user_admin
     from tg_bot.modules.sql import log_channel_sql as sql
+
 
     def loggable(func):
         @wraps(func)
@@ -41,6 +44,7 @@ if is_module_loaded(FILENAME):
             return result
 
         return log_action
+
 
     def gloggable(func):
         @wraps(func)
@@ -65,8 +69,9 @@ if is_module_loaded(FILENAME):
 
         return glog_action
 
+
     def send_log(
-        context: CallbackContext, log_chat_id: str, orig_chat_id: str, result: str
+            context: CallbackContext, log_chat_id: str, orig_chat_id: str, result: str
     ):
         bot = context.bot
         try:
@@ -93,6 +98,7 @@ if is_module_loaded(FILENAME):
                     + "\n\nFormatting has been disabled due to an unexpected error.",
                 )
 
+
     @user_admin
     @keicmd(command='logchannel')
     def logging(update: Update, context: CallbackContext):
@@ -111,6 +117,7 @@ if is_module_loaded(FILENAME):
 
         else:
             message.reply_text("No log channel has been set for this group!")
+
 
     @user_admin
     @keicmd(command='setlog')
@@ -154,6 +161,7 @@ if is_module_loaded(FILENAME):
                 " - forward the /setlog to the group\n"
             )
 
+
     @user_admin
     @keicmd(command='unsetlog')
     def unsetlog(update: Update, context: CallbackContext):
@@ -171,11 +179,14 @@ if is_module_loaded(FILENAME):
         else:
             message.reply_text("No log channel has been set yet!")
 
+
     def __stats__():
         return f"• {sql.num_logchannels()} log channels set."
 
+
     def __migrate__(old_chat_id, new_chat_id):
         sql.migrate_chat(old_chat_id, new_chat_id)
+
 
     def __chat_settings__(chat_id, user_id):
         log_channel = sql.get_chat_log_channel(chat_id)
@@ -183,6 +194,7 @@ if is_module_loaded(FILENAME):
             log_channel_info = dispatcher.bot.get_chat(log_channel)
             return f"This group has all it's logs sent to: {escape_markdown(log_channel_info.title)} (`{log_channel}`)"
         return "No log channel is set for this group!"
+
 
     __help__ = """
 *Admins only:*
@@ -202,6 +214,7 @@ else:
     # run anyway if module not loaded
     def loggable(func):
         return func
+
 
     def gloggable(func):
         return func

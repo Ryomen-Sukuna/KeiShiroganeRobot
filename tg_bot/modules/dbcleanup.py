@@ -1,12 +1,12 @@
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.error import BadRequest, Unauthorized
+from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 from time import sleep
 
 import tg_bot.modules.sql.antispam_sql as gban_sql
 import tg_bot.modules.sql.users_sql as user_sql
 from tg_bot import DEV_USERS, OWNER_ID, dispatcher
 from tg_bot.modules.helper_funcs.chat_status import dev_plus
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
-from telegram.error import BadRequest, Unauthorized
-from telegram.ext import CallbackContext, CallbackQueryHandler, CommandHandler
 
 
 def get_invalid_chats(update: Update, context: CallbackContext, remove: bool = False):
@@ -116,9 +116,9 @@ def callback_button(update: Update, context: CallbackContext):
         chat_count = get_muted_chats(update, context, True)
         bot.sendMessage(chat_id, f"Left {chat_count} chats.")
     elif (
-        query_type == "db_leave_chat"
-        or query_type == "db_cleanup"
-        and query.from_user.id not in admin_list
+            query_type == "db_leave_chat"
+            or query_type == "db_cleanup"
+            and query.from_user.id not in admin_list
     ):
         query.answer("You are not allowed to use this.")
     elif query_type == "db_cleanup":

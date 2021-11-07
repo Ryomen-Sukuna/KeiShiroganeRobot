@@ -1,14 +1,14 @@
 import html
-from typing import List
-
 from telegram import Update, ParseMode, MAX_MESSAGE_LENGTH
 from telegram.ext.dispatcher import CallbackContext
 from telegram.utils.helpers import escape_markdown
+from typing import List
 
 import tg_bot.modules.sql.userinfo_sql as sql
 from tg_bot import dispatcher, SUDO_USERS, DEV_USERS
-from tg_bot.modules.helper_funcs.extraction import extract_user
 from tg_bot.modules.helper_funcs.decorators import keicmd
+from tg_bot.modules.helper_funcs.extraction import extract_user
+
 
 @keicmd(command='me', pass_args=True)
 def about_me(update: Update, context: CallbackContext):
@@ -67,6 +67,7 @@ def set_about_me(update: Update, context: CallbackContext):
                 )
             )
 
+
 @keicmd(command='bio', pass_args=True)
 def about_bio(update: Update, context: CallbackContext):
     args = context.args
@@ -105,9 +106,9 @@ def about_bio(update: Update, context: CallbackContext):
         sender_id = update.effective_user.id
 
         if (
-            user_id == bot.id
-            and sender_id not in SUDO_USERS
-            and sender_id not in DEV_USERS
+                user_id == bot.id
+                and sender_id not in SUDO_USERS
+                and sender_id not in DEV_USERS
         ):
             message.reply_text(
                 "Erm... yeah, I only trust sudo users or developers to set my bio."
@@ -132,6 +133,7 @@ def about_bio(update: Update, context: CallbackContext):
                 )
     else:
         message.reply_text("Reply to someone's message to set their bio!")
+
 
 @keicmd(command='setbio')
 def set_about_bio(update: Update, context: CallbackContext):
@@ -195,6 +197,7 @@ def __user_info__(user_id):
 
 
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "userinfo_help")

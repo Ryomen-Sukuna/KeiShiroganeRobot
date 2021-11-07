@@ -1,9 +1,11 @@
 import requests
-from tg_bot import dispatcher
-from tg_bot.modules.disable import DisableAbleCommandHandler
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext
+
+from tg_bot import dispatcher
+from tg_bot.modules.disable import DisableAbleCommandHandler
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @keicmd(command='paste', pass_args=True)
 def paste(update: Update, context: CallbackContext):
@@ -22,9 +24,9 @@ def paste(update: Update, context: CallbackContext):
 
     key = (
         requests.post("https://nekobin.com/api/documents", json={"content": data})
-        .json()
-        .get("result")
-        .get("key")
+            .json()
+            .get("result")
+            .get("key")
     )
 
     url = f"https://nekobin.com/{key}"

@@ -1,7 +1,6 @@
 import re
-from html import escape
-
 import telegram
+from html import escape
 from telegram import ParseMode, InlineKeyboardMarkup, Message, InlineKeyboardButton
 from telegram.error import BadRequest
 from telegram.ext import (
@@ -14,8 +13,11 @@ from telegram.ext import (
 from telegram.utils.helpers import mention_html, escape_markdown
 
 from tg_bot import dispatcher, log, SUDO_USERS
+from tg_bot.modules.connection import connected
 from tg_bot.modules.disable import DisableAbleCommandHandler
+from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
 from tg_bot.modules.helper_funcs.chat_status import user_admin
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
 from tg_bot.modules.helper_funcs.extraction import extract_text
 from tg_bot.modules.helper_funcs.filters import CustomFilters
 from tg_bot.modules.helper_funcs.misc import build_keyboard_parser
@@ -27,12 +29,6 @@ from tg_bot.modules.helper_funcs.string_handling import (
     markdown_to_html,
 )
 from tg_bot.modules.sql import cust_filters_sql as sql
-
-from tg_bot.modules.connection import connected
-
-from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
-from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg, keicallback
-
 
 HANDLER_GROUP = 10
 
@@ -261,6 +257,7 @@ def stop_filter(update, context):
         "That's not a filter - Click: /filters to get currently active filters.",
     )
 
+
 @keimsg((CustomFilters.has_text & ~Filters.update.edited_message))
 def reply_filter(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
@@ -446,12 +443,13 @@ def reply_filter(update, context):
                         )
 
             else:
-                    # LEGACY - all new filters will have has_markdown set to True.
+                # LEGACY - all new filters will have has_markdown set to True.
                 try:
                     send_message(update.effective_message, filt.reply)
                 except BadRequest as excp:
                     log.exception("Error in filters: " + excp.message)
             break
+
 
 @keicmd(command="removeallfilters", filters=Filters.chat_type.groups)
 def rmall_filters(update, context):
@@ -478,6 +476,7 @@ def rmall_filters(update, context):
             reply_markup=buttons,
             parse_mode=ParseMode.MARKDOWN,
         )
+
 
 @keicallback(pattern=r"filters_.*")
 def rmall_callback(update, context):
@@ -563,9 +562,12 @@ def __chat_settings__(chat_id, user_id):
     cust_filters = sql.get_chat_triggers(chat_id)
     return "There are `{}` custom filters here.".format(len(cust_filters))
 
+
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "cust_filters_help")
+
 
 __mod_name__ = "Filters"

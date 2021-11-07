@@ -1,7 +1,7 @@
 import random
-
 from telegram import Update
 from telegram.ext import CallbackContext
+
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
 reactions = [
@@ -208,6 +208,7 @@ reactions = [
     "╰( ͡° ͜ʖ ͡° )つ──☆*:・ﾟ",
     "(∩ᄑ_ᄑ)⊃━☆ﾟ*･｡*･:≡( ε:)",
 ]
+
 
 @keicmd(command='react')
 def react(update: Update, context: CallbackContext):

@@ -1,16 +1,16 @@
 import html
-
+from alphabet_detector import AlphabetDetector
 from telegram import Message, Chat, ParseMode, MessageEntity
 from telegram import TelegramError, ChatPermissions
 from telegram.error import BadRequest
 from telegram.ext import Filters
 from telegram.utils.helpers import mention_html
-from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
-from alphabet_detector import AlphabetDetector
-from tg_bot.modules.sql.approve_sql import is_approved
+
 import tg_bot.modules.sql.locks_sql as sql
 from tg_bot import dispatcher, SUDO_USERS, log
+from tg_bot.modules.connection import connected
 from tg_bot.modules.disable import DisableAbleCommandHandler
+from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
 from tg_bot.modules.helper_funcs.chat_status import (
     can_delete,
     is_user_admin,
@@ -18,10 +18,9 @@ from tg_bot.modules.helper_funcs.chat_status import (
     is_bot_admin,
     user_admin,
 )
+from tg_bot.modules.helper_funcs.decorators import keicmd, keimsg
 from tg_bot.modules.log_channel import loggable
-from tg_bot.modules.connection import connected
-
-from tg_bot.modules.helper_funcs.alternate import send_message, typing_action
+from tg_bot.modules.sql.approve_sql import is_approved
 
 ad = AlphabetDetector()
 
@@ -33,7 +32,7 @@ LOCK_TYPES = {
     "contact": Filters.contact,
     "photo": Filters.photo,
     "url": Filters.entity(MessageEntity.URL)
-    | Filters.caption_entity(MessageEntity.URL),
+           | Filters.caption_entity(MessageEntity.URL),
     "bots": Filters.status_update.new_chat_members,
     "forward": Filters.forwarded,
     "game": Filters.game,
@@ -94,7 +93,7 @@ REST_GROUP = 2
 
 # NOT ASYNC
 def restr_members(
-    bot, chat_id, members, messages=False, media=False, other=False, previews=False
+        bot, chat_id, members, messages=False, media=False, other=False, previews=False
 ):
     for mem in members:
         try:
@@ -112,7 +111,7 @@ def restr_members(
 
 # NOT ASYNC
 def unrestr_members(
-    bot, chat_id, members, messages=True, media=True, other=True, previews=True
+        bot, chat_id, members, messages=True, media=True, other=True, previews=True
 ):
     for mem in members:
         try:
@@ -126,6 +125,7 @@ def unrestr_members(
             )
         except TelegramError:
             pass
+
 
 @keicmd(command='locktypes')
 def locktypes(update, context):
@@ -147,8 +147,8 @@ def lock(update, context) -> str:
     user = update.effective_user
 
     if (
-        can_delete(chat, context.bot.id)
-        or update.effective_message.chat.type == "private"
+            can_delete(chat, context.bot.id)
+            or update.effective_message.chat.type == "private"
     ):
         if len(args) >= 1:
             ltype = args[0].lower()
@@ -374,10 +374,10 @@ def del_lockables(update, context):
             continue
         if lockable == "button":
             if (
-                sql.is_locked(chat.id, lockable)
-                and can_delete(chat, context.bot.id)
-                and message.reply_markup
-                and message.reply_markup.inline_keyboard
+                    sql.is_locked(chat.id, lockable)
+                    and can_delete(chat, context.bot.id)
+                    and message.reply_markup
+                    and message.reply_markup.inline_keyboard
             ):
                 try:
                     message.delete()
@@ -388,10 +388,10 @@ def del_lockables(update, context):
             continue
         if lockable == "inline":
             if (
-                sql.is_locked(chat.id, lockable)
-                and can_delete(chat, context.bot.id)
-                and message
-                and message.via_bot
+                    sql.is_locked(chat.id, lockable)
+                    and can_delete(chat, context.bot.id)
+                    and message
+                    and message.via_bot
             ):
                 try:
                     message.delete()
@@ -401,9 +401,9 @@ def del_lockables(update, context):
                 break
             continue
         if (
-            filter(update)
-            and sql.is_locked(chat.id, lockable)
-            and can_delete(chat, context.bot.id)
+                filter(update)
+                and sql.is_locked(chat.id, lockable)
+                and can_delete(chat, context.bot.id)
         ):
             if lockable == "bots":
                 new_members = update.effective_message.new_chat_members
@@ -544,7 +544,9 @@ def __chat_settings__(chat_id, user_id):
 
 from tg_bot.modules.language import gs
 
+
 def get_help(chat):
     return gs(chat, "locks_help")
+
 
 __mod_name__ = "Locks"

@@ -1,7 +1,6 @@
 import threading
-from typing import Union
-
 from sqlalchemy import Column, Integer, String, Boolean
+from typing import Union
 
 from tg_bot.modules.sql import SESSION, BASE
 
@@ -83,8 +82,8 @@ def migrate_chat(old_chat_id, new_chat_id):
     with CHAT_LOCK:
         chat_notes = (
             SESSION.query(ReportingChatSettings)
-            .filter(ReportingChatSettings.chat_id == str(old_chat_id))
-            .all()
+                .filter(ReportingChatSettings.chat_id == str(old_chat_id))
+                .all()
         )
         for note in chat_notes:
             note.chat_id = str(new_chat_id)

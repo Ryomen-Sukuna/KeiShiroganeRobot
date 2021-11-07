@@ -1,11 +1,14 @@
 import html
-
+from pyrogram import Client, filters
+from pyrogram.types import Chat, User
 from telegram import ParseMode, Update
 from telegram.error import BadRequest
 from telegram.ext import CallbackContext, Filters
 from telegram.utils.helpers import mention_html, mention_markdown
 
 from tg_bot import SUDO_USERS, dispatcher
+from tg_bot import kp, get_entity
+from tg_bot.modules.helper_funcs.alternate import send_message
 from tg_bot.modules.helper_funcs.chat_status import (
     bot_admin,
     can_pin,
@@ -14,15 +17,11 @@ from tg_bot.modules.helper_funcs.chat_status import (
     user_admin,
     ADMIN_CACHE,
 )
-
-from tg_bot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
-from tg_bot.modules.log_channel import loggable
-from tg_bot.modules.helper_funcs.alternate import send_message
-from tg_bot import kp, get_entity
-from pyrogram import Client, filters
-from pyrogram.types import Chat, User
-from tg_bot.modules.language import gs
 from tg_bot.modules.helper_funcs.decorators import keicmd
+from tg_bot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
+from tg_bot.modules.language import gs
+from tg_bot.modules.log_channel import loggable
+
 
 @keicmd(command="promote", can_disable=False)
 @connection_status
@@ -41,8 +40,8 @@ def promote(update: Update, context: CallbackContext) -> str:
     promoter = chat.get_member(user.id)
 
     if (
-        not (promoter.can_promote_members or promoter.status == "creator")
-        and not user.id in SUDO_USERS
+            not (promoter.can_promote_members or promoter.status == "creator")
+            and not user.id in SUDO_USERS
     ):
         message.reply_text("You don't have the necessary rights to do that!")
         return
@@ -106,6 +105,7 @@ def promote(update: Update, context: CallbackContext) -> str:
     )
 
     return log_message
+
 
 @keicmd(command="demote", can_disable=False)
 @connection_status
@@ -181,11 +181,13 @@ def demote(update: Update, context: CallbackContext) -> str:
         )
         return
 
+
 @keicmd(command="admincache", can_disable=False)
 @user_admin
 def refresh_admin(update, _):
     ADMIN_CACHE.pop(update.effective_chat.id)
     update.effective_message.reply_text("Admins cache refreshed!")
+
 
 @keicmd(command="title", can_disable=False)
 @connection_status
@@ -251,6 +253,7 @@ def set_title(update: Update, context: CallbackContext):
         parse_mode=ParseMode.HTML,
     )
 
+
 @keicmd(command="pin", can_disable=False)
 @bot_admin
 @can_pin
@@ -269,9 +272,9 @@ def pin(update: Update, context: CallbackContext) -> str:
     is_silent = True
     if len(args) >= 1:
         is_silent = (
-            args[0].lower() != "notify"
-            or args[0].lower() == "loud"
-            or args[0].lower() == "violent"
+                args[0].lower() != "notify"
+                or args[0].lower() == "loud"
+                or args[0].lower() == "violent"
         )
 
     if prev_message and is_group:
@@ -291,6 +294,7 @@ def pin(update: Update, context: CallbackContext) -> str:
         )
 
         return log_message
+
 
 @keicmd(command="unpin", can_disable=False)
 @bot_admin
@@ -317,6 +321,7 @@ def unpin(update: Update, context: CallbackContext) -> str:
     )
 
     return log_message
+
 
 @keicmd(command="invitelink", can_disable=False)
 @bot_admin
@@ -395,7 +400,9 @@ async def admins(client, message):
     reply = await message.reply_text(text_unping, disable_web_page_preview=True)
     await reply.edit_text(text_ping, disable_web_page_preview=True)
 
+
 def get_help(chat):
     return gs(chat, "admin_help")
+
 
 __mod_name__ = "Admin"

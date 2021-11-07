@@ -1,5 +1,10 @@
 # Module to blacklist users and prevent them from using commands by @TheRealPhoenix
 
+from telegram import ParseMode, Update
+from telegram.error import BadRequest
+from telegram.ext import CallbackContext, CommandHandler, run_async
+from telegram.utils.helpers import mention_html
+
 import tg_bot.modules.sql.blacklistusers_sql as sql
 from tg_bot import (
     DEV_USERS,
@@ -11,18 +16,15 @@ from tg_bot import (
     dispatcher,
 )
 from tg_bot.modules.helper_funcs.chat_status import dev_plus
+from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.extraction import extract_user, extract_user_and_text
 from tg_bot.modules.log_channel import gloggable
-from telegram import ParseMode, Update
-from telegram.error import BadRequest
-from telegram.ext import CallbackContext, CommandHandler, run_async
-from telegram.utils.helpers import mention_html
-from tg_bot.modules.helper_funcs.decorators import keicmd
 
 BLACKLISTWHITELIST = (
-    [OWNER_ID] + DEV_USERS + SUDO_USERS + WHITELIST_USERS + SUPPORT_USERS
+        [OWNER_ID] + DEV_USERS + SUDO_USERS + WHITELIST_USERS + SUPPORT_USERS
 )
 BLABLEUSERS = [OWNER_ID] + DEV_USERS
+
 
 @keicmd(command='ignore', pass_args=True)
 @dev_plus
@@ -64,6 +66,7 @@ def bl_user(update: Update, context: CallbackContext) -> str:
         log_message += f"\n<b>Reason:</b> {reason}"
 
     return log_message
+
 
 @keicmd(command='notice', pass_args=True)
 @dev_plus
@@ -107,6 +110,7 @@ def unbl_user(update: Update, context: CallbackContext) -> str:
         message.reply_text("I am not ignoring them at all though!")
         return ""
 
+
 @keicmd(command='ignoredlist', pass_args=True)
 @dev_plus
 def bl_users(update: Update, context: CallbackContext):
@@ -131,7 +135,6 @@ def bl_users(update: Update, context: CallbackContext):
 
 
 def __user_info__(user_id):
-
     if user_id in (777000, 1087968824):
         return ""
 
@@ -139,11 +142,11 @@ def __user_info__(user_id):
 
     text = "Blacklisted: <b>{}</b>"
     if (
-        user_id
-        in [777000, 1087968824, dispatcher.bot.id]
-        + SUDO_USERS
-        + SARDEGNA_USERS
-        + WHITELIST_USERS
+            user_id
+            in [777000, 1087968824, dispatcher.bot.id]
+            + SUDO_USERS
+            + SARDEGNA_USERS
+            + WHITELIST_USERS
     ):
         return ""
     if is_blacklisted:
@@ -155,5 +158,6 @@ def __user_info__(user_id):
         text = text.format("No")
 
     return text
+
 
 __mod_name__ = "Blacklisting Users"

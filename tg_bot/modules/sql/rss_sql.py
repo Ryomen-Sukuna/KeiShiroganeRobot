@@ -1,5 +1,4 @@
 import threading
-
 from sqlalchemy import Column, UnicodeText, Integer
 
 from tg_bot.modules.sql import BASE, SESSION
@@ -31,8 +30,8 @@ def check_url_availability(tg_chat_id, tg_feed_link):
     try:
         return (
             SESSION.query(RSS)
-            .filter(RSS.feed_link == tg_feed_link, RSS.chat_id == tg_chat_id)
-            .all()
+                .filter(RSS.feed_link == tg_feed_link, RSS.chat_id == tg_chat_id)
+                .all()
         )
     finally:
         SESSION.close()

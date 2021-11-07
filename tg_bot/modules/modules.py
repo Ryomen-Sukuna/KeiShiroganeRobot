@@ -1,4 +1,6 @@
 import importlib
+from telegram import ParseMode, Update
+from telegram.ext import CallbackContext, CommandHandler
 
 from tg_bot import dispatcher
 from tg_bot.__main__ import (
@@ -13,8 +15,6 @@ from tg_bot.__main__ import (
     USER_SETTINGS,
 )
 from tg_bot.modules.helper_funcs.chat_status import dev_plus, sudo_plus
-from telegram import ParseMode, Update
-from telegram.ext import CallbackContext, CommandHandler
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
 

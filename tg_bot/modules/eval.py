@@ -1,14 +1,13 @@
 import io
 import os
-
 # Common imports for eval
 import textwrap
 import traceback
 from contextlib import redirect_stdout
-
-from tg_bot import log as LOGGER, dispatcher, SYS_ADMIN
 from telegram import ParseMode, Update
 from telegram.ext import Filters, CallbackContext
+
+from tg_bot import log as LOGGER, dispatcher, SYS_ADMIN
 from tg_bot.modules.helper_funcs.decorators import keicmd
 
 namespaces = {}
@@ -48,7 +47,6 @@ def send(msg, bot, update):
         )
 
 
-
 @keicmd(command=("e", "ev", "eva", "eval"), filters=Filters.user(SYS_ADMIN))
 def evaluate(update: Update, context: CallbackContext):
     bot = context.bot
@@ -75,7 +73,7 @@ def do(func, bot, update):
 
     os.chdir(os.getcwd())
     with open(
-        os.path.join(os.getcwd(), "tg_bot/modules/helper_funcs/temp.txt"), "w",
+            os.path.join(os.getcwd(), "tg_bot/modules/helper_funcs/temp.txt"), "w",
     ) as temp:
         temp.write(body)
 
@@ -111,7 +109,6 @@ def do(func, bot, update):
             result = f"{value}{func_return}"
         if result:
             return result
-
 
 
 @keicmd(command="clearlocals", filters=Filters.user(SYS_ADMIN))

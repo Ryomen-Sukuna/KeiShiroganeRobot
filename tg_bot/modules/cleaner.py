@@ -1,4 +1,12 @@
 import html
+from telegram import ParseMode, Update
+from telegram.ext import (
+    CallbackContext,
+    CommandHandler,
+    Filters,
+    MessageHandler,
+    run_async,
+)
 
 from tg_bot import ALLOW_EXCL, CustomCommandHandler, dispatcher
 from tg_bot.modules.disable import DisableAbleCommandHandler
@@ -9,14 +17,6 @@ from tg_bot.modules.helper_funcs.chat_status import (
     user_admin,
 )
 from tg_bot.modules.sql import cleaner_sql as sql
-from telegram import ParseMode, Update
-from telegram.ext import (
-    CallbackContext,
-    CommandHandler,
-    Filters,
-    MessageHandler,
-    run_async,
-)
 
 CMD_STARTERS = ("/", "!") if ALLOW_EXCL else "/"
 BLUE_TEXT_CLEAN_GROUP = 13
@@ -50,7 +50,7 @@ def clean_blue_text_must_click(update: Update, context: CallbackContext):
         fst_word = message.text.strip().split(None, 1)[0]
 
         if len(fst_word) > 1 and any(
-            fst_word.startswith(start) for start in CMD_STARTERS
+                fst_word.startswith(start) for start in CMD_STARTERS
         ):
 
             command = fst_word[1:].split("@")
@@ -185,7 +185,6 @@ def remove_bluetext_ignore_global(update: Update, context: CallbackContext):
 
 @dev_plus
 def bluetext_ignore_list(update: Update, context: CallbackContext):
-
     message = update.effective_message
     chat = update.effective_chat
 
@@ -212,10 +211,13 @@ def bluetext_ignore_list(update: Update, context: CallbackContext):
     message.reply_text(text, parse_mode=ParseMode.HTML)
     return
 
+
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "cleaner_help")
+
 
 SET_CLEAN_BLUE_TEXT_HANDLER = CommandHandler(
     "cleanbluetext", set_blue_text_must_click, pass_args=True, run_async=True

@@ -1,12 +1,14 @@
 import requests
 from telegram import ParseMode, Update
 from telegram.ext import CallbackContext, run_async
+
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @keicmd(command=["ud", "urban"])
 def ud(update: Update, context: CallbackContext):
     message = update.effective_message
-    text = message.text[len("/ud ") :]
+    text = message.text[len("/ud "):]
     results = requests.get(
         f"https://api.urbandictionary.com/v0/define?term={text}"
     ).json()

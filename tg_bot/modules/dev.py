@@ -1,15 +1,17 @@
+import asyncio
 import os
 import subprocess
 import sys
-from time import sleep
-from tg_bot import dispatcher, telethn, OWNER_ID
-from tg_bot.modules.helper_funcs.chat_status import dev_plus
+from statistics import mean
 from telegram import TelegramError, Update
 from telegram.ext import CallbackContext, CommandHandler
-import asyncio
-from statistics import mean
-from time import monotonic as time
 from telethon import events
+from time import monotonic as time
+from time import sleep
+
+from tg_bot import dispatcher, telethn, OWNER_ID
+from tg_bot.modules.helper_funcs.chat_status import dev_plus
+
 
 @dev_plus
 def leave(update: Update, context: CallbackContext):
@@ -44,6 +46,7 @@ def gitpull(update: Update, context: CallbackContext):
     os.system("restart.bat")
     os.execv("start.bat", sys.argv)
 
+
 @dev_plus
 def restart(update: Update, context: CallbackContext):
     update.effective_message.reply_text(
@@ -52,6 +55,7 @@ def restart(update: Update, context: CallbackContext):
 
     os.system("restart.bat")
     os.execv("start.bat", sys.argv)
+
 
 class Store:
     def __init__(self, func):
@@ -77,6 +81,7 @@ class Store:
                 self.calls[-1] += 1
         await self.func(event)
 
+
 async def nothing(event):
     pass
 
@@ -93,8 +98,9 @@ telethn.add_event_handler(callback_queries, events.CallbackQuery())
 @telethn.on(events.NewMessage(pattern=r"/getstats", from_users=OWNER_ID))
 async def getstats(event):
     await event.reply(
-        f"**__KEI EVENT STATISTICS__**\n**Average messages:** {messages.average()}/s\n**Average Callback Queries:** {callback_queries.average()}/s\n**Average Inline Queries:** {inline_queries.average()}/s", parse_mode='md'
-        )
+        f"**__KEI EVENT STATISTICS__**\n**Average messages:** {messages.average()}/s\n**Average Callback Queries:** {callback_queries.average()}/s\n**Average Inline Queries:** {inline_queries.average()}/s",
+        parse_mode='md'
+    )
 
 
 LEAVE_HANDLER = CommandHandler("leave", leave, run_async=True)

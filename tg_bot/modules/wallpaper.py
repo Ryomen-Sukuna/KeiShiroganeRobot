@@ -1,10 +1,11 @@
-from random import randint
-
 import requests as r
-from tg_bot import WALL_API
+from random import randint
 from telegram import Update
 from telegram.ext import CallbackContext
+
+from tg_bot import WALL_API
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 # Wallpapers module by @TheRealPhoenix using wall.alphacoders.com
 

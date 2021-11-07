@@ -1,7 +1,7 @@
 from enum import IntEnum, unique
+from telegram import Message
 
 from tg_bot.modules.helper_funcs.string_handling import button_markdown_parser
-from telegram import Message
 
 
 @unique
@@ -139,16 +139,15 @@ def get_welcome_type(msg: Message):
 
 
 def get_filter_type(msg: Message):
-
     if not msg.reply_to_message and msg.text and len(msg.text.split()) >= 3:
         content = None
         text = msg.text.split(None, 2)[2]
         data_type = Types.TEXT
 
     elif (
-        msg.reply_to_message
-        and msg.reply_to_message.text
-        and len(msg.text.split()) >= 2
+            msg.reply_to_message
+            and msg.reply_to_message.text
+            and len(msg.text.split()) >= 2
     ):
         content = None
         text = msg.reply_to_message.text

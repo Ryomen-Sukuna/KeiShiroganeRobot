@@ -1,5 +1,4 @@
 import threading
-
 from sqlalchemy import Column, Integer, UnicodeText
 
 from tg_bot.modules.sql import SESSION, BASE

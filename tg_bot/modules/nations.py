@@ -1,11 +1,10 @@
 import html
 import json
 import os
-from typing import List, Optional
-
 from telegram import Update, ParseMode, TelegramError
 from telegram.ext import CommandHandler, run_async, CallbackContext
 from telegram.utils.helpers import mention_html
+from typing import List, Optional
 
 from tg_bot import (
     dispatcher,
@@ -17,10 +16,11 @@ from tg_bot import (
     OWNER_ID,
 )
 from tg_bot.modules.helper_funcs.chat_status import whitelist_plus, dev_plus, sudo_plus
+from tg_bot.modules.helper_funcs.decorators import keicmd
 from tg_bot.modules.helper_funcs.extraction import extract_user
 from tg_bot.modules.log_channel import gloggable
 from tg_bot.modules.sql import nation_sql as sql
-from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
     bot = context.bot
@@ -32,6 +32,7 @@ def check_user_id(user_id: int, context: CallbackContext) -> Optional[str]:
 
     else:
         return None
+
 
 @keicmd(command='addsudo')
 @dev_plus
@@ -89,8 +90,8 @@ def addsudo(update: Update, context: CallbackContext) -> str:
 @sudo_plus
 @gloggable
 def addsupport(
-    update: Update,
-    context: CallbackContext,
+        update: Update,
+        context: CallbackContext,
 ) -> str:
     message = update.effective_message
     user = update.effective_user
@@ -381,6 +382,7 @@ def removesardegna(update: Update, context: CallbackContext) -> str:
         message.reply_text("This user is not a Sardegna Nation!")
         return ""
 
+
 # I added extra new lines
 nations = """ Kei has bot access levels we call as *"Nation Levels"*
 \n*Zero Unions* - Devs who can access the bots server and can execute, edit, modify bot code. Can also manage other Nations
@@ -400,6 +402,7 @@ def send_nations(update):
         nations, parse_mode=ParseMode.MARKDOWN, disable_web_page_preview=True
     )
 
+
 @keicmd(command='removesardegna')
 @whitelist_plus
 def whitelistlist(update: Update, context: CallbackContext):
@@ -415,6 +418,7 @@ def whitelistlist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
+
 @keicmd(command='sardegnas')
 @whitelist_plus
 def Sardegnalist(update: Update, context: CallbackContext):
@@ -428,6 +432,7 @@ def Sardegnalist(update: Update, context: CallbackContext):
         except TelegramError:
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
+
 
 @keicmd(command=["supportlist", "sakuras"])
 @whitelist_plus
@@ -443,6 +448,7 @@ def supportlist(update: Update, context: CallbackContext):
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
 
+
 @keicmd(command=["sudolist", "royals"])
 @whitelist_plus
 def sudolist(update: Update, context: CallbackContext):
@@ -457,6 +463,7 @@ def sudolist(update: Update, context: CallbackContext):
         except TelegramError:
             pass
     update.effective_message.reply_text(reply, parse_mode=ParseMode.HTML)
+
 
 @keicmd(command=["devlist", "eagle"])
 @whitelist_plus
@@ -475,6 +482,7 @@ def devlist(update: Update, context: CallbackContext):
 
 
 from tg_bot.modules.language import gs
+
 
 def get_help(chat):
     return gs(chat, "nation_help")

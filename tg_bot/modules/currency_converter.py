@@ -1,8 +1,10 @@
 import requests
-from tg_bot import CASH_API_KEY
 from telegram import Update, ParseMode
 from telegram.ext import CallbackContext
+
+from tg_bot import CASH_API_KEY
 from tg_bot.modules.helper_funcs.decorators import keicmd
+
 
 @keicmd(command='cash')
 def convert(update: Update, context: CallbackContext):
@@ -45,6 +47,6 @@ def convert(update: Update, context: CallbackContext):
 
     else:
         update.effective_message.reply_text(
-            f"*Invalid Args!!:* Required 3 But Passed {len(args) -1}",
+            f"*Invalid Args!!:* Required 3 But Passed {len(args) - 1}",
             parse_mode=ParseMode.MARKDOWN,
         )
