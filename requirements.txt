@@ -1,4 +1,4 @@
-aiohttp==3.8.0
+aiohttp==3.8.1
 alphabet_detector
 beautifulsoup4
 bleach
