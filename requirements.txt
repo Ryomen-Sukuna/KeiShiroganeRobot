@@ -1,4 +1,4 @@
-aiohttp==3.8.1
+aiohttp~=3.8.1
 alphabet_detector
 beautifulsoup4
 bleach
@@ -16,10 +16,10 @@ intellivoid-SPB
 markdown2
 multicolorcaptcha
 nltk
-pillow==9.0.1
+pillow~=9.0.1
 psutil
 psycopg2-binary
-pyYAML==6.0
+pyYAML~=6.0
 pyrate-limiter
 pyrogram
 python-telegram-bot==13.5
@@ -28,8 +28,8 @@ rich
 spamwatch
 speedtest-cli
 spongemock
-sqlalchemy==1.4.35
-telethon==1.24.0
+sqlalchemy~=1.4.35
+telethon~=1.24.0
 tgcrypto
 tswift
 ujson
