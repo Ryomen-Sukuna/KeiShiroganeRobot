@@ -16,7 +16,7 @@ intellivoid-SPB
 markdown2
 multicolorcaptcha
 nltk
-pillow~=9.1.0
+pillow~=9.1.1
 psutil
 psycopg2-binary
 pyYAML~=6.0
